@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --nav-h: 4.5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
+  }
+
+  body {
+    @apply bg-paper text-ink antialiased;
+    font-family: var(--font-vazir);
+    line-height: 1.9;
+  }
+
+  ::selection {
+    background: rgba(168, 137, 79, 0.25);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .section {
+    @apply py-24 sm:py-32;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-gold,
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-all duration-300;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+
+  .btn-primary {
+    @apply bg-brand text-white shadow-card hover:-translate-y-0.5 hover:bg-brand-500;
+  }
+
+  .btn-secondary {
+    @apply border border-line bg-white/60 text-ink backdrop-blur-sm hover:border-brand-400 hover:bg-white;
+  }
+
+  .btn-gold {
+    @apply bg-gold font-bold text-ink shadow-[0_10px_40px_-10px_rgba(194,165,108,0.7)] hover:-translate-y-0.5 hover:bg-gold-soft;
+  }
+
+  .btn-ghost-light {
+    @apply border border-white/25 text-white hover:border-gold hover:text-gold-soft;
+  }
+
+  .glass-navy {
+    @apply rounded-2xl border border-white/10 backdrop-blur-xl;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      0 24px 60px -24px rgba(0, 0, 0, 0.7);
+  }
+
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-white/70 shadow-card backdrop-blur-sm;
+  }
+
+  .eyebrow {
+    @apply flex items-center gap-3 text-xs font-bold tracking-[0.3em] text-brand-600;
+  }
+
+  .eyebrow::after {
+    content: '';
+    @apply h-px w-12 bg-brand-400/60;
+  }
+
+  .navy-stage {
+    background:
+      radial-gradient(900px 480px at 28% 38%, rgba(194, 165, 108, 0.14), transparent 60%),
+      radial-gradient(1200px 600px at 85% -10%, rgba(61, 85, 184, 0.35), transparent 55%),
+      linear-gradient(180deg, #0a1128, #101c4b 55%, #14235c);
+  }
+
+  .navy-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 0),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 0);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 30%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 30%, #000 40%, transparent 100%);
+  }
+
+  .scene {
+    perspective: 1400px;
+  }
+}
+
+@layer utilities {
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .ltr {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    animation: marquee-rtl linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+}
