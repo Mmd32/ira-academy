@@ -3,8 +3,9 @@ import Link from 'next/link';
 
 import { PageHeader, ComingSoon } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
+import { FeaturedCourse } from '@/components/programs/FeaturedCourse';
 import {
-  categories,
+  programModels,
   courses,
   workshops,
   seminars,
@@ -27,6 +28,8 @@ export default function ProgramsPage() {
         lead="دوره‌های تخصصی دانش‌محور، کارگاه‌های مهارت‌محور و سمینارها و وبینارهای آکادمی — کنار هر برنامه، لینک ثبت‌نام همان برنامه."
       />
 
+      <FeaturedCourse />
+
       <section id="courses" className="section bg-white">
         <div className="container-x">
           <Reveal>
@@ -34,43 +37,56 @@ export default function ProgramsPage() {
             <h2 className="mt-5 text-3xl sm:text-4xl">دانش‌محور، با پروژه‌ی واقعی</h2>
           </Reveal>
 
-          {categories.map((category) => (
-            <div key={category.id} className="mt-12">
-              <Reveal>
-                <h3 className="flex items-center gap-3 text-lg font-extrabold text-brand">
-                  {category.title}
-                  <span className="h-px flex-1 bg-line" />
-                </h3>
-              </Reveal>
+          {programModels.map((model) => {
+            const modelCourses = courses.filter((course) => course.model === model.id);
 
-              <div className="mt-6 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                {courses
-                  .filter((course) => course.category === category.id)
-                  .map((course) => (
-                    <Reveal key={course.id} className="h-full">
-                      <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-400/50 hover:shadow-lift">
-                        <span className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-l from-transparent via-gold/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                        <span className="w-fit rounded-full border border-brand/10 bg-brand/5 px-3 py-1 text-[10px] font-bold text-brand-600">
-                          {course.audience}
-                        </span>
-                        <h4 className="mt-3 text-base font-extrabold leading-8 text-ink">
-                          {course.title}
-                        </h4>
-                        <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{course.blurb}</p>
-                        <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                          <span className="text-xs font-semibold text-ink-mute">
-                            {fa(course.sessions)} مبحث · {fa(course.hours)} ساعت
+            return (
+              <div key={model.id} className="mt-12">
+                <Reveal>
+                  <h3 className="flex items-center gap-3 text-lg font-extrabold text-brand">
+                    {model.title}
+                    <span className="h-px flex-1 bg-line" />
+                  </h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-7 text-ink-soft">{model.desc}</p>
+                </Reveal>
+
+                {modelCourses.length === 0 ? (
+                  <Reveal>
+                    <p className="mt-6 rounded-2xl border border-dashed border-line bg-paper px-6 py-8 text-center text-sm text-ink-mute">
+                      دوره‌های این بخش به‌زودی اعلام می‌شود.
+                    </p>
+                  </Reveal>
+                ) : (
+                  <div className="mt-6 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    {modelCourses.map((course) => (
+                      <Reveal key={course.id} className="h-full">
+                        <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-400/50 hover:shadow-lift">
+                          <span className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-l from-transparent via-gold/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                          <span className="w-fit rounded-full border border-brand/10 bg-brand/5 px-3 py-1 text-[10px] font-bold text-brand-600">
+                            {course.audience}
                           </span>
-                          <Link href={`/register/?course=${course.id}`} className={registerCta}>
-                            ثبت‌نام
-                          </Link>
+                          <h4 className="mt-3 text-base font-extrabold leading-8 text-ink">
+                            {course.title}
+                          </h4>
+                          <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">
+                            {course.blurb}
+                          </p>
+                          <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
+                            <span className="text-xs font-semibold text-ink-mute">
+                              {fa(course.sessions)} مبحث · {fa(course.hours)} ساعت
+                            </span>
+                            <Link href={`/register/?course=${course.id}`} className={registerCta}>
+                              ثبت‌نام
+                            </Link>
+                          </div>
                         </div>
-                      </div>
-                    </Reveal>
-                  ))}
+                      </Reveal>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

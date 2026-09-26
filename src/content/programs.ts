@@ -1,6 +1,7 @@
-export type CourseCategory = 'retail' | 'fnb' | 'other';
+/** How a programme is delivered — the top-level grouping on /programs. */
+export type CourseModel = 'standard' | 'organization' | 'institute' | 'university';
 
-export type Category = { id: CourseCategory; title: string };
+export type ProgramModel = { id: CourseModel; title: string; desc: string };
 
 export type Course = {
   id: string;
@@ -9,26 +10,38 @@ export type Course = {
   audience: string;
   sessions: number;
   hours: number;
-  category: CourseCategory;
+  model: CourseModel;
 };
 
 export type Workshop = { id: string; title: string; blurb: string; duration: string };
 export type Seminar = { id: string; title: string; blurb: string; type: string };
 
-export const categories = [
+/**
+ * PLACEHOLDER COPY — the four delivery models are confirmed, but their
+ * descriptions still need the academy's own wording.
+ */
+export const programModels = [
   {
-    id: 'retail',
-    title: 'ریتیل و فروشگاه‌داری'
+    id: 'standard',
+    title: 'استاندارد',
+    desc: 'دوره‌های عمومی آکادمی با سرفصل ثابت و ثبت‌نام آزاد.'
   },
   {
-    id: 'fnb',
-    title: 'مدیریت کافه و رستوران (F&B)'
+    id: 'organization',
+    title: 'سازمانی — Custom-Made',
+    desc: 'دوره‌هایی که بر اساس نیاز، محصول و تیم هر سازمان ویژه‌سازی و در محل برگزار می‌شود.'
   },
   {
-    id: 'other',
-    title: 'سایر'
+    id: 'institute',
+    title: 'همکاری با انستیتوها',
+    desc: 'دوره‌های مشترک با انستیتوها و مراکز آموزشی تخصصی.'
+  },
+  {
+    id: 'university',
+    title: 'همکاری با دانشگاه‌ها',
+    desc: 'دوره‌های مشترک با دانشگاه‌ها و مراکز آموزش عالی.'
   }
-] as const satisfies readonly Category[];
+] as const satisfies readonly ProgramModel[];
 
 export const courses = [
   {
@@ -38,7 +51,7 @@ export const courses = [
     audience: 'فروشندگان',
     sessions: 6,
     hours: 18,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'visual-merchandising',
@@ -47,7 +60,7 @@ export const courses = [
     audience: 'مدیران فروشگاه',
     sessions: 5,
     hours: 15,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'store-management-1',
@@ -56,7 +69,7 @@ export const courses = [
     audience: 'مدیران و سرپرستان',
     sessions: 9,
     hours: 22,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'store-management-2',
@@ -65,7 +78,7 @@ export const courses = [
     audience: 'دانش‌آموختگان سطح پایه',
     sessions: 9,
     hours: 30,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'customer-experience',
@@ -74,7 +87,7 @@ export const courses = [
     audience: 'فروشندگان',
     sessions: 4,
     hours: 12,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'pricing-promotion',
@@ -83,7 +96,7 @@ export const courses = [
     audience: 'مالکان و برندها',
     sessions: 4,
     hours: 12,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'inventory',
@@ -92,7 +105,7 @@ export const courses = [
     audience: 'مدیران فروشگاه',
     sessions: 5,
     hours: 15,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'online-retail',
@@ -101,7 +114,7 @@ export const courses = [
     audience: 'مالکان و برندها',
     sessions: 6,
     hours: 18,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'team-leadership',
@@ -110,7 +123,7 @@ export const courses = [
     audience: 'مالکان و برندها',
     sessions: 6,
     hours: 18,
-    category: 'retail'
+    model: 'standard'
   },
   {
     id: 'fnb-cafe-management',
@@ -119,7 +132,7 @@ export const courses = [
     audience: 'مالکان و مدیران F&B',
     sessions: 8,
     hours: 24,
-    category: 'fnb'
+    model: 'standard'
   },
   {
     id: 'fnb-service',
@@ -128,7 +141,7 @@ export const courses = [
     audience: 'پرسنل و سرپرستان سالن',
     sessions: 4,
     hours: 12,
-    category: 'fnb'
+    model: 'standard'
   },
   {
     id: 'franchise',
@@ -137,9 +150,48 @@ export const courses = [
     audience: 'مالکان و برندها',
     sessions: 5,
     hours: 15,
-    category: 'other'
+    model: 'standard'
   }
 ] as const satisfies readonly Course[];
+
+export type Partner = { name: string; logo: string };
+
+export type FeaturedCourse = {
+  id: string;
+  /** Small label above the title, e.g. the co-branding line. */
+  eyebrow: string;
+  title: string;
+  blurb: string;
+  audience: string;
+  sessions: number;
+  hours: number;
+  model: CourseModel;
+  /** Co-branded logos shown as a lockup; the academy's own mark is added first. */
+  partners: readonly Partner[];
+  highlights: readonly string[];
+};
+
+/**
+ * PLACEHOLDER DATA — the course is confirmed (IRA × Bake Academy) but every
+ * field below is sample copy waiting on the real course sheet.
+ */
+export const featuredCourse = {
+  id: 'restaurant-cafe-management',
+  eyebrow: 'دوره‌ی شاخص آکادمی',
+  title: 'مدیریت رستوران و کافی‌شاپ',
+  blurb:
+    'این متن نمونه است و با معرفی رسمی دوره جایگزین می‌شود — دوره‌ی مشترک آکادمی ریتیل ایران و Bake Academy برای مدیران و مالکان رستوران و کافی‌شاپ.',
+  audience: 'مالکان و مدیران رستوران و کافی‌شاپ',
+  sessions: 0,
+  hours: 0,
+  model: 'institute',
+  partners: [{ name: 'Bake Academy', logo: '/media/bake-academy.png' }],
+  highlights: [
+    'سرفصل نمونه — با سرفصل رسمی دوره جایگزین می‌شود',
+    'سرفصل نمونه — با سرفصل رسمی دوره جایگزین می‌شود',
+    'سرفصل نمونه — با سرفصل رسمی دوره جایگزین می‌شود'
+  ]
+} as const satisfies FeaturedCourse;
 
 export const workshops = [
   {

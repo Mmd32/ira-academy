@@ -4,12 +4,13 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { Reveal } from '@/components/Reveal';
-import { courses, workshops, seminars } from '@/content/programs';
+import { courses, workshops, seminars, featuredCourse } from '@/content/programs';
 import { site } from '@/content/site';
 import { fa } from '@/lib/text';
 
 /** Everything registrable, in one flat list for the <select>. */
 const programs = [
+  { id: featuredCourse.id, label: `دوره: ${featuredCourse.title}` },
   ...courses.map((c) => ({ id: c.id, label: `دوره: ${c.title}` })),
   ...workshops.map((w) => ({ id: w.id, label: `کارگاه: ${w.title}` })),
   ...seminars.map((s) => ({ id: s.id, label: `${s.type}: ${s.title}` })),
