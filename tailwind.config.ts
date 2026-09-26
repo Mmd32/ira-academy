@@ -29,7 +29,7 @@ const config: Config = {
         line: '#DDE1EA',
       },
       fontFamily: {
-        sans: ['var(--font-vazirmatn)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-brand)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         card: '0 1px 2px rgba(14,22,51,0.05), 0 12px 40px -18px rgba(14,22,51,0.20)',

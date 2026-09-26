@@ -8,7 +8,7 @@ import './globals.css';
 
 const vazirmatn = Vazirmatn({
   subsets: ['arabic', 'latin'],
-  variable: '--font-vazir',
+  variable: '--font-brand',
   display: 'swap',
 });
 
