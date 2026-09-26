@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import { ConsultWidget } from '@/components/ConsultWidget';
+import { siteUrl } from '@/lib/site-url';
 import './globals.css';
 
 /**
@@ -32,6 +33,8 @@ const lahzeh = localFont({
 });
 
 export const metadata: Metadata = {
+  // Without this, Open Graph and canonical URLs stay relative and break when shared.
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'آکادمی ریتیل ایران | آموزش تخصصی فروش و مدیریت فروشگاه',
     template: '%s | آکادمی ریتیل ایران',
@@ -47,6 +50,7 @@ export const metadata: Metadata = {
     'آکادمی ریتیل ایران',
   ],
   openGraph: {
+    url: '/',
     title: 'آکادمی ریتیل ایران',
     description:
       'آموزش تخصصی فروش، مدیریت فروشگاه و تجربه‌ی مشتری — برای فروشگاه‌داران و برندهای زنجیره‌ای.',

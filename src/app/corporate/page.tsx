@@ -7,7 +7,10 @@ import { corporate } from '@/content/pages';
 import { site } from '@/content/site';
 import { fa } from '@/lib/text';
 
-export const metadata: Metadata = { title: 'خدمات سازمانی' };
+export const metadata: Metadata = {
+  title: 'خدمات سازمانی',
+  alternates: { canonical: '/corporate/' },
+};
 
 export default function CorporatePage() {
   return (

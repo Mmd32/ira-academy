@@ -4,7 +4,10 @@ import { Suspense } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import { RegisterForm } from '@/components/RegisterForm';
 
-export const metadata: Metadata = { title: 'ثبت‌نام' };
+export const metadata: Metadata = {
+  title: 'ثبت‌نام',
+  alternates: { canonical: '/register/' },
+};
 
 export default function RegisterPage() {
   return (
