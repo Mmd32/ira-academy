@@ -1,18 +1,40 @@
 import type { Metadata } from 'next';
-import { Vazirmatn } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import { ConsultWidget } from '@/components/ConsultWidget';
+import { siteUrl } from '@/lib/site-url';
 import './globals.css';
 
-const vazirmatn = Vazirmatn({
-  subsets: ['arabic', 'latin'],
-  variable: '--font-vazir',
+/**
+ * Lahzeh FaNum — the academy's corporate typeface.
+ *
+ * Only the six weights the site actually uses are declared: Next preloads
+ * every declared file, so shipping Thin/ExtraLight/Light would cost three
+ * downloads per visit for nothing. The unused .woff2 files stay in src/fonts/
+ * if a future design needs them.
+ *
+ * Weights come from the file names, not the files' own metadata — several
+ * of them report the wrong usWeightClass (SemiBold and ExtraBold both say 400).
+ */
+const lahzeh = localFont({
+  src: [
+    { path: '../fonts/Lahzeh-FaNum-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/Lahzeh-FaNum-Medium.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/Lahzeh-FaNum-SemiBold.woff2', weight: '600', style: 'normal' },
+    { path: '../fonts/Lahzeh-FaNum-Bold.woff2', weight: '700', style: 'normal' },
+    { path: '../fonts/Lahzeh-FaNum-ExtraBold.woff2', weight: '800', style: 'normal' },
+    { path: '../fonts/Lahzeh-FaNum-Black.woff2', weight: '900', style: 'normal' },
+  ],
+  variable: '--font-brand',
   display: 'swap',
+  fallback: ['system-ui', 'sans-serif'],
 });
 
 export const metadata: Metadata = {
+  // Without this, Open Graph and canonical URLs stay relative and break when shared.
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'آکادمی ریتیل ایران | آموزش تخصصی فروش و مدیریت فروشگاه',
     template: '%s | آکادمی ریتیل ایران',
@@ -28,6 +50,7 @@ export const metadata: Metadata = {
     'آکادمی ریتیل ایران',
   ],
   openGraph: {
+    url: '/',
     title: 'آکادمی ریتیل ایران',
     description:
       'آموزش تخصصی فروش، مدیریت فروشگاه و تجربه‌ی مشتری — برای فروشگاه‌داران و برندهای زنجیره‌ای.',
@@ -45,7 +68,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fa" dir="rtl" className={vazirmatn.variable}>
+    <html lang="fa" dir="rtl" className={lahzeh.variable}>
       <body>
         <Nav />
         <main>{children}</main>

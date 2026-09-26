@@ -12,7 +12,10 @@ import {
   handoutsArchive,
 } from '@/content/knowledge';
 
-export const metadata: Metadata = { title: 'دانشنامه ریتیل' };
+export const metadata: Metadata = {
+  title: 'دانشنامه ریتیل',
+  alternates: { canonical: '/knowledge/' },
+};
 
 export default function KnowledgePage() {
   return (

@@ -5,7 +5,10 @@ import { Reveal } from '@/components/Reveal';
 import { LeadForm } from '@/components/LeadForm';
 import { community } from '@/content/pages';
 
-export const metadata: Metadata = { title: 'جامعه حرفه‌ای IRA' };
+export const metadata: Metadata = {
+  title: 'جامعه حرفه‌ای IRA',
+  alternates: { canonical: '/community/' },
+};
 
 export default function CommunityPage() {
   return (

@@ -14,7 +14,10 @@ import {
 } from '@/content/programs';
 import { fa } from '@/lib/text';
 
-export const metadata: Metadata = { title: 'برنامه‌های آموزشی' };
+export const metadata: Metadata = {
+  title: 'برنامه‌های آموزشی',
+  alternates: { canonical: '/programs/' },
+};
 
 const registerCta =
   'rounded-full bg-brand px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-brand-500';

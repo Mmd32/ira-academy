@@ -5,7 +5,10 @@ import { Reveal } from '@/components/Reveal';
 import { about } from '@/content/pages';
 import { fa } from '@/lib/text';
 
-export const metadata: Metadata = { title: 'معرفی آکادمی' };
+export const metadata: Metadata = {
+  title: 'معرفی آکادمی',
+  alternates: { canonical: '/about/' },
+};
 
 const pillars = [
   { label: 'هدف', text: about.goal },

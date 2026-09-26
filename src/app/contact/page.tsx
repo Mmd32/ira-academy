@@ -7,7 +7,10 @@ import { contact } from '@/content/pages';
 import { site } from '@/content/site';
 import { fa } from '@/lib/text';
 
-export const metadata: Metadata = { title: 'ارتباط با آکادمی' };
+export const metadata: Metadata = {
+  title: 'ارتباط با آکادمی',
+  alternates: { canonical: '/contact/' },
+};
 
 export default function ContactPage() {
   return (

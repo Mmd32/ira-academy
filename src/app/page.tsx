@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import { Hero } from '@/components/home/Hero';
 import {
   CourseMarquee,
@@ -6,6 +8,10 @@ import {
   NewsTicker,
   HomeCta,
 } from '@/components/home/sections';
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 export default function HomePage() {
   return (
