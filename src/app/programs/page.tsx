@@ -203,7 +203,7 @@ export default function ProgramsPage() {
                 ۰۵ — MBA و Mini MBA تخصصی <ComingSoon />
               </p>
               <p className="mt-4 leading-8 text-ink-soft">
-                دوره‌های MBA و Mini MBA تخصصی خرده‌فروشی در آینده ارائه می‌شود. برای اطلاع از زمان
+                دوره‌های MBA و Mini MBA تخصصی ریتیل در آینده ارائه می‌شود. برای اطلاع از زمان
                 شروع، در خبرنامه ثبت‌نام کنید یا با مشاوران در تماس باشید.
               </p>
               <Link href="/register/?course=mba" className="btn-secondary mt-6 !py-2.5 text-xs">

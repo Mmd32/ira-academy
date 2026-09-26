@@ -217,7 +217,7 @@ export const workshops = [
 export const seminars = [
   {
     id: 'sem-trends',
-    title: 'سمینار روندهای خرده‌فروشی ۱۴۰۵',
+    title: 'سمینار روندهای ریتیل ۱۴۰۵',
     blurb: 'تصویری از آینده‌ی نزدیک ریتیل ایران و جهان برای تصمیم‌گیران.',
     type: 'حضوری'
   },

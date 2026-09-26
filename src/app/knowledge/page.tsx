@@ -23,14 +23,14 @@ export default function KnowledgePage() {
       <PageHeader
         eyebrow="دانشنامه ریتیل"
         title="دانشنامه ریتیل و فروشگاه‌داری"
-        lead="مرجع تخصصی و قابل اتکای دانش خرده‌فروشی — اخبار، مقالات و مورد کاوی، ویدیو و پادکست، ابزارهای کاربردی و لغت‌نامه."
+        lead="مرجع تخصصی و قابل اتکای دانش ریتیل — اخبار، مقالات و مورد کاوی، ویدیو و پادکست، ابزارهای کاربردی و لغت‌نامه."
       />
 
       <section id="news" className="section bg-white">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">اخبار روز — جهان و ایران</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">تازه‌های خرده‌فروشی</h2>
+            <h2 className="mt-5 text-3xl sm:text-4xl">تازه‌های ریتیل</h2>
           </Reveal>
           <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
             {news.map((item) => (

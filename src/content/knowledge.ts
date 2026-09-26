@@ -7,7 +7,7 @@ export type GlossaryEntry = { term: string; def: string };
 export const news = [
   {
     id: 'n1',
-    title: 'رشد سهم فروشگاه‌های زنجیره‌ای از خرده‌فروشی ایران',
+    title: 'رشد سهم فروشگاه‌های زنجیره‌ای از ریتیل ایران',
     scope: 'ایران',
     date: 'این هفته'
   },
@@ -141,7 +141,7 @@ export const glossary = [
  */
 export const library = {
   title: 'کتابخانه (معرفی کتاب)',
-  text: 'این بخش در آینده ایجاد می‌شود — معرفی کتاب‌های تخصصی خرده‌فروشی.',
+  text: 'این بخش در آینده ایجاد می‌شود — معرفی کتاب‌های تخصصی ریتیل.',
 } as const;
 
 export const handoutsArchive = {
