@@ -6,7 +6,7 @@ import { LeadForm } from '@/components/LeadForm';
 import { community } from '@/content/pages';
 
 export const metadata: Metadata = {
-  title: 'جامعه حرفه‌ای IRA',
+  title: 'جامعه حرفه‌ای ARI',
   alternates: { canonical: '/community/' },
 };
 
@@ -14,7 +14,7 @@ export default function CommunityPage() {
   return (
     <>
       <PageHeader
-        eyebrow="جامعه حرفه‌ای IRA"
+        eyebrow="جامعه حرفه‌ای ARI"
         title="شبکه‌ای پویا از اهالی ریتیل"
         lead="باشگاه اعضا و رویدادهای آکادمی — جایی برای یادگیری از هم‌صنف‌ها، شبکه‌سازی و رشد حرفه‌ای مشترک."
       />
@@ -48,7 +48,7 @@ export default function CommunityPage() {
               <p className="mb-6 mt-1 text-sm text-ink-mute">
                 پس از بررسی، نتیجه از طریق تماس یا پیامک اعلام می‌شود.
               </p>
-              <LeadForm subject="درخواست عضویت در باشگاه IRA" cta="ارسال درخواست عضویت" />
+              <LeadForm subject="درخواست عضویت در باشگاه ARI" cta="ارسال درخواست عضویت" />
             </div>
           </Reveal>
         </div>

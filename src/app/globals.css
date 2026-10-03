@@ -75,7 +75,12 @@
   }
 
   .eyebrow {
-    @apply flex items-center gap-3 text-xs font-bold tracking-[0.3em] text-brand-600;
+    @apply flex items-center gap-3 text-[13px] font-bold tracking-[0.22em] text-brand-600 sm:text-sm;
+  }
+
+  /* The same small label as .eyebrow, for use on the navy stage. */
+  .eyebrow-light {
+    @apply text-[13px] font-bold tracking-[0.22em] text-gold-soft sm:text-sm;
   }
 
   .eyebrow::after {

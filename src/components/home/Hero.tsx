@@ -209,11 +209,11 @@ export function Hero() {
               className="grid items-center gap-10 pb-10 lg:grid-cols-2 lg:gap-14"
             >
               <div>
-                <p className="flex items-center gap-3 text-xs font-bold tracking-[0.25em] text-gold-soft">
+                <p className="eyebrow-light flex items-center gap-3">
                   {slide.eyebrow}
                   <span className="h-px w-10 shrink-0 bg-gold/50" />
                 </p>
-                <h1 className="mt-6 text-4xl leading-[1.3] text-white sm:text-5xl">
+                <h1 className="mt-4 text-4xl leading-[1.3] text-white sm:text-5xl">
                   {splitTitle(slide.title).map((part, i) =>
                     part.gold ? (
                       <span key={i} className="text-gold-soft"> {part.text} </span>

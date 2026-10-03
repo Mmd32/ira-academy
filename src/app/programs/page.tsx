@@ -6,7 +6,7 @@ import { Reveal } from '@/components/Reveal';
 import { FeaturedCourse } from '@/components/programs/FeaturedCourse';
 import {
   programModels,
-  courses,
+  visibleCourses,
   workshops,
   seminars,
   pastEvents,
@@ -22,6 +22,15 @@ export const metadata: Metadata = {
 const registerCta =
   'rounded-full bg-brand px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-brand-500';
 
+/**
+ * Sections hidden for now. The markup below is untouched — flip a flag to
+ * bring one back.
+ */
+const SHOW_WORKSHOPS = false;
+const SHOW_SEMINARS = false;
+const SHOW_PAST_EVENTS = false;
+const SHOW_CALENDAR = false;
+
 export default function ProgramsPage() {
   return (
     <>
@@ -36,13 +45,13 @@ export default function ProgramsPage() {
       <section id="courses" className="section bg-white">
         <div className="container-x">
           <Reveal>
-            <p className="eyebrow">۰۱ — دوره‌های تخصصی</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">دانش‌محور، با پروژه‌ی واقعی</h2>
+            <p className="eyebrow">دوره‌های تخصصی</p>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">دانش‌محور، با پروژه‌ی واقعی</h2>
           </Reveal>
 
           <div className="mt-12 space-y-4">
             {programModels.map((model, i) => {
-              const modelCourses = courses.filter((course) => course.model === model.id);
+              const modelCourses = visibleCourses.filter((course) => course.model === model.id);
 
               return (
                 <Reveal key={model.id}>
@@ -53,7 +62,7 @@ export default function ProgramsPage() {
                     open={i === 0}
                     className="group overflow-hidden rounded-2xl border border-line bg-white shadow-card"
                   >
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 marker:content-none [&::-webkit-details-marker]:hidden">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 marker:content-none sm:gap-4 sm:p-6 [&::-webkit-details-marker]:hidden">
                       <span className="min-w-0">
                         <span className="block text-lg font-extrabold text-brand">
                           {model.title}
@@ -84,7 +93,7 @@ export default function ProgramsPage() {
                       </span>
                     </summary>
 
-                    <div className="border-t border-line bg-paper p-6">
+                    <div className="border-t border-line bg-paper p-5 sm:p-6">
                       {modelCourses.length === 0 ? (
                         <p className="py-4 text-center text-sm text-ink-mute">
                           دوره‌های این بخش به‌زودی اعلام می‌شود.
@@ -106,7 +115,7 @@ export default function ProgramsPage() {
                               <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">
                                 {course.blurb}
                               </p>
-                              <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
+                              <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
                                 <span className="text-xs font-semibold text-ink-mute">
                                   {fa(course.sessions)} مبحث · {fa(course.hours)} ساعت
                                 </span>
@@ -130,81 +139,93 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      <section id="workshops" className="section border-y border-line bg-paper-soft">
-        <div className="container-x">
-          <Reveal>
-            <p className="eyebrow">۰۲ — کارگاه‌ها</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">مهارت‌محور و فشرده</h2>
-          </Reveal>
-          <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
-            {workshops.map((workshop) => (
-              <Reveal key={workshop.id} className="h-full">
-                <div className="card flex h-full flex-col p-6">
-                  <h3 className="text-base font-extrabold leading-8 text-ink">{workshop.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{workshop.blurb}</p>
-                  <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                    <span className="text-xs font-semibold text-ink-mute">{workshop.duration}</span>
-                    <Link href={`/register/?course=${workshop.id}`} className={registerCta}>
+      {SHOW_WORKSHOPS && (
+  <section id="workshops" className="section border-y border-line bg-paper-soft">
+          <div className="container-x">
+            <Reveal>
+              <p className="eyebrow">کارگاه‌ها</p>
+              <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">مهارت‌محور و فشرده</h2>
+            </Reveal>
+            <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
+              {workshops.map((workshop) => (
+                <Reveal key={workshop.id} className="h-full">
+                  <div className="card flex h-full flex-col p-6">
+                    <h3 className="text-base font-extrabold leading-8 text-ink">{workshop.title}</h3>
+                    <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{workshop.blurb}</p>
+                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
+                      <span className="text-xs font-semibold text-ink-mute">{workshop.duration}</span>
+                      <Link href={`/register/?course=${workshop.id}`} className={registerCta}>
+                        ثبت‌نام
+                      </Link>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {SHOW_SEMINARS && (
+  <section id="seminars" className="section bg-white">
+          <div className="container-x">
+            <Reveal>
+              <p className="eyebrow">سمینارها و وبینارها</p>
+              <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">رویدادهای دانشی آکادمی</h2>
+            </Reveal>
+            <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-2">
+              {seminars.map((seminar) => (
+                <Reveal key={seminar.id} className="h-full">
+                  <div className="card flex h-full items-center justify-between gap-4 p-6">
+                    <div>
+                      <span className="w-fit rounded-full bg-gold/15 px-3 py-1 text-[10px] font-black text-gold">
+                        {seminar.type}
+                      </span>
+                      <h3 className="mt-3 font-extrabold text-ink">{seminar.title}</h3>
+                      <p className="mt-1 text-sm leading-7 text-ink-soft">{seminar.blurb}</p>
+                    </div>
+                    <Link href={`/register/?course=${seminar.id}`} className={registerCta}>
                       ثبت‌نام
                     </Link>
                   </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-
-      <section id="seminars" className="section bg-white">
-        <div className="container-x">
-          <Reveal>
-            <p className="eyebrow">۰۳ — سمینارها و وبینارها</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">رویدادهای دانشی آکادمی</h2>
-          </Reveal>
-          <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-2">
-            {seminars.map((seminar) => (
-              <Reveal key={seminar.id} className="h-full">
-                <div className="card flex h-full items-center justify-between gap-4 p-6">
-                  <div>
-                    <span className="w-fit rounded-full bg-gold/15 px-3 py-1 text-[10px] font-black text-gold">
-                      {seminar.type}
-                    </span>
-                    <h3 className="mt-3 font-extrabold text-ink">{seminar.title}</h3>
-                    <p className="mt-1 text-sm leading-7 text-ink-soft">{seminar.blurb}</p>
-                  </div>
-                  <Link href={`/register/?course=${seminar.id}`} className={registerCta}>
-                    ثبت‌نام
-                  </Link>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="section border-t border-line bg-paper-soft">
-        <div className="container-x grid gap-10 lg:grid-cols-2">
-          <Reveal>
-            <div className="card h-full p-8">
-              <p className="eyebrow">۰۴ — دوره‌های برگزارشده</p>
-              <ul className="mt-5 space-y-3">
-                {pastEvents.map((event) => (
-                  <li key={event} className="flex items-start gap-3 text-sm leading-7 text-ink-soft">
-                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                    {event}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
+        <div
+          className={`container-x grid gap-10 ${SHOW_PAST_EVENTS ? 'lg:grid-cols-2' : ''}`}
+        >
+          {SHOW_PAST_EVENTS && (
+            <Reveal>
+              <div className="card h-full p-8">
+                <p className="eyebrow">دوره‌های برگزارشده</p>
+                <ul className="mt-5 space-y-3">
+                  {pastEvents.map((event) => (
+                    <li
+                      key={event}
+                      className="flex items-start gap-3 text-sm leading-7 text-ink-soft"
+                    >
+                      <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                      {event}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          )}
           <Reveal>
             <div className="card h-full p-8 opacity-80">
               <p className="eyebrow">
-                ۰۵ — MBA و Mini MBA تخصصی <ComingSoon />
+                MBA و Mini MBA تخصصی <ComingSoon />
               </p>
               <p className="mt-4 leading-8 text-ink-soft">
-                دوره‌های MBA و Mini MBA تخصصی ریتیل در آینده ارائه می‌شود. برای اطلاع از زمان
-                شروع، در خبرنامه ثبت‌نام کنید یا با مشاوران در تماس باشید.
+                دوره‌های MBA تخصصی ریتیل — طبق استانداردهای جهانی و با مجوز وزارت علوم — در
+                آینده ارائه می‌شود. برای اطلاع از زمان شروع، در بخش «اعلام علاقه‌مندی» ثبت‌نام
+                کنید یا با مشاوران آکادمی در تماس باشید.
               </p>
               <Link href="/register/?course=mba" className="btn-secondary mt-6 !py-2.5 text-xs">
                 اعلام علاقه‌مندی
@@ -214,18 +235,20 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      <section id="calendar" className="section border-t border-line bg-white">
-        <div className="container-x">
-          <Reveal>
-            <div className="card p-8">
-              <p className="eyebrow">
-                ۰۶ — {calendar.title} <ComingSoon />
-              </p>
-              <p className="mt-4 leading-8 text-ink-soft">{calendar.text}</p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {SHOW_CALENDAR && (
+  <section id="calendar" className="section border-t border-line bg-white">
+          <div className="container-x">
+            <Reveal>
+              <div className="card p-8">
+                <p className="eyebrow">
+                  {calendar.title} <ComingSoon />
+                </p>
+                <p className="mt-4 leading-8 text-ink-soft">{calendar.text}</p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
     </>
   );
 }

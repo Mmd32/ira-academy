@@ -21,7 +21,7 @@ export function PageHeader({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center gap-3 text-xs font-bold tracking-[0.3em] text-gold-soft"
+          className="eyebrow-light flex items-center gap-3"
         >
           <Link href="/" className="text-white/50 transition-colors hover:text-gold-soft">
             خانه

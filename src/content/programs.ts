@@ -11,6 +11,10 @@ export type Course = {
   sessions: number;
   hours: number;
   model: CourseModel;
+  /** Hidden from the site when false; the entry is kept so it can return. */
+  enabled?: boolean;
+  /** Lower sorts first on /programs. */
+  order?: number;
 };
 
 export type Workshop = { id: string; title: string; blurb: string; duration: string };
@@ -29,7 +33,7 @@ export const programModels = [
   {
     id: 'organization',
     title: 'سازمانی — Custom-Made',
-    desc: 'دوره‌هایی که بر اساس نیاز، محصول و تیم هر سازمان ویژه‌سازی و در محل برگزار می‌شود.'
+    desc: 'این دوره‌ها بر اساس نیاز برندها شخصی‌سازی و در محل آن سازمان برگزار می‌شود.'
   },
   {
     id: 'institute',
@@ -51,7 +55,8 @@ export const courses = [
     audience: 'فروشندگان',
     sessions: 6,
     hours: 18,
-    model: 'standard'
+    model: 'standard',
+    enabled: false
   },
   {
     id: 'visual-merchandising',
@@ -60,7 +65,8 @@ export const courses = [
     audience: 'مدیران فروشگاه',
     sessions: 5,
     hours: 15,
-    model: 'standard'
+    model: 'standard',
+    order: 3
   },
   {
     id: 'store-management-1',
@@ -69,16 +75,18 @@ export const courses = [
     audience: 'مدیران و سرپرستان',
     sessions: 9,
     hours: 22,
-    model: 'standard'
+    model: 'standard',
+    order: 1
   },
   {
     id: 'store-management-2',
-    title: 'مدیریت حرفه‌ای فروشگاه (سطح دو)',
+    title: 'مدیریت حرفه‌ای فروشگاه (سطح پیشرفته)',
     blurb: 'فراتر از اجرا: تحلیل KPIها، تصمیم‌گیری در بحران، رهبری تیم، سودآوری و طراحی فروشگاه مقیاس‌پذیر + پروژه‌ی پایانی.',
     audience: 'دانش‌آموختگان سطح پایه',
     sessions: 9,
     hours: 30,
-    model: 'standard'
+    model: 'standard',
+    order: 2
   },
   {
     id: 'customer-experience',
@@ -87,7 +95,8 @@ export const courses = [
     audience: 'فروشندگان',
     sessions: 4,
     hours: 12,
-    model: 'standard'
+    model: 'standard',
+    enabled: false
   },
   {
     id: 'pricing-promotion',
@@ -96,7 +105,8 @@ export const courses = [
     audience: 'مالکان و برندها',
     sessions: 4,
     hours: 12,
-    model: 'standard'
+    model: 'standard',
+    enabled: false
   },
   {
     id: 'inventory',
@@ -105,7 +115,8 @@ export const courses = [
     audience: 'مدیران فروشگاه',
     sessions: 5,
     hours: 15,
-    model: 'standard'
+    model: 'standard',
+    enabled: false
   },
   {
     id: 'online-retail',
@@ -114,7 +125,8 @@ export const courses = [
     audience: 'مالکان و برندها',
     sessions: 6,
     hours: 18,
-    model: 'standard'
+    model: 'standard',
+    enabled: false
   },
   {
     id: 'team-leadership',
@@ -123,16 +135,18 @@ export const courses = [
     audience: 'مالکان و برندها',
     sessions: 6,
     hours: 18,
-    model: 'standard'
+    model: 'standard',
+    enabled: false
   },
   {
     id: 'fnb-cafe-management',
-    title: 'مدیریت کافه و رستوران (F&B)',
+    title: 'مبانی مدیریت عملیات رستوران و کافی‌شاپ',
     blurb: 'منوی مهندسی‌شده، مدیریت پرایم‌کاست، گردش انبار و استاندارد سرویس برای کافه و رستوران.',
     audience: 'مالکان و مدیران F&B',
-    sessions: 8,
-    hours: 24,
-    model: 'standard'
+    sessions: 14,
+    hours: 32,
+    model: 'standard',
+    order: 4
   },
   {
     id: 'fnb-service',
@@ -141,16 +155,18 @@ export const courses = [
     audience: 'پرسنل و سرپرستان سالن',
     sessions: 4,
     hours: 12,
-    model: 'standard'
+    model: 'standard',
+    enabled: false
   },
   {
     id: 'franchise',
     title: 'فرنچایز و توسعه‌ی شعب',
     blurb: 'از استانداردسازی عملیات تا قرارداد فرنچایز — مسیر تبدیل یک فروشگاه موفق به زنجیره.',
     audience: 'مالکان و برندها',
-    sessions: 5,
-    hours: 15,
-    model: 'standard'
+    sessions: 4,
+    hours: 8,
+    model: 'standard',
+    order: 5
   }
 ] as const satisfies readonly Course[];
 
@@ -172,26 +188,32 @@ export type FeaturedCourse = {
 };
 
 /**
- * PLACEHOLDER DATA — the course is confirmed (IRA × Bake Academy) but every
+ * PLACEHOLDER DATA — the course is confirmed (ARI × Bake Academy) but every
  * field below is sample copy waiting on the real course sheet.
  */
 export const featuredCourse = {
   id: 'restaurant-cafe-management',
-  eyebrow: 'دوره‌ی شاخص آکادمی',
-  title: 'مدیریت رستوران و کافی‌شاپ',
+  eyebrow: 'در حال ثبت‌نام',
+  title: 'مبانی مدیریت عملیات رستوران و کافی‌شاپ',
   blurb:
-    'این متن نمونه است و با معرفی رسمی دوره جایگزین می‌شود — دوره‌ی مشترک آکادمی ریتیل ایران و Bake Academy برای مدیران و مالکان رستوران و کافی‌شاپ.',
+    'این دوره بر مدیریت اجرایی شعب رستوران‌ها و کافی‌شاپ‌ها و بهینه‌سازی ساختار عملیاتی آن‌ها تمرکز داشته و شرکت‌کنندگان را قادر می‌سازد تا عملیات روزانه شعبه تحت مدیریت خود را منظم، پایدار و تحت کنترل اداره کنند و از طریق بهبود هماهنگی تیم و اجرای صحیح فرآیندها، کیفیت سرویس، تجربه مشتری و بهره‌وری کلی واحد تجاری را ارتقا دهند.',
   audience: 'مالکان و مدیران رستوران و کافی‌شاپ',
-  sessions: 0,
-  hours: 0,
+  sessions: 14,
+  hours: 32,
   model: 'institute',
   partners: [{ name: 'Bake Academy', logo: '/media/bake-academy.png' }],
   highlights: [
-    'سرفصل نمونه — با سرفصل رسمی دوره جایگزین می‌شود',
-    'سرفصل نمونه — با سرفصل رسمی دوره جایگزین می‌شود',
-    'سرفصل نمونه — با سرفصل رسمی دوره جایگزین می‌شود'
+    'کانسپت‌های مختلف F&B',
+    'مدیریت عملیات روزانه و افزایش نظم عملیاتی',
+    'مدیریت تیم و ارتقای عملکرد پرسنل',
+    'تعریف شاخص‌های کلیدی عملکرد (KPI)'
   ]
 } as const satisfies FeaturedCourse;
+
+/** Visible courses, in the order the page should show them. */
+export const visibleCourses: readonly Course[] = (courses as readonly Course[])
+  .filter((c) => c.enabled !== false)
+  .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 
 export const workshops = [
   {

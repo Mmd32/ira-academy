@@ -6,10 +6,10 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const links = [
-  { href: '/about/', label: 'معرفی آکادمی' },
+  { href: '/about/', label: 'معرفی' },
   { href: '/programs/', label: 'برنامه‌های آموزشی' },
   { href: '/corporate/', label: 'خدمات سازمانی' },
-  { href: '/community/', label: 'جامعه IRA' },
+  { href: '/community/', label: 'جامعه ARI' },
   { href: '/knowledge/', label: 'دانشنامه' },
   { href: '/portal/', label: 'دانش‌پذیران' },
   { href: '/contact/', label: 'تماس' },
@@ -43,16 +43,14 @@ export function Nav() {
     >
       <div className="container-x flex h-[var(--nav-h)] items-center justify-between gap-4">
         <Link href="/" className="flex shrink-0 items-center gap-3">
-          <span
-            className={`grid h-10 w-10 place-items-center rounded-xl bg-white p-1 transition-shadow duration-300 ${
-              overHero ? 'shadow-[0_0_0_1px_rgba(194,165,108,0.35)]' : 'border border-line'
-            }`}
-          >
+          <span className="grid h-10 w-10 shrink-0 place-items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/logo-mark.png"
               alt="آکادمی ریتیل ایران"
-              className="h-full w-full object-contain"
+              className={`h-full w-full object-contain transition-[filter] duration-300 ${
+                overHero ? 'brightness-0 invert' : ''
+              }`}
             />
           </span>
           <span

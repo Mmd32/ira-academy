@@ -22,7 +22,7 @@ export function FeaturedCourse() {
     <section id="featured" className="section bg-white">
       <div className="container-x">
         <Reveal>
-          <article className="overflow-hidden rounded-3xl border border-line bg-white shadow-lift lg:grid lg:grid-cols-[1fr_20rem]">
+          <article className="overflow-hidden rounded-3xl border border-line bg-white shadow-lift lg:grid lg:grid-cols-[1fr_24rem]">
             <div className="p-8 sm:p-10 lg:p-12">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="rounded-full bg-gold/15 px-3 py-1 text-[11px] font-black text-gold">
@@ -58,7 +58,7 @@ export function FeaturedCourse() {
                     ثبت‌نام در دوره
                   </Link>
                   <Link href="/contact/#advisors" className="btn-secondary">
-                    مشاوره‌ی رایگان
+                    مشاوره +
                   </Link>
                 </span>
               </div>
@@ -69,28 +69,28 @@ export function FeaturedCourse() {
               <div className="navy-grid absolute inset-0" aria-hidden />
 
               <div className="relative text-center">
-                <p className="text-[11px] font-bold tracking-[0.3em] text-gold-soft">با همکاری</p>
+                <p className="eyebrow-light">با همکاری</p>
 
-                <div className="mt-5 inline-flex items-center gap-5 rounded-2xl bg-white px-6 py-4 shadow-lift">
+                <div className="mt-6 inline-flex items-center gap-6 rounded-2xl bg-white px-8 py-5 shadow-lift">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/media/logo-mark.png"
                     alt={site.brand}
-                    className="h-9 w-auto object-contain"
+                    className="h-12 w-auto object-contain"
                   />
-                  <span className="h-9 w-px shrink-0 bg-line" aria-hidden />
+                  <span className="h-12 w-px shrink-0 bg-line" aria-hidden />
                   {partners.map((partner) => (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       key={partner.name}
                       src={partner.logo}
                       alt={partner.name}
-                      className="h-7 w-auto object-contain"
+                      className="h-10 w-auto object-contain"
                     />
                   ))}
                 </div>
 
-                <p className="mt-5 text-xs leading-6 text-white/55">
+                <p className="mt-6 text-sm leading-7 text-white/65">
                   {site.brand}
                   <span className="mx-2 text-white/30">×</span>
                   {partners.map((p) => p.name).join('، ')}

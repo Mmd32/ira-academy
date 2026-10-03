@@ -90,7 +90,7 @@ export default function ContactPage() {
             <div id="teach" className="navy-stage relative overflow-hidden rounded-3xl p-8 text-white">
               <div className="navy-grid absolute inset-0" aria-hidden />
               <div className="relative">
-                <p className="text-xs font-bold tracking-[0.3em] text-gold-soft">
+                <p className="eyebrow-light">
                   مدرس آکادمی ریتیل ایران شوید
                 </p>
                 <h2 className="mt-4 text-2xl text-white">دانش‌تان را درس بدهید</h2>

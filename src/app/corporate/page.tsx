@@ -52,7 +52,7 @@ export default function CorporatePage() {
         <div className="container-x relative grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <div>
-              <p className="flex items-center gap-3 text-xs font-bold tracking-[0.3em] text-gold-soft">
+              <p className="eyebrow-light flex items-center gap-3">
                 تماس با مشاوران آموزش سازمانی
                 <span className="h-px w-12 bg-gold/50" />
               </p>

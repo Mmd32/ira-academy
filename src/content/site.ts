@@ -9,6 +9,9 @@ export const site = {
   email: 'info@iranretailacademy.com',
   instagram: '@iranretailacademy',
   address: 'تهران — نشانی دقیق دفتر آکادمی پس از نهایی‌شدن در همین بخش درج می‌شود.',
+  /** Shown under the logo in the footer. */
+  footerText:
+    'مرجع آموزش‌های تخصصی صنعت فروشگاه‌داری. نقطه تقاطع دانش آکادمیک، تجربیات عملی، موردکاوی‌های واقعی و شبکه‌سازی مؤثر.',
   stats: [
     {
       value: '۱۲',
