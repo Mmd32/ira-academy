@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Reveal } from '@/components/Reveal';
 import { Marquee } from '@/components/Marquee';
-import { courses } from '@/content/programs';
+import { visibleCourses } from '@/content/programs';
 import { news, articles } from '@/content/knowledge';
 import { fa } from '@/lib/text';
 
@@ -10,7 +10,7 @@ export function CourseMarquee() {
   return (
     <section className="border-b border-line bg-white py-6">
       <Marquee speed={55}>
-        {courses.map((course) => (
+        {visibleCourses.map((course) => (
           <div
             key={course.id}
             className="flex items-center gap-3 rounded-full border border-line bg-paper py-2 pl-2 pr-5"

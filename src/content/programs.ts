@@ -192,7 +192,7 @@ export type FeaturedCourse = {
  * field below is sample copy waiting on the real course sheet.
  */
 export const featuredCourse = {
-  id: 'restaurant-cafe-management',
+  id: 'fnb-cafe-management',
   eyebrow: 'در حال ثبت‌نام',
   title: 'مبانی مدیریت عملیات رستوران و کافی‌شاپ',
   blurb:
