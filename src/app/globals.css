@@ -124,6 +124,19 @@
     mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
 
+  /* Declared here, not only in tailwind.config.ts: Tailwind emits a @keyframes
+     block only when its animate-* utility is used somewhere, and this ticker
+     drives the animation through .marquee-track instead. Without this the
+     animation ran but had no frames, so the strip sat still. */
+  @keyframes marquee-rtl {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(50%);
+    }
+  }
+
   .marquee-track {
     animation: marquee-rtl linear infinite;
   }

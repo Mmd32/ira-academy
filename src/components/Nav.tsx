@@ -63,7 +63,7 @@ export function Nav() {
         </Link>
 
         <nav
-          className={`hidden items-center gap-6 text-[13px] font-medium lg:flex xl:gap-8 ${
+          className={`hidden items-center gap-7 text-[13px] font-medium lg:flex xl:gap-9 ${
             overHero ? 'text-white/70' : 'text-ink-soft'
           }`}
         >
