@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
-
-import { PageHeader, ComingSoon } from '@/components/PageHeader';
 import Link from 'next/link';
 
+import { PageHeader, ComingSoon } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { articles as posts } from '@/content/articles';
 import {
   news,
-  articles,
   media,
   toolkits,
   glossary,
@@ -95,20 +93,6 @@ export default function KnowledgePage() {
               </Reveal>
             ))}
 
-            {articles.map((article) => (
-              <Reveal key={article.id} className="h-full">
-                <div className="card flex h-full flex-col p-6">
-                  <span className="w-fit rounded-full border border-brand/10 bg-brand/5 px-3 py-1 text-[10px] font-bold text-brand-600">
-                    {article.kind}
-                  </span>
-                  <h3 className="mt-4 text-base font-extrabold leading-8 text-ink">
-                    {article.title}
-                  </h3>
-                  <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{article.excerpt}</p>
-                  <span className="mt-4 text-xs font-bold text-ink-mute">به‌زودی</span>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </div>
       </section>

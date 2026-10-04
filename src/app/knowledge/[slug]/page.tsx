@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { Reveal } from '@/components/Reveal';
+import { StoreLayoutDiagram } from '@/components/articles/StoreLayoutDiagram';
 import { articles, getArticle, readingMinutes } from '@/content/articles';
 import { site } from '@/content/site';
 import { siteUrl } from '@/lib/site-url';
@@ -145,6 +146,24 @@ export default function ArticlePage({ params }: Props) {
                     <p className="border-r-2 border-gold pr-5 text-lg leading-10 text-ink sm:text-xl">
                       {block.text}
                     </p>
+                  </Reveal>
+                );
+              }
+
+              if (block.type === 'diagram') {
+                return (
+                  <Reveal key={i}>
+                    <StoreLayoutDiagram />
+                  </Reveal>
+                );
+              }
+
+              if (block.type === 'note') {
+                return (
+                  <Reveal key={i}>
+                    <aside className="mt-10 rounded-2xl border border-line bg-paper p-6 text-sm leading-8 text-ink-soft">
+                      {block.text}
+                    </aside>
                   </Reveal>
                 );
               }

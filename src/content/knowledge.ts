@@ -1,5 +1,4 @@
 export type NewsItem = { id: string; title: string; scope: string; date: string };
-export type Article = { id: string; title: string; kind: string; excerpt: string };
 export type MediaItem = { id: string; title: string; kind: string; length: string };
 export type Toolkit = { id: string; title: string; items: readonly string[] };
 export type GlossaryEntry = { term: string; def: string };
@@ -24,27 +23,6 @@ export const news = [
     date: 'ماه جاری'
   }
 ] as const satisfies readonly NewsItem[];
-
-export const articles = [
-  {
-    id: 'a1',
-    title: 'چرا مشتری وارد فروشگاه می‌شود ولی نمی‌خرد؟',
-    kind: 'مقاله',
-    excerpt: 'پنج گلوگاه رایج مسیر مشتری در فروشگاه‌های ایرانی — از ویترین تا صندوق — و راه‌حل هر کدام.'
-  },
-  {
-    id: 'a2',
-    title: 'مورد کاوی: بازطراحی چیدمان یک سوپرمارکت محلی',
-    kind: 'مورد کاوی',
-    excerpt: 'چطور جابه‌جایی سه قفسه و اصلاح نور، سبد خرید میانگین را ۲۲٪ بالا برد.'
-  },
-  {
-    id: 'a3',
-    title: 'گزارش برند: درس‌های توسعه‌ی یک زنجیره‌ی پوشاک ایرانی',
-    kind: 'گزارش برند',
-    excerpt: 'مرور مسیر رشد، خطاهای توسعه‌ی شتاب‌زده و الگوی موفق شعبه‌داری.'
-  }
-] as const satisfies readonly Article[];
 
 export const media = [
   {
