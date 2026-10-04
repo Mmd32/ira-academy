@@ -31,6 +31,17 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-brand)', 'system-ui', 'sans-serif'],
       },
+      /**
+       * Heading sizes only. Tailwind pairs these with Latin line-heights —
+       * text-5xl ships 1.0 — which crushes Persian, where descenders and dots
+       * need the room. Body sizes keep their defaults.
+       */
+      fontSize: {
+        '2xl': ['1.5rem', { lineHeight: '1.55' }],
+        '3xl': ['1.875rem', { lineHeight: '1.5' }],
+        '4xl': ['2.25rem', { lineHeight: '1.45' }],
+        '5xl': ['3rem', { lineHeight: '1.4' }],
+      },
       boxShadow: {
         card: '0 1px 2px rgba(14,22,51,0.05), 0 12px 40px -18px rgba(14,22,51,0.20)',
         lift: '0 2px 4px rgba(14,22,51,0.06), 0 30px 60px -24px rgba(14,22,51,0.32)',

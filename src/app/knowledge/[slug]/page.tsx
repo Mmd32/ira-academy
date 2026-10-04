@@ -77,6 +77,12 @@ export default function ArticlePage({ params }: Props) {
 
   const others = articles.filter((a) => a.slug !== article.slug);
 
+  // The lead runs above the cover image so the article opens with words.
+  const firstNonLead = article.body.findIndex((b) => b.type !== 'lead');
+  const splitAt = firstNonLead === -1 ? article.body.length : firstNonLead;
+  const lead = article.body.slice(0, splitAt);
+  const rest = article.body.slice(splitAt);
+
   return (
     <>
       <script
@@ -100,7 +106,7 @@ export default function ArticlePage({ params }: Props) {
             {article.kind}
           </nav>
 
-          <h1 className="mt-5 max-w-4xl text-3xl leading-[1.45] text-white sm:text-4xl lg:text-5xl">
+          <h1 className="mt-5 max-w-3xl text-balance text-[1.75rem]/[1.6] text-white sm:text-[2.125rem]/[1.55] lg:text-[2.5rem]/[1.5]">
             {article.title}
           </h1>
 
@@ -118,22 +124,32 @@ export default function ArticlePage({ params }: Props) {
 
       <article className="section bg-white">
         <div className="container-x">
+          <div className="mx-auto max-w-3xl">
+            {lead.map((block, i) => (
+              <Reveal key={`lead-${i}`}>
+                <p className="border-r-2 border-gold pr-5 text-lg leading-10 text-ink sm:text-xl">
+                  {'text' in block ? block.text : ''}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+
           <Reveal>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={article.cover.src}
               alt={article.cover.alt}
-              className="mx-auto aspect-[16/9] w-full max-w-4xl rounded-3xl object-cover shadow-lift"
+              className="mx-auto mt-12 aspect-[16/9] w-full max-w-4xl rounded-3xl object-cover shadow-lift"
               loading="eager"
             />
           </Reveal>
 
           <div className="mx-auto mt-14 max-w-3xl">
-            {article.body.map((block, i) => {
+            {rest.map((block, i) => {
               if (block.type === 'h2') {
                 return (
                   <Reveal key={i}>
-                    <h2 className="mt-14 text-2xl font-extrabold leading-[1.5] text-ink sm:text-3xl">
+                    <h2 className="mt-14 text-balance text-[1.375rem]/[1.6] font-extrabold text-ink sm:text-[1.625rem]/[1.55]">
                       {block.text}
                     </h2>
                   </Reveal>
