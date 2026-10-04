@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 
 import { PageHeader, ComingSoon } from '@/components/PageHeader';
+import Link from 'next/link';
+
 import { Reveal } from '@/components/Reveal';
+import { articles as posts } from '@/content/articles';
 import {
   news,
   articles,
@@ -56,12 +59,45 @@ export default function KnowledgePage() {
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">مقالات + مورد کاوی + گزارشات برندها</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">خواندنی‌های عمیق‌تر</h2>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">خواندنی‌های عمیق‌تر</h2>
           </Reveal>
+
+          {/* Published articles first, then the ones still being written. */}
           <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
+            {posts.map((post) => (
+              <Reveal key={post.slug} className="h-full">
+                <Link
+                  href={`/knowledge/${post.slug}/`}
+                  className="group card flex h-full flex-col overflow-hidden p-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={post.cover.src}
+                    alt={post.cover.alt}
+                    className="aspect-[16/9] w-full object-cover"
+                    loading="lazy"
+                  />
+                  <span className="flex flex-1 flex-col p-6">
+                    <span className="w-fit rounded-full bg-gold/15 px-3 py-1 text-[10px] font-black text-gold">
+                      {post.kind}
+                    </span>
+                    <span className="mt-4 block text-base font-extrabold leading-8 text-ink">
+                      {post.title}
+                    </span>
+                    <span className="mt-2 block flex-1 text-sm leading-7 text-ink-soft">
+                      {post.excerpt}
+                    </span>
+                    <span className="mt-4 text-xs font-bold text-brand transition-colors group-hover:text-gold-soft">
+                      ادامه‌ی مطلب ←
+                    </span>
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+
             {articles.map((article) => (
               <Reveal key={article.id} className="h-full">
-                <div className="card flex h-full flex-col p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
+                <div className="card flex h-full flex-col p-6">
                   <span className="w-fit rounded-full border border-brand/10 bg-brand/5 px-3 py-1 text-[10px] font-bold text-brand-600">
                     {article.kind}
                   </span>
@@ -69,7 +105,7 @@ export default function KnowledgePage() {
                     {article.title}
                   </h3>
                   <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{article.excerpt}</p>
-                  <span className="mt-4 text-xs font-bold text-brand">ادامه‌ی مطلب ←</span>
+                  <span className="mt-4 text-xs font-bold text-ink-mute">به‌زودی</span>
                 </div>
               </Reveal>
             ))}

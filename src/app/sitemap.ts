@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 
+import { articles } from '@/content/articles';
 import { siteUrl } from '@/lib/site-url';
 
 export const dynamic = 'force-static';
@@ -23,10 +24,19 @@ const routes: { path: string; priority: number; changeFrequency: MetadataRoute.S
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  return routes.map(({ path, priority, changeFrequency }) => ({
-    url: `${siteUrl}${path}`,
-    lastModified,
-    changeFrequency,
-    priority,
-  }));
+  return [
+    ...routes.map(({ path, priority, changeFrequency }) => ({
+      url: `${siteUrl}${path}`,
+      lastModified,
+      changeFrequency,
+      priority,
+    })),
+    // Each published article is its own indexable page.
+    ...articles.map((a) => ({
+      url: `${siteUrl}/knowledge/${a.slug}/`,
+      lastModified: new Date(a.publishedAt),
+      changeFrequency: 'yearly' as const,
+      priority: 0.7,
+    })),
+  ];
 }

@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 import { Marquee } from '@/components/Marquee';
 import { visibleCourses } from '@/content/programs';
-import { news, articles } from '@/content/knowledge';
+import { news } from '@/content/knowledge';
+import { articles as posts } from '@/content/articles';
 import { fa } from '@/lib/text';
 
 export function CourseMarquee() {
@@ -128,17 +129,33 @@ export function ArticlesPreview() {
         </Reveal>
 
         <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
-          {articles.map((article, i) => (
-            <Reveal key={article.id} delay={0.08 * i} className="h-full">
+          {posts.map((post, i) => (
+            <Reveal key={post.slug} delay={0.08 * i} className="h-full">
               <Link
-                href="/knowledge/#articles"
-                className="flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
+                href={`/knowledge/${post.slug}/`}
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
               >
-                <span className="w-fit rounded-full border border-brand/10 bg-brand/5 px-3 py-1 text-[10px] font-bold text-brand-600">
-                  {article.kind}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.cover.src}
+                  alt={post.cover.alt}
+                  className="aspect-[16/9] w-full object-cover"
+                  loading="lazy"
+                />
+                <span className="flex flex-1 flex-col p-6">
+                  <span className="w-fit rounded-full bg-gold/15 px-3 py-1 text-[10px] font-black text-gold">
+                    {post.kind}
+                  </span>
+                  <span className="mt-4 block text-base font-extrabold leading-8 text-ink">
+                    {post.title}
+                  </span>
+                  <span className="mt-2 block flex-1 text-sm leading-7 text-ink-soft">
+                    {post.excerpt}
+                  </span>
+                  <span className="mt-4 text-xs font-bold text-brand transition-colors group-hover:text-gold-soft">
+                    ادامه‌ی مطلب ←
+                  </span>
                 </span>
-                <h3 className="mt-4 text-base font-extrabold leading-8 text-ink">{article.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{article.excerpt}</p>
               </Link>
             </Reveal>
           ))}
