@@ -164,6 +164,9 @@ function SlideVisual({ slide }: { slide: HeroSlide }) {
   }
 }
 
+/** The stats strip under the hero. Flip to true to bring it back. */
+const SHOW_STATS = false;
+
 export function Hero() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -206,29 +209,36 @@ export function Hero() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: reduced ? 0 : 40 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="grid items-center gap-10 pb-10 lg:grid-cols-2 lg:gap-14"
+              className="grid items-center gap-10 pb-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14"
             >
               <div>
                 <p className="eyebrow-light flex items-center gap-3">
                   {slide.eyebrow}
                   <span className="h-px w-10 shrink-0 bg-gold/50" />
                 </p>
-                <h1 className="mt-4 text-4xl leading-[1.3] text-white sm:text-5xl">
-                  {splitTitle(slide.title).map((part, i) =>
-                    part.gold ? (
-                      <span key={i} className="text-gold-soft"> {part.text} </span>
-                    ) : (
-                      <span key={i}>{part.text}</span>
-                    ),
-                  )}
+                <h1 className="mt-4 text-[1.375rem]/[1.5] text-white sm:text-4xl lg:text-3xl">
+                  {splitTitle(slide.title).map((part, i) => (
+                    <span key={i} className={part.gold ? 'text-gold-soft' : undefined}>
+                      {/* A newline in the content is a deliberate line break. */}
+                      {part.text.split('\n').map((line, j) => (
+                        <span key={j}>
+                          {j > 0 && <br />}
+                          {line}
+                        </span>
+                      ))}
+                    </span>
+                  ))}
                 </h1>
-                <p className="mt-5 max-w-xl text-lg leading-9 text-white/65">{slide.lead}</p>
+                <p className="mt-5 max-w-2xl text-base/8 text-white/65 sm:text-lg/9 lg:text-base/8">
+                  {slide.lead}
+                </p>
                 <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <Link href={slide.primary.href} className="btn-gold">
+                  {/* Matched widths, so the two labels sit centred against each other. */}
+                  <Link href={slide.primary.href} className="btn-gold min-w-[9.5rem]">
                     {slide.primary.label}
                   </Link>
                   {slide.secondary?.href && (
-                    <Link href={slide.secondary.href} className="btn-ghost-light">
+                    <Link href={slide.secondary.href} className="btn-ghost-light min-w-[9.5rem]">
                       {slide.secondary.label}
                     </Link>
                   )}
@@ -275,6 +285,7 @@ export function Hero() {
         </div>
       </div>
 
+      {SHOW_STATS && (
       <div className="relative border-t border-white/10">
         <div className="container-x grid grid-cols-2 md:grid-cols-4">
           {stats.map((stat, i) => (
@@ -292,6 +303,7 @@ export function Hero() {
           ))}
         </div>
       </div>
+      )}
     </section>
   );
 }

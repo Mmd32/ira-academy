@@ -80,7 +80,7 @@ export const toolkits = [
 
 export const glossary = [
   {
-    term: 'ویزوال مرچندایزینگ',
+    term: 'ویژوال مرچندایزینگ',
     def: 'هنر و علم چیدمان و نمایش کالا برای افزایش فروش.'
   },
   {

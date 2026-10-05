@@ -4,7 +4,11 @@ export type HeroSlide = {
   id: string;
   enabled: boolean;
   eyebrow: string;
-  /** Text wrapped in *asterisks* renders as the gold highlight. */
+  /**
+   * Text wrapped in *asterisks* renders as the gold highlight; a newline
+   * forces a line break, so a title can be set line by line instead of
+   * wrapping wherever the column happens to end.
+   */
   title: string;
   lead: string;
   primary: { href: string; label: string };
@@ -21,15 +25,15 @@ export const hero = {
       id: 'brand',
       enabled: true,
       eyebrow: 'آکادمی ریتیل ایران، مرجع آموزش‌های تخصصی صنعت فروشگاه‌داری',
-      title: 'برای صنعت فروشگاه‌داری، دانش تخصصی یک انتخاب نیست. *یک ضرورت است!*',
-      lead: 'آکادمی ریتیل ایران، بستری برای توسعه دانش و مهارت‌های حرفه‌ای صنعت فروشگاه‌داری.',
+      title: 'برای صنعت فروشگاه‌داری،\nدانش تخصصی یک انتخاب نیست.\n*یک ضرورت است!*',
+      lead: 'آکادمی ریتیل ایران، مرجع توسعه دانش و مهارت‌های فروشگاه‌داری',
       primary: {
         href: '/programs/',
-        label: 'مشاهده +'
+        label: 'مشاهده'
       },
       secondary: {
         href: '/about/',
-        label: 'معرفی +'
+        label: 'معرفی'
       },
       visual: 'scene3d',
       image: ''
@@ -60,7 +64,7 @@ export const hero = {
       lead: 'مشاور هوشمند آکادمی از شما چند سؤال کوتاه می‌پرسد و با توجه به شرایط فروشگاه‌ها و وضعیت کسب‌وکارتان، مناسب‌ترین مسیر آموزشی را به شما پیشنهاد می‌دهد.',
       primary: {
         href: '/contact/',
-        label: 'مشاوره +'
+        label: 'مشاوره'
       },
       secondary: {
         href: '/programs/',
