@@ -30,7 +30,7 @@ export function ConsultWidget() {
     setPending(true);
 
     try {
-      const res = await fetch(`${API_BASE}/api/consult`, {
+      const res = await fetch(`${API_BASE}/api/consult/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // The greeting is local-only; the API receives the real exchange.

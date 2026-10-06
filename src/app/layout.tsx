@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { Nav } from '@/components/Nav';
-import { Footer } from '@/components/Footer';
-import { ConsultWidget } from '@/components/ConsultWidget';
 import { siteUrl } from '@/lib/site-url';
 import './globals.css';
 
@@ -69,12 +66,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fa" dir="rtl" className={lahzeh.variable}>
-      <body>
-        <Nav />
-        <main>{children}</main>
-        <Footer />
-        <ConsultWidget />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

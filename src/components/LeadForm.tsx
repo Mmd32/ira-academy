@@ -38,7 +38,7 @@ export function LeadForm({
 
     setState('busy');
     try {
-      const res = await fetch(`${API_BASE}/api/lead`, {
+      const res = await fetch(`${API_BASE}/api/lead/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: subject, ...values }),
