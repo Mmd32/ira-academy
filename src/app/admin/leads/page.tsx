@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { requireAdmin } from '@/server/guard';
 
 import { leadCounts, listLeads } from '@/server/leads';
 import { LEAD_STATUSES, type LeadStatus } from '@/lib/leads-shared';
@@ -19,6 +20,7 @@ const faDateTime = (iso: string) =>
 type Props = { searchParams: { status?: string } };
 
 export default function LeadsPage({ searchParams }: Props) {
+  requireAdmin();
   const filter = (searchParams.status ?? 'all') as LeadStatus | 'all';
   const leads = listLeads(filter);
   const counts = leadCounts();

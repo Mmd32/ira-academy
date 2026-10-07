@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { site } from '@/content/site';
+import { getSite } from '@/server/content';
 
 const columns = [
   {
@@ -32,6 +32,7 @@ const columns = [
 ];
 
 export function Footer() {
+  const site = getSite();
   const year = new Date().getFullYear().toLocaleString('fa-IR', { useGrouping: false });
 
   return (

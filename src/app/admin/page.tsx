@@ -1,17 +1,15 @@
 import Link from 'next/link';
+import { requireAdmin } from '@/server/guard';
 
-import { currentUser } from '@/server/auth';
 import { getAllArticles, getAllCourses, getGlossary } from '@/server/content';
 import { leadCounts } from '@/server/leads';
 import { fa } from '@/lib/text';
 
-import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
 export default function AdminHome() {
-  const user = currentUser();
-  if (!user) redirect('/admin/login/');
+  const user = requireAdmin();
 
   const counts = leadCounts();
   const courses = getAllCourses();

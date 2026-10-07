@@ -1,9 +1,18 @@
 import type { Metadata } from 'next';
 
+/**
+ * Rendered per request: its content comes from the database, and an editor who
+ * saves a change in the panel must see it on the site immediately. At this
+ * traffic a SQLite read per request costs microseconds.
+ */
+export const dynamic = 'force-dynamic';
+
+
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { LeadForm } from '@/components/LeadForm';
-import { community } from '@/content/pages';
+import { community as communitySeed } from '@/content/pages';
+import { getPage } from '@/server/content';
 
 export const metadata: Metadata = {
   title: 'جامعه حرفه‌ای ARI',
@@ -11,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default function CommunityPage() {
+  const community = getPage('community', communitySeed as unknown as typeof communitySeed);
   return (
     <>
       <PageHeader

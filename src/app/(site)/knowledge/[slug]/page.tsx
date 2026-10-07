@@ -2,23 +2,29 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+/**
+ * Rendered per request: its content comes from the database, and an editor who
+ * saves a change in the panel must see it on the site immediately. At this
+ * traffic a SQLite read per request costs microseconds.
+ */
+export const dynamic = 'force-dynamic';
+
+
 import { Reveal } from '@/components/Reveal';
 import { StoreLayoutDiagram } from '@/components/articles/StoreLayoutDiagram';
-import { articles, getArticle, readingMinutes } from '@/content/articles';
-import { site } from '@/content/site';
+import { readingMinutes } from '@/content/articles';
+import { getArticles, getArticleBySlug, getSite } from '@/server/content';
+
 import { siteUrl } from '@/lib/site-url';
 import { fa } from '@/lib/text';
 
 type Props = { params: { slug: string } };
 
-export function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
-}
-
 export function generateMetadata({ params }: Props): Metadata {
-  const article = getArticle(params.slug);
+  const article = getArticleBySlug(params.slug);
   if (!article) return {};
 
+  const site = getSite();
   const url = `/knowledge/${article.slug}/`;
   return {
     title: article.title,
@@ -50,9 +56,10 @@ const faDate = (iso: string) =>
   new Date(iso).toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
 
 export default function ArticlePage({ params }: Props) {
-  const article = getArticle(params.slug);
+  const article = getArticleBySlug(params.slug);
   if (!article) notFound();
 
+  const site = getSite();
   const url = `${siteUrl}/knowledge/${article.slug}/`;
 
   // Article schema, so search engines can show the author and date.
@@ -75,7 +82,7 @@ export default function ArticlePage({ params }: Props) {
     keywords: article.keywords.join('، '),
   };
 
-  const others = articles.filter((a) => a.slug !== article.slug);
+  const others = getArticles().filter((a) => a.slug !== article.slug);
 
   // The lead runs above the cover image so the article opens with words.
   const firstNonLead = article.body.findIndex((b) => b.type !== 'lead');

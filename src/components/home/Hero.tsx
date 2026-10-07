@@ -11,8 +11,8 @@ import {
   useTransform,
 } from 'framer-motion';
 
-import { heroSlides, heroAutoplayMs, type HeroSlide } from '@/content/hero';
-import { stats } from '@/content/site';
+import { type HeroSlide } from '@/content/hero';
+import type { Stat } from '@/content/site';
 import { fa, splitTitle } from '@/lib/text';
 import { Emblem3D } from './Emblem3D';
 
@@ -167,7 +167,15 @@ function SlideVisual({ slide }: { slide: HeroSlide }) {
 /** The stats strip under the hero. Flip to true to bring it back. */
 const SHOW_STATS = false;
 
-export function Hero() {
+export function Hero({
+  slides: heroSlides,
+  autoplayMs: heroAutoplayMs,
+  stats,
+}: {
+  slides: HeroSlide[];
+  autoplayMs: number;
+  stats: readonly Stat[];
+}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduced = useReducedMotion();
@@ -175,7 +183,7 @@ export function Hero() {
 
   const goTo = useCallback(
     (next: number) => setIndex(((next % heroSlides.length) + heroSlides.length) % heroSlides.length),
-    [],
+    [heroSlides.length],
   );
 
   useEffect(() => {
@@ -187,7 +195,7 @@ export function Hero() {
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
-  }, [reduced, paused]);
+  }, [reduced, paused, heroSlides.length, heroAutoplayMs]);
 
   const slide = heroSlides[index];
 

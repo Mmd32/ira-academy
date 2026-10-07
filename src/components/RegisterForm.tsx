@@ -4,26 +4,28 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { Reveal } from '@/components/Reveal';
-import { visibleCourses, workshops, seminars } from '@/content/programs';
-import { site } from '@/content/site';
+
+
 import { fa } from '@/lib/text';
 
 /** Everything registrable, in one flat list for the <select>. */
-const programs = [
-  ...visibleCourses.map((c) => ({ id: c.id, label: `دوره: ${c.title}` })),
-  ...workshops.map((w) => ({ id: w.id, label: `کارگاه: ${w.title}` })),
-  ...seminars.map((s) => ({ id: s.id, label: `${s.type}: ${s.title}` })),
-  { id: 'mba', label: 'MBA / Mini MBA تخصصی (اعلام علاقه‌مندی)' },
-];
+export type RegisterProgram = { id: string; label: string };
+export type RegisterContact = { email: string; phone: string };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? '';
 
-export function RegisterForm() {
+export function RegisterForm({
+  programs,
+  site,
+}: {
+  programs: RegisterProgram[];
+  site: RegisterContact;
+}) {
   // ?course=<id> preselects a program, but only if it is a real one.
   const requested = useSearchParams().get('course') || '';
   const initial = useMemo(
     () => (programs.some((p) => p.id === requested) ? requested : ''),
-    [requested],
+    [requested, programs],
   );
 
   const [programId, setProgramId] = useState(initial);

@@ -1,10 +1,19 @@
 import type { Metadata } from 'next';
 
+/**
+ * Rendered per request: its content comes from the database, and an editor who
+ * saves a change in the panel must see it on the site immediately. At this
+ * traffic a SQLite read per request costs microseconds.
+ */
+export const dynamic = 'force-dynamic';
+
+
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { LeadForm } from '@/components/LeadForm';
-import { contact } from '@/content/pages';
-import { site } from '@/content/site';
+import { contact as contactSeed } from '@/content/pages';
+import { getPage } from '@/server/content';
+import { getSite } from '@/server/content';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
@@ -13,6 +22,8 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+  const contact = getPage('contact', contactSeed as unknown as typeof contactSeed);
+  const site = getSite();
   return (
     <>
       <PageHeader

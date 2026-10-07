@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Reveal } from '@/components/Reveal';
 import { featuredCourse } from '@/content/programs';
-import { site } from '@/content/site';
+import { getSite } from '@/server/content';
 import { fa } from '@/lib/text';
 
 /**
@@ -13,6 +13,7 @@ import { fa } from '@/lib/text';
  * white plate, which is what makes a partnership look official.
  */
 export function FeaturedCourse() {
+  const site = getSite();
   const { eyebrow, title, blurb, audience, sessions, hours, partners, highlights } = featuredCourse;
 
   // 0 means "not published yet" — show a dash rather than a bare zero.

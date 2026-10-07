@@ -19,7 +19,7 @@ const NAV = [
   { href: '/admin/leads/', label: 'فرم‌ها و سرنخ‌ها', badge: 'leads' },
   { href: '/admin/articles/', label: 'مقاله‌ها' },
   { href: '/admin/courses/', label: 'دوره‌ها' },
-  { href: '/admin/pages/', label: 'متن صفحات' },
+  { href: '/admin/texts/', label: 'متن‌های سایت' },
   { href: '/admin/glossary/', label: 'واژه‌نامه' },
 ];
 

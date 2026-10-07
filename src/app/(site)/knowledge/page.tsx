@@ -1,14 +1,21 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+/**
+ * Rendered per request: its content comes from the database, and an editor who
+ * saves a change in the panel must see it on the site immediately. At this
+ * traffic a SQLite read per request costs microseconds.
+ */
+export const dynamic = 'force-dynamic';
+
+
 import { PageHeader, ComingSoon } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
-import { articles as posts } from '@/content/articles';
+import { getArticles, getGlossary } from '@/server/content';
 import {
   news,
   media,
   toolkits,
-  glossary,
   library,
   handoutsArchive,
 } from '@/content/knowledge';
@@ -19,6 +26,8 @@ export const metadata: Metadata = {
 };
 
 export default function KnowledgePage() {
+  const posts = getArticles();
+  const glossary = getGlossary();
   return (
     <>
       <PageHeader

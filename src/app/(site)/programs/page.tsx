@@ -1,17 +1,24 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+/**
+ * Rendered per request: its content comes from the database, and an editor who
+ * saves a change in the panel must see it on the site immediately. At this
+ * traffic a SQLite read per request costs microseconds.
+ */
+export const dynamic = 'force-dynamic';
+
+
 import { PageHeader, ComingSoon } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { FeaturedCourse } from '@/components/programs/FeaturedCourse';
 import {
-  programModels,
-  visibleCourses,
   workshops,
   seminars,
   pastEvents,
   calendar,
 } from '@/content/programs';
+import { getProgramModels, getVisibleCourses, getWorkshops, getSeminars } from '@/server/content';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
@@ -32,6 +39,11 @@ const SHOW_PAST_EVENTS = false;
 const SHOW_CALENDAR = false;
 
 export default function ProgramsPage() {
+  const programModels = getProgramModels();
+  const visibleCourses = getVisibleCourses();
+  const workshops = getWorkshops();
+  const seminars = getSeminars();
+
   return (
     <>
       <PageHeader

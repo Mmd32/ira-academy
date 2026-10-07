@@ -2,12 +2,13 @@ import Link from 'next/link';
 
 import { Reveal } from '@/components/Reveal';
 import { Marquee } from '@/components/Marquee';
-import { visibleCourses } from '@/content/programs';
+
 import { news } from '@/content/knowledge';
-import { articles as posts } from '@/content/articles';
+import { getArticles, getVisibleCourses } from '@/server/content';
 import { fa } from '@/lib/text';
 
 export function CourseMarquee() {
+  const visibleCourses = getVisibleCourses();
   return (
     <section className="border-b border-line bg-white py-6">
       <Marquee speed={55}>
@@ -113,6 +114,7 @@ export function SectionsGrid() {
 }
 
 export function ArticlesPreview() {
+  const posts = getArticles();
   return (
     <section className="section border-y border-line bg-paper-soft">
       <div className="container-x">

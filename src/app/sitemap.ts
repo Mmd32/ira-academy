@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next';
 
-import { articles } from '@/content/articles';
+import { getArticles } from '@/server/content';
 import { siteUrl } from '@/lib/site-url';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 /**
  * Every public route. Priorities reflect how central a page is to the
@@ -32,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority,
     })),
     // Each published article is its own indexable page.
-    ...articles.map((a) => ({
+    ...getArticles().map((a) => ({
       url: `${siteUrl}/knowledge/${a.slug}/`,
       lastModified: new Date(a.publishedAt),
       changeFrequency: 'yearly' as const,

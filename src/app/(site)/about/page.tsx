@@ -1,8 +1,17 @@
 import type { Metadata } from 'next';
 
+/**
+ * Rendered per request: its content comes from the database, and an editor who
+ * saves a change in the panel must see it on the site immediately. At this
+ * traffic a SQLite read per request costs microseconds.
+ */
+export const dynamic = 'force-dynamic';
+
+
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
-import { about } from '@/content/pages';
+import { about as aboutSeed } from '@/content/pages';
+import { getPage } from '@/server/content';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
@@ -17,12 +26,12 @@ export const metadata: Metadata = {
 const SHOW_FOUNDERS = false;
 const SHOW_SPONSORS = false;
 
-const pillars = [
-  { label: 'هدف', text: about.goal },
-  { label: 'چشم‌انداز', text: about.vision },
-];
-
 export default function AboutPage() {
+  const about = getPage('about', aboutSeed as unknown as typeof aboutSeed);
+  const pillars = [
+    { label: 'هدف', text: about.goal },
+    { label: 'چشم‌انداز', text: about.vision },
+  ];
   return (
     <>
       <PageHeader
