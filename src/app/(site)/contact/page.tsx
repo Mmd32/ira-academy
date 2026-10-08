@@ -11,6 +11,7 @@ export const dynamic = 'force-dynamic';
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { LeadForm } from '@/components/LeadForm';
+import { LiteralText } from '@/components/LiteralText';
 import { contact as contactSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { getSite } from '@/server/content';
@@ -46,13 +47,20 @@ export default function ContactPage() {
               {/*
                 Label above value, both aligned to the right. Pushing the value
                 to the opposite edge made the eye jump across the card on every
-                row. The email keeps its own left-to-right direction — it is a
-                Latin address — but sits on the right like everything else.
+                row.
+
+                Every value keeps left-to-right direction and is aligned right.
+                Alignment and direction are different things here: a phone
+                number or an email read left to right whatever the page does,
+                and flipping their direction reorders the parts — "021 2842
+                9966 و 5" came out as "5 و 9966 2842 021".
               */}
               <dl className="mt-5 space-y-5 text-sm">
                 <div className="border-b border-line pb-4">
                   <dt className="text-xs text-ink-mute">تلفن</dt>
-                  <dd className="mt-1 font-bold text-ink">{fa(site.phone)}</dd>
+                  <dd className="mt-1 text-right">
+                    <LiteralText value={fa(site.phone)} className="font-bold text-ink" />
+                  </dd>
                 </div>
                 <div className="border-b border-line pb-4">
                   <dt className="text-xs text-ink-mute">ایمیل</dt>
@@ -60,7 +68,9 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <dt className="text-xs text-ink-mute">واتساپ / تلگرام / بله</dt>
-                  <dd className="mt-1 font-bold text-brand">{fa(site.mobile)}</dd>
+                  <dd className="mt-1 text-right">
+                    <LiteralText value={fa(site.mobile)} className="font-bold text-brand" />
+                  </dd>
                 </div>
               </dl>
             </div>
