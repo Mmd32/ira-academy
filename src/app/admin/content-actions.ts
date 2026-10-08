@@ -155,7 +155,7 @@ export async function saveTextsAction(formData: FormData) {
 
   // Contact details and the footer blurb.
   const site: Record<string, string> = {};
-  for (const key of ['brand', 'brandEn', 'tagline', 'phone', 'mobile', 'email', 'instagram', 'address', 'footerText']) {
+  for (const key of ['brand', 'brandEn', 'tagline', 'phone', 'phone2', 'mobile', 'email', 'instagram', 'address', 'footerText']) {
     site[key] = str(formData, `site:${key}`);
   }
   setSetting('site', site);

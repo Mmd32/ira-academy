@@ -4,7 +4,9 @@ export const site = {
   brand: 'آکادمی ریتیل ایران',
   brandEn: 'Iran Retail Academy',
   tagline: 'مرجع آموزش تخصصی ریتیل — برای فروشگاه‌داران مستقل و برندهای زنجیره‌ای، با رویکردی عملی و آکادمیک.',
-  phone: '۰۲۱ ۲۸۴۲ ۹۹۶۶ و ۵',
+  phone: '02128429966',
+  /** Second line of the same office. */
+  phone2: '02128429965',
   mobile: '0912-0000000',
   email: 'info@academyretailiran.com',
   instagram: '@iranretailacademy',

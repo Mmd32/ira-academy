@@ -12,6 +12,7 @@ const SITE_FIELDS: { key: string; label: string; hint?: string }[] = [
   { key: 'brandEn', label: 'نام انگلیسی' },
   { key: 'tagline', label: 'شعار', hint: 'در توضیحات سئو هم استفاده می‌شود' },
   { key: 'phone', label: 'تلفن ثابت' },
+  { key: 'phone2', label: 'تلفن ثابت — خط دوم', hint: 'خالی بگذارید اگر ندارید' },
   { key: 'mobile', label: 'موبایل' },
   { key: 'email', label: 'ایمیل' },
   { key: 'instagram', label: 'اینستاگرام' },

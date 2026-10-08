@@ -58,8 +58,16 @@ export default function ContactPage() {
               <dl className="mt-5 space-y-5 text-sm">
                 <div className="border-b border-line pb-4">
                   <dt className="text-xs text-ink-mute">تلفن</dt>
-                  <dd className="mt-1 text-right">
-                    <LiteralText value={fa(site.phone)} className="font-bold text-ink" />
+                  <dd className="mt-1 space-y-1 text-right">
+                    {[site.phone, site.phone2]
+                      .filter(Boolean)
+                      .map((number) => (
+                        <LiteralText
+                          key={String(number)}
+                          value={fa(String(number))}
+                          className="block font-bold text-ink"
+                        />
+                      ))}
                   </dd>
                 </div>
                 <div className="border-b border-line pb-4">
