@@ -63,7 +63,7 @@ function Scene3D() {
           className="glass-navy absolute -right-1 top-6 w-40 animate-float-slow p-4 sm:right-0"
           style={{ transform: 'translateZ(110px)' }}
         >
-          <div className="text-[10px] font-bold tracking-widest text-white/50">رشد فروش</div>
+          <div className="text-[10px] font-bold text-white/50">رشد فروش</div>
           <div className="mt-1 text-2xl font-black text-gold-soft">{fa('34')}٪+</div>
           <div className="mt-2 flex items-end gap-1">
             {[8, 14, 11, 18, 24, 30].map((h, i) => (
@@ -140,7 +140,7 @@ function ChatDemo() {
             i % 2 ? 'ml-auto border-gold/30' : 'mr-auto'
           }`}
         >
-          <div className="mb-1 text-[10px] font-bold tracking-widest text-gold-soft">{turn.who}</div>
+          <div className="mb-1 text-[10px] font-bold text-gold-soft">{turn.who}</div>
           {turn.text}
         </div>
       ))}

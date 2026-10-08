@@ -54,7 +54,7 @@ export function Nav() {
             />
           </span>
           <span
-            className={`text-sm font-extrabold tracking-tight transition-colors duration-300 ${
+            className={`text-sm font-extrabold transition-colors duration-300 ${
               overHero ? 'text-white' : 'text-ink'
             }`}
           >

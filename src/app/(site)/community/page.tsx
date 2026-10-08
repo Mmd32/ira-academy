@@ -81,7 +81,7 @@ export default function CommunityPage() {
                   <div className={`absolute inset-0 ${album.tone}`} />
                   <div className="navy-grid absolute inset-0 opacity-40" />
                   <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end bg-gradient-to-t from-ink/80 to-transparent p-5 text-white">
-                    <span className="text-[10px] font-bold tracking-widest text-white/70">
+                    <span className="text-[10px] font-bold text-white/70">
                       آلبوم تصاویر
                     </span>
                     <h3 className="mt-1 font-extrabold leading-7">{album.title}</h3>
