@@ -26,11 +26,7 @@ export default function ContactPage() {
   const site = getSite();
   return (
     <>
-      <PageHeader
-        eyebrow="ارتباط با آکادمی"
-        title="در تماس باشیم"
-        lead="تماس، نشانی دفتر، درخواست مشاوره، پرسش‌های متداول و مسیرهای همکاری با آکادمی ریتیل ایران."
-      />
+      <PageHeader eyebrow="ارتباط با آکادمی" title="در تماس باشیم" />
 
       <section className="section bg-white">
         <div className="container-x grid gap-8 lg:grid-cols-3">
@@ -50,7 +46,7 @@ export default function ContactPage() {
               <dl className="mt-5 space-y-4 text-sm">
                 <div className="flex items-center justify-between border-b border-line pb-4">
                   <dt className="text-ink-mute">تلفن</dt>
-                  <dd className="ltr font-bold text-ink">{fa(site.phone)}</dd>
+                  <dd className="font-bold text-ink">{fa(site.phone)}</dd>
                 </div>
                 <div className="flex items-center justify-between border-b border-line pb-4">
                   <dt className="text-ink-mute">ایمیل</dt>
@@ -68,9 +64,13 @@ export default function ContactPage() {
             <div id="advisors" className="card h-full p-7">
               <p className="eyebrow">ارتباط با مشاوران آکادمی</p>
               <p className="mb-5 mt-2 text-xs leading-6 text-ink-mute">
-                برای انتخاب دوره‌ی مناسب، درخواست مشاوره‌ی رایگان بدهید.
+                برای انتخاب دوره‌ مناسب، در کنارتان هستیم.
               </p>
-              <LeadForm subject="درخواست مشاوره‌ی رایگان" cta="درخواست مشاوره‌ی رایگان" />
+              <LeadForm
+                subject="درخواست مشاوره رایگان"
+                cta="درخواست مشاوره رایگان"
+                email={String(site.email ?? '')}
+              />
             </div>
           </Reveal>
         </div>
@@ -80,7 +80,6 @@ export default function ContactPage() {
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">پرسش‌های متداول</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">سؤال شما احتمالاً اینجاست</h2>
           </Reveal>
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             {contact.faqs.map((faq) => (
@@ -104,7 +103,7 @@ export default function ContactPage() {
                 <p className="eyebrow-light">
                   مدرس آکادمی ریتیل ایران شوید
                 </p>
-                <h2 className="mt-4 text-2xl text-white">دانش‌تان را درس بدهید</h2>
+                <h2 className="mt-4 text-2xl text-white">{contact.teachHeading}</h2>
                 <p className="mt-3 max-w-md text-sm leading-8 text-white/65">{contact.teachText}</p>
                 <a
                   href={`mailto:${site.email}?subject=درخواست تدریس در آکادمی`}
@@ -119,7 +118,11 @@ export default function ContactPage() {
           <Reveal>
             <div id="partner" className="card flex h-full flex-col p-8">
               <p className="eyebrow">مشارکت و همکاری</p>
-              <p className="mt-4 flex-1 leading-8 text-ink-soft">{contact.partnerText}</p>
+              <div className="mt-4 flex-1 leading-8 text-ink-soft">
+                {contact.partnerLines.map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
               <a
                 href={`mailto:${site.email}?subject=پیشنهاد همکاری`}
                 className="btn-primary mt-6 w-fit !py-2.5 text-xs"

@@ -21,10 +21,14 @@ export function LeadForm({
   subject,
   cta = 'ارسال درخواست',
   fields = ['name', 'phone', 'note'],
+  // The address the fallback writes to. Passed in rather than written here, so
+  // changing it in the panel changes it everywhere.
+  email = 'info@academyretailiran.com',
 }: {
   subject: string;
   cta?: string;
   fields?: LeadField[];
+  email?: string;
 }) {
   const [values, setValues] = useState<Partial<Record<LeadField, string>>>({});
   const [state, setState] = useState<'idle' | 'busy' | 'done'>('idle');
@@ -54,7 +58,7 @@ export function LeadForm({
       ]
         .filter(Boolean)
         .join('\n');
-      window.location.href = `mailto:info@iranretailacademy.com?subject=${encodeURIComponent(
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(
         subject,
       )}&body=${encodeURIComponent(body)}`;
       setState('idle');

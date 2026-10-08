@@ -4,11 +4,11 @@ export const site = {
   brand: 'آکادمی ریتیل ایران',
   brandEn: 'Iran Retail Academy',
   tagline: 'مرجع آموزش تخصصی ریتیل — برای فروشگاه‌داران مستقل و برندهای زنجیره‌ای، با رویکردی عملی و آکادمیک.',
-  phone: '021-00000000',
+  phone: '۰۲۱ ۲۸۴۲ ۹۹۶۶ و ۵',
   mobile: '0912-0000000',
-  email: 'info@iranretailacademy.com',
+  email: 'info@academyretailiran.com',
   instagram: '@iranretailacademy',
-  address: 'تهران — نشانی دقیق دفتر آکادمی پس از نهایی‌شدن در همین بخش درج می‌شود.',
+  address: 'تهران، خیابان ولیعصر، بالاتر از چهارراه پارک وی، شماره ۲۷۸۸، طبقه ۷',
   /** Shown under the logo in the footer. */
   footerText:
     'مرجع آموزش‌های تخصصی صنعت فروشگاه‌داری. نقطه تقاطع دانش آکادمیک، تجربیات عملی، موردکاوی‌های واقعی و شبکه‌سازی مؤثر.',

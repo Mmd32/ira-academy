@@ -12,7 +12,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { LeadForm } from '@/components/LeadForm';
 import { community as communitySeed } from '@/content/pages';
-import { getPage } from '@/server/content';
+import { getPage, getSite } from '@/server/content';
 
 export const metadata: Metadata = {
   title: 'جامعه حرفه‌ای ARI',
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default function CommunityPage() {
+  const site = getSite();
   const community = getPage('community', communitySeed as unknown as typeof communitySeed);
   return (
     <>
@@ -58,7 +59,11 @@ export default function CommunityPage() {
               <p className="mb-6 mt-1 text-sm text-ink-mute">
                 پس از بررسی، نتیجه از طریق تماس یا پیامک اعلام می‌شود.
               </p>
-              <LeadForm subject="درخواست عضویت در باشگاه ARI" cta="ارسال درخواست عضویت" />
+              <LeadForm
+                subject="درخواست عضویت در باشگاه ARI"
+                cta="ارسال درخواست عضویت"
+                email={String(site.email ?? '')}
+              />
             </div>
           </Reveal>
         </div>
