@@ -29,9 +29,9 @@ export default function ContactPage() {
       <PageHeader eyebrow="ارتباط با آکادمی" title="در تماس باشیم" />
 
       <section className="section bg-white">
-        <div className="container-x grid gap-8 lg:grid-cols-3">
+        <div className="container-x grid items-start gap-8 lg:grid-cols-3">
           <Reveal>
-            <div className="card h-full p-7">
+            <div className="card p-7">
               <p className="eyebrow">نشانی دفتر</p>
               <p className="mt-5 text-sm leading-8 text-ink-soft">{site.address}</p>
               <div className="mt-5 grid aspect-video place-items-center rounded-2xl border border-dashed border-line bg-paper text-xs text-ink-mute">
@@ -41,27 +41,33 @@ export default function ContactPage() {
           </Reveal>
 
           <Reveal>
-            <div className="card h-full p-7">
+            <div className="card p-7">
               <p className="eyebrow">اطلاعات تماس</p>
-              <dl className="mt-5 space-y-4 text-sm">
-                <div className="flex items-center justify-between border-b border-line pb-4">
-                  <dt className="text-ink-mute">تلفن</dt>
-                  <dd className="font-bold text-ink">{fa(site.phone)}</dd>
+              {/*
+                Label above value, both aligned to the right. Pushing the value
+                to the opposite edge made the eye jump across the card on every
+                row. The email keeps its own left-to-right direction — it is a
+                Latin address — but sits on the right like everything else.
+              */}
+              <dl className="mt-5 space-y-5 text-sm">
+                <div className="border-b border-line pb-4">
+                  <dt className="text-xs text-ink-mute">تلفن</dt>
+                  <dd className="mt-1 font-bold text-ink">{fa(site.phone)}</dd>
                 </div>
-                <div className="flex items-center justify-between border-b border-line pb-4">
-                  <dt className="text-ink-mute">ایمیل</dt>
-                  <dd className="ltr font-bold text-ink">{site.email}</dd>
+                <div className="border-b border-line pb-4">
+                  <dt className="text-xs text-ink-mute">ایمیل</dt>
+                  <dd className="ltr mt-1 text-right font-bold text-ink">{site.email}</dd>
                 </div>
-                <div className="flex items-center justify-between">
-                  <dt className="text-ink-mute">واتساپ / تلگرام / بله</dt>
-                  <dd className="ltr font-bold text-brand">{fa(site.mobile)}</dd>
+                <div>
+                  <dt className="text-xs text-ink-mute">واتساپ / تلگرام / بله</dt>
+                  <dd className="mt-1 font-bold text-brand">{fa(site.mobile)}</dd>
                 </div>
               </dl>
             </div>
           </Reveal>
 
           <Reveal>
-            <div id="advisors" className="card h-full p-7">
+            <div id="advisors" className="card p-7">
               <p className="eyebrow">ارتباط با مشاوران آکادمی</p>
               <p className="mb-5 mt-2 text-xs leading-6 text-ink-mute">
                 برای انتخاب دوره‌ مناسب، در کنارتان هستیم.
