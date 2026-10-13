@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { getArticles } from '@/server/content';
+import { getArticles, getContentUpdatedAt } from '@/server/content';
 import { siteUrl } from '@/lib/site-url';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +22,8 @@ const routes: { path: string; priority: number; changeFrequency: MetadataRoute.S
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+  // When the panel last changed anything, not when this was fetched.
+  const lastModified = getContentUpdatedAt();
 
   return [
     ...routes.map(({ path, priority, changeFrequency }) => ({

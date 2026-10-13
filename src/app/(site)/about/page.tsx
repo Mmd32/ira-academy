@@ -15,6 +15,8 @@ import { getPage } from '@/server/content';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
+  description:
+    'معرفی هویت، اعتبار و فلسفه‌ی آموزشی آکادمی ریتیل ایران — چرا هستیم، به کجا می‌رویم و چه کسانی این مسیر را می‌سازند.',
   title: 'معرفی آکادمی',
   alternates: { canonical: '/about/' },
 };

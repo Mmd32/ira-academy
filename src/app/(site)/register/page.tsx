@@ -14,6 +14,8 @@ import { RegisterForm } from '@/components/RegisterForm';
 import { getSeminars, getSite, getVisibleCourses, getWorkshops } from '@/server/content';
 
 export const metadata: Metadata = {
+  description:
+    'ثبت‌نام در دوره‌ها، کارگاه‌ها و سمینارهای آکادمی ریتیل ایران — برنامه را انتخاب کنید، کارشناسان برای تکمیل ثبت‌نام تماس می‌گیرند.',
   title: 'ثبت‌نام',
   alternates: { canonical: '/register/' },
 };

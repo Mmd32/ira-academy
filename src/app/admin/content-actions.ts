@@ -12,6 +12,7 @@ import {
   upsertArticle,
   upsertCourse,
   setSetting,
+  touchContent,
 } from '@/server/content-write';
 
 import type { ArticleBlock } from '@/content/articles';
@@ -79,6 +80,7 @@ export async function saveArticleAction(formData: FormData) {
     str(formData, 'originalSlug') || undefined,
   );
 
+  touchContent();
   revalidatePath('/admin/articles');
   revalidatePath('/knowledge');
   revalidatePath(`/knowledge/${slug}`);
@@ -89,6 +91,7 @@ export async function deleteArticleAction(formData: FormData) {
   requireUser();
   const slug = str(formData, 'slug');
   if (slug) deleteArticle(slug);
+  touchContent();
   revalidatePath('/admin/articles');
   revalidatePath('/knowledge');
 }
@@ -114,6 +117,7 @@ export async function saveCourseAction(formData: FormData) {
     str(formData, 'originalId') || undefined,
   );
 
+  touchContent();
   revalidatePath('/admin/courses');
   revalidatePath('/programs');
   revalidatePath('/');
@@ -124,6 +128,7 @@ export async function deleteCourseAction(formData: FormData) {
   requireUser();
   const id = str(formData, 'id');
   if (id) deleteCourse(id);
+  touchContent();
   revalidatePath('/admin/courses');
   revalidatePath('/programs');
 }
@@ -136,6 +141,7 @@ export async function saveGlossaryAction(formData: FormData) {
 
   replaceGlossary(terms.map((term, i) => ({ term, definition: defs[i] ?? '' })));
 
+  touchContent();
   revalidatePath('/admin/glossary');
   revalidatePath('/knowledge');
 }
@@ -160,6 +166,7 @@ export async function saveTextsAction(formData: FormData) {
   }
   setSetting('site', site);
 
+  touchContent();
   revalidatePath('/admin/texts');
   revalidatePath('/', 'layout');
 }

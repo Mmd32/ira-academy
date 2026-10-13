@@ -39,6 +39,13 @@ export function getPage<T>(slug: string, fallback: T): T {
   return row ? json.parse<T>(row.content, fallback) : fallback;
 }
 
+/** When content last changed; falls back to now on a fresh database. */
+export function getContentUpdatedAt(): Date {
+  const iso = setting<string>('contentUpdatedAt', '');
+  const date = iso ? new Date(iso) : null;
+  return date && !Number.isNaN(date.getTime()) ? date : new Date();
+}
+
 export function getProgramModels(): readonly ProgramModel[] {
   return setting<ProgramModel[]>('programModels', []);
 }

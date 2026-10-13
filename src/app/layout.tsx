@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { siteUrl } from '@/lib/site-url';
+import { organizationSchema, verification, websiteSchema } from '@/lib/seo';
+import { JsonLd } from '@/components/JsonLd';
+import { getSite } from '@/server/content';
 import './globals.css';
 
 /**
@@ -38,6 +41,7 @@ export const metadata: Metadata = {
   },
   description:
     'مرجع آموزش تخصصی ریتیل در ایران — دوره‌های حرفه‌ای فروش، مدیریت فروشگاه، ویژوال مرچندایزینگ و تجربه‌ی مشتری برای فروشگاه‌داران و برندهای زنجیره‌ای.',
+  verification: verification(),
   keywords: [
     'آموزش ریتیل',
     'مدیریت فروشگاه',
@@ -54,19 +58,27 @@ export const metadata: Metadata = {
     siteName: 'آکادمی ریتیل ایران',
     locale: 'fa_IR',
     type: 'website',
+    images: [{ url: '/media/logo-mark.png', width: 512, height: 512, alt: 'آکادمی ریتیل ایران' }],
   },
   twitter: {
     card: 'summary',
     title: 'آکادمی ریتیل ایران',
+    images: ['/media/logo-mark.png'],
     description:
       'آموزش تخصصی فروش، مدیریت فروشگاه و تجربه‌ی مشتری — برای فروشگاه‌داران و برندهای زنجیره‌ای.',
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const site = getSite();
+
   return (
     <html lang="fa" dir="rtl" className={lahzeh.variable}>
-      <body>{children}</body>
+      <body>
+        <JsonLd data={organizationSchema(site)} />
+        <JsonLd data={websiteSchema(site)} />
+        {children}
+      </body>
     </html>
   );
 }

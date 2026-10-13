@@ -15,6 +15,8 @@ import { community as communitySeed } from '@/content/pages';
 import { getPage, getSite } from '@/server/content';
 
 export const metadata: Metadata = {
+  description:
+    'باشگاه اعضا و رویدادهای آکادمی ریتیل ایران — جایی برای یادگیری از هم‌صنف‌ها، شبکه‌سازی و رشد حرفه‌ای مشترک.',
   title: 'جامعه حرفه‌ای ARI',
   alternates: { canonical: '/community/' },
 };

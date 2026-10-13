@@ -20,8 +20,13 @@ import {
 } from '@/content/programs';
 import { getProgramModels, getVisibleCourses, getWorkshops, getSeminars } from '@/server/content';
 import { fa } from '@/lib/text';
+import { JsonLd } from '@/components/JsonLd';
+import { breadcrumbSchema, courseListSchema } from '@/lib/seo';
+import { getSite } from '@/server/content';
 
 export const metadata: Metadata = {
+  description:
+    'دوره‌های تخصصی دانش‌محور، کارگاه‌های مهارت‌محور و سمینارهای آکادمی ریتیل ایران — کنار هر برنامه، لینک ثبت‌نام همان برنامه.',
   title: 'برنامه‌های آموزشی',
   alternates: { canonical: '/programs/' },
 };
@@ -43,9 +48,18 @@ export default function ProgramsPage() {
   const visibleCourses = getVisibleCourses();
   const workshops = getWorkshops();
   const seminars = getSeminars();
+  const site = getSite();
 
   return (
     <>
+      <JsonLd data={courseListSchema(visibleCourses, site)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'خانه', path: '/' },
+          { name: 'برنامه‌های آموزشی', path: '/programs/' },
+        ])}
+      />
+
       <PageHeader
         eyebrow="برنامه‌های آموزشی"
         title="دوره‌ها، کارگاه‌ها و سمینارها"

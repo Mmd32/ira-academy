@@ -17,6 +17,8 @@ import { getSite } from '@/server/content';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
+  description:
+    'راهکارهای توسعه‌ی سرمایه انسانی برای زنجیره‌ها و برندهای چندشعبه‌ای — نیازسنجی، طراحی برنامه، برگزاری و سنجش اثر.',
   title: 'خدمات سازمانی',
   alternates: { canonical: '/corporate/' },
 };

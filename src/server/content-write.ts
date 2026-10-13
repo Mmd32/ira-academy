@@ -129,6 +129,22 @@ export function replaceGlossary(entries: { term: string; definition: string }[])
   write();
 }
 
+/**
+ * Stamps the moment content last changed.
+ *
+ * The sitemap reports this as each page's lastModified. Sending "now" on every
+ * crawl tells search engines the whole site changed every time they look, and
+ * they learn to disregard the field entirely.
+ */
+export function touchContent() {
+  db()
+    .prepare(
+      `INSERT INTO settings (key, value) VALUES ('contentUpdatedAt', ?)
+       ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+    )
+    .run(json.stringify(new Date().toISOString()));
+}
+
 export function setSetting(key: string, value: unknown) {
   db()
     .prepare(

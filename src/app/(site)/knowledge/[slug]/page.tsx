@@ -16,6 +16,7 @@ import { readingMinutes } from '@/content/articles';
 import { getArticles, getArticleBySlug, getSite } from '@/server/content';
 
 import { siteUrl } from '@/lib/site-url';
+import { breadcrumbSchema } from '@/lib/seo';
 import { fa } from '@/lib/text';
 
 type Props = { params: { slug: string } };
@@ -96,6 +97,19 @@ export default function ArticlePage({ params }: Props) {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: 'خانه', path: '/' },
+              { name: 'دانشنامه ریتیل', path: '/knowledge/' },
+              { name: article.shortTitle || article.title, path: `/knowledge/${article.slug}/` },
+            ]),
+          ),
+        }}
       />
 
       <header className="navy-stage relative overflow-hidden text-white">

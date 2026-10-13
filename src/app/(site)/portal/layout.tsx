@@ -5,6 +5,8 @@ import type { Metadata } from 'next';
  * Without this it would inherit the site-wide default title.
  */
 export const metadata: Metadata = {
+  description:
+    'درگاه دانش‌پذیران آکادمی ریتیل ایران — دسترسی به دوره‌ها، جزوه‌ها و پیگیری وضعیت ثبت‌نام.',
   title: 'درگاه دانش‌پذیران',
   alternates: { canonical: '/portal/' },
 };

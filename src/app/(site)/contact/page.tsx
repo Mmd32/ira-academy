@@ -12,12 +12,16 @@ import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { LeadForm } from '@/components/LeadForm';
 import { LiteralText } from '@/components/LiteralText';
+import { JsonLd } from '@/components/JsonLd';
+import { breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { contact as contactSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { getSite } from '@/server/content';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
+  description:
+    'نشانی دفتر، تلفن، ایمیل و مسیرهای همکاری با آکادمی ریتیل ایران — به‌همراه پاسخ پرسش‌های پرتکرار درباره‌ی دوره‌ها.',
   title: 'ارتباط با آکادمی',
   alternates: { canonical: '/contact/' },
 };
@@ -27,6 +31,14 @@ export default function ContactPage() {
   const site = getSite();
   return (
     <>
+      <JsonLd data={faqSchema(contact.faqs)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'خانه', path: '/' },
+          { name: 'ارتباط با آکادمی', path: '/contact/' },
+        ])}
+      />
+
       <PageHeader eyebrow="ارتباط با آکادمی" title="در تماس باشیم" />
 
       <section className="section bg-white">

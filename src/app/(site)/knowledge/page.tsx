@@ -21,6 +21,8 @@ import {
 } from '@/content/knowledge';
 
 export const metadata: Metadata = {
+  description:
+    'مرجع تخصصی دانش ریتیل — اخبار، مقالات و مورد کاوی، ویدیو و پادکست، ابزارهای کاربردی و واژه‌نامه‌ی ریتیل.',
   title: 'دانشنامه ریتیل',
   alternates: { canonical: '/knowledge/' },
 };
