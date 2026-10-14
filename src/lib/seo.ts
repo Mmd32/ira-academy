@@ -55,9 +55,16 @@ export function organizationSchema(site: Site) {
           availableLanguage: ['fa'],
         }))
       : undefined,
-    sameAs: text(site, 'instagram')
-      ? [`https://instagram.com/${text(site, 'instagram').replace(/^@/, '')}`]
-      : undefined,
+    // Every profile the academy actually owns, so Google can tie them to
+    // this one entity instead of treating each as a separate business.
+    sameAs: (() => {
+      const profiles: string[] = [];
+      const instagram = text(site, 'instagram').replace(/^@/, '');
+      if (instagram) profiles.push(`https://instagram.com/${instagram}`);
+      const linkedin = text(site, 'linkedin');
+      if (linkedin) profiles.push(linkedin);
+      return profiles.length ? profiles : undefined;
+    })(),
   };
 }
 
