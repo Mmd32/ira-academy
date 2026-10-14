@@ -11,7 +11,13 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <Nav />
-      <main>{children}</main>
+      {/*
+        The entrance animation tilts each block on the X axis, and a tilted box
+        measures a few pixels wider than the flat one. On a 375px screen that
+        was enough to give /programs a one-pixel horizontal scroll. The tilt is
+        decorative, so it is clipped rather than removed.
+      */}
+      <main className="overflow-x-hidden">{children}</main>
       <Footer />
       <ConsultWidget />
     </>

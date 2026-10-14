@@ -20,6 +20,7 @@ import {
 } from '@/content/programs';
 import { getProgramModels, getVisibleCourses, getWorkshops, getSeminars } from '@/server/content';
 import { fa } from '@/lib/text';
+import { BilingualTerm } from '@/components/BilingualTerm';
 import { JsonLd } from '@/components/JsonLd';
 import { breadcrumbSchema, courseListSchema } from '@/lib/seo';
 import { getSite } from '@/server/content';
@@ -90,9 +91,11 @@ export default function ProgramsPage() {
                   >
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 marker:content-none sm:gap-4 sm:p-6 [&::-webkit-details-marker]:hidden">
                       <span className="min-w-0">
-                        <span className="block text-lg font-extrabold text-brand">
-                          {model.title}
-                        </span>
+                        <BilingualTerm
+                          term={model.title}
+                          className="block text-lg font-extrabold text-brand"
+                          latinClassName="mt-0.5 block text-xs font-normal text-ink-mute"
+                        />
                         <span className="mt-1 block text-sm leading-7 text-ink-soft">
                           {model.desc}
                         </span>

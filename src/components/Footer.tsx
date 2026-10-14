@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getSite } from '@/server/content';
+import { SocialLinks } from '@/components/SocialLinks';
 
 const columns = [
   {
@@ -17,7 +18,7 @@ const columns = [
       { href: '/knowledge/#articles', label: 'مقالات' },
       { href: '/knowledge/#glossary', label: 'لغت‌نامه ریتیل' },
       { href: '/knowledge/#articles', label: 'موردکاوی‌های کاربردی' },
-      { href: '/portal/', label: 'درگاه' },
+      { href: '/portal/', label: 'ورود دانش‌پذیران' },
     ],
   },
   {
@@ -51,6 +52,7 @@ export function Footer() {
             <span className="text-sm font-extrabold">{site.brand}</span>
           </div>
           <p className="mt-4 max-w-xs text-xs leading-6 text-white/50">{site.footerText}</p>
+          <SocialLinks site={site} />
         </div>
 
         {columns.map((column) => (

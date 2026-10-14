@@ -10,6 +10,8 @@ export const site = {
   mobile: '0912-0000000',
   email: 'info@academyretailiran.com',
   instagram: '@iranretailacademy',
+  /** Full profile URL. Empty hides the icon. */
+  linkedin: '',
   address: 'تهران، خیابان ولیعصر، بالاتر از چهارراه پارک وی، شماره ۲۷۸۸، طبقه ۷',
   /** Shown under the logo in the footer. */
   footerText:

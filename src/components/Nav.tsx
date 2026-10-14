@@ -11,7 +11,7 @@ const links = [
   { href: '/corporate/', label: 'خدمات سازمانی' },
   { href: '/community/', label: 'جامعه ARI' },
   { href: '/knowledge/', label: 'دانشنامه' },
-  { href: '/portal/', label: 'دانش‌پذیران' },
+  { href: '/knowledge/#articles', label: 'مقالات' },
   { href: '/contact/', label: 'تماس' },
 ];
 
@@ -84,9 +84,24 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/register/" className={`${overHero ? 'btn-gold' : 'btn-primary'} !px-5 !py-2.5 text-xs`}>
-            ثبت‌نام
-          </Link>
+          {/* Two actions, one control: enrol on the right, sign in on the left. */}
+          <div
+            className={`flex items-center overflow-hidden rounded-full ${
+              overHero ? 'bg-gold text-ink' : 'bg-brand text-white'
+            }`}
+          >
+            <Link href="/register/" className="px-4 py-2.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5">
+              ثبت‌نام
+            </Link>
+            <span className={`h-4 w-px ${overHero ? 'bg-ink/25' : 'bg-white/30'}`} aria-hidden />
+            <Link
+              href="/portal/"
+              className="px-4 py-2.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5"
+              title="ورود دانش‌پذیران"
+            >
+              ورود
+            </Link>
+          </div>
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="منو"
@@ -113,11 +128,17 @@ export function Nav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="border-b border-line/60 py-3.5 text-sm font-medium text-ink-soft last:border-b-0"
+                  className="border-b border-line/60 py-3.5 text-sm font-medium text-ink-soft"
                 >
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href="/portal/"
+                className="py-3.5 text-sm font-bold text-brand"
+              >
+                ورود دانش‌پذیران
+              </Link>
             </div>
           </motion.nav>
         )}

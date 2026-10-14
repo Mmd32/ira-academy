@@ -15,7 +15,8 @@ const SITE_FIELDS: { key: string; label: string; hint?: string }[] = [
   { key: 'phone2', label: 'تلفن ثابت — خط دوم', hint: 'خالی بگذارید اگر ندارید' },
   { key: 'mobile', label: 'موبایل' },
   { key: 'email', label: 'ایمیل' },
-  { key: 'instagram', label: 'اینستاگرام' },
+  { key: 'instagram', label: 'اینستاگرام', hint: 'فقط نام کاربری، مثلاً @name' },
+  { key: 'linkedin', label: 'لینکدین', hint: 'نشانی کامل صفحه' },
   { key: 'address', label: 'نشانی' },
   { key: 'footerText', label: 'متن پاورقی', hint: 'زیر لوگو در انتهای همه‌ی صفحات' },
 ];

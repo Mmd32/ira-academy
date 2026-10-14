@@ -11,6 +11,7 @@ export const dynamic = 'force-dynamic';
 
 import { PageHeader, ComingSoon } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
+import { BilingualTerm } from '@/components/BilingualTerm';
 import { getArticles, getGlossary } from '@/server/content';
 import {
   news,
@@ -166,7 +167,7 @@ export default function KnowledgePage() {
                         className="flex items-start gap-3 text-sm leading-7 text-ink-soft"
                       >
                         <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                        {item}
+                        <BilingualTerm term={item} />
                       </li>
                     ))}
                   </ul>
@@ -187,8 +188,11 @@ export default function KnowledgePage() {
             {glossary.map((entry) => (
               <Reveal key={entry.term}>
                 <div className="flex items-start gap-4 rounded-2xl border border-line bg-paper p-5">
-                  <span className="shrink-0 rounded-full bg-brand px-4 py-1.5 text-xs font-bold text-white">
-                    {entry.term}
+                  <span className="shrink-0 rounded-full bg-brand px-4 py-1.5 text-center text-xs font-bold text-white">
+                    <BilingualTerm
+                      term={entry.term}
+                      latinClassName="mt-0.5 block text-[10px] font-normal text-white/70"
+                    />
                   </span>
                   <p className="text-sm leading-7 text-ink-soft">{entry.def}</p>
                 </div>
