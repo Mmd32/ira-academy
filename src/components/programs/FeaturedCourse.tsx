@@ -9,12 +9,10 @@ import { fa } from '@/lib/text';
  * The flagship programme at the top of /programs. It is deliberately built from
  * the same parts as an ordinary course card — audience chip, title, blurb,
  * "x مبحث · y ساعت" meta — just larger, so it reads as the same family.
- * The one thing it adds is the co-brand plate: both academies on a single
- * white plate, which is what makes a partnership look official.
  */
 export function FeaturedCourse() {
   const site = getSite();
-  const { eyebrow, title, blurb, audience, sessions, hours, partners, highlights } = featuredCourse;
+  const { eyebrow, title, blurb, audience, sessions, hours, highlights } = featuredCourse;
 
   // 0 means "not published yet" — show a dash rather than a bare zero.
   const stat = (value: number) => (value > 0 ? fa(value) : '—');
@@ -65,39 +63,24 @@ export function FeaturedCourse() {
               </div>
             </div>
 
-            {/* Co-brand plate — the one loud element, so everything else stays quiet. */}
-            <div className="navy-stage relative grid place-items-center gap-6 p-10">
+            {/* The academy's own mark, now that the course runs under its name alone. */}
+            <div className="navy-stage relative grid place-items-center p-10">
               <div className="navy-grid absolute inset-0" aria-hidden />
 
               <div className="relative text-center">
-                <p className="eyebrow-light">با همکاری</p>
-
-                <div className="mt-6 inline-flex items-center gap-6 rounded-2xl bg-white px-8 py-5 shadow-lift">
+                <div className="inline-flex items-center rounded-2xl bg-white px-10 py-6 shadow-lift">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/media/logo-mark.png"
                     alt={site.brand}
-                    className="h-12 w-auto object-contain"
+                    className="h-14 w-auto object-contain"
                   />
-                  <span className="h-12 w-px shrink-0 bg-line" aria-hidden />
-                  {partners.map((partner) => (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      key={partner.name}
-                      src={partner.logo}
-                      alt={partner.name}
-                      className="h-10 w-auto object-contain"
-                    />
-                  ))}
                 </div>
 
-                <p className="mt-6 text-sm leading-7 text-white/65">
-                  {site.brand}
-                  <span className="mx-2 text-white/30">×</span>
-                  {partners.map((p) => p.name).join('، ')}
-                </p>
+                <p className="mt-6 text-sm leading-7 text-white/65">{site.brand}</p>
               </div>
             </div>
+
           </article>
         </Reveal>
       </div>

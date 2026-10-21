@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 
 import { PageHeader } from '@/components/PageHeader';
 import { RegisterForm } from '@/components/RegisterForm';
-import { getSeminars, getSite, getVisibleCourses, getWorkshops } from '@/server/content';
+import { getSeminars, getSite, getVisibleCourses } from '@/server/content';
 
 export const metadata: Metadata = {
   description:
@@ -25,7 +25,6 @@ export default function RegisterPage() {
   const site = getSite();
   const programs = [
     ...getVisibleCourses().map((c) => ({ id: c.id, label: `دوره: ${c.title}` })),
-    ...getWorkshops().map((w) => ({ id: w.id, label: `کارگاه: ${w.title}` })),
     ...getSeminars().map((s) => ({ id: s.id, label: `${s.type}: ${s.title}` })),
   ];
 

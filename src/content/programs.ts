@@ -170,7 +170,6 @@ export const courses = [
   }
 ] as const satisfies readonly Course[];
 
-export type Partner = { name: string; logo: string };
 
 export type FeaturedCourse = {
   id: string;
@@ -183,7 +182,6 @@ export type FeaturedCourse = {
   hours: number;
   model: CourseModel;
   /** Co-branded logos shown as a lockup; the academy's own mark is added first. */
-  partners: readonly Partner[];
   highlights: readonly string[];
 };
 
@@ -201,7 +199,6 @@ export const featuredCourse = {
   sessions: 14,
   hours: 32,
   model: 'institute',
-  partners: [{ name: 'Bake Academy', logo: '/media/bake-academy.png' }],
   highlights: [
     'کانسپت‌های مختلف F&B',
     'مدیریت عملیات روزانه و افزایش نظم عملیاتی',

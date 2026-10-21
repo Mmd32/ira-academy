@@ -10,10 +10,19 @@ import { createLead } from '@/server/leads';
 
 export const dynamic = 'force-dynamic';
 
-/** One IP gets a handful of submissions per window — enough for a real person,
- *  not enough to fill the table or to spam the sales team's notifications. */
-const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 5;
+/**
+ * A flood guard, not a quota.
+ *
+ * Anyone may enrol in as many programmes as they like, as often as they like,
+ * with the same phone number — nothing here counts registrations or rejects a
+ * repeat. The only thing this stops is an automated flood filling the table.
+ *
+ * The threshold is deliberately far above human speed because Iranian mobile
+ * carriers put many subscribers behind one address: a per-IP limit tuned for
+ * one person would turn away a whole carrier's worth of real ones.
+ */
+const WINDOW_MS = 600_000; // 10 minutes
+const MAX_PER_WINDOW = 60;
 const hits = new Map<string, number[]>();
 
 function rateLimited(ip: string): boolean {
@@ -40,7 +49,7 @@ export async function POST(request: Request) {
 
   if (rateLimited(ip)) {
     return NextResponse.json(
-      { ok: false, error: 'درخواست‌های بیش از حد. چند لحظه بعد دوباره تلاش کنید.' },
+      { ok: false, error: 'درخواست‌های بیش از حد. چند دقیقه بعد دوباره تلاش کنید.' },
       { status: 429 },
     );
   }
