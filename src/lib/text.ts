@@ -17,3 +17,29 @@ export function splitTitle(title: string): TitlePart[] {
     .map((text, i) => ({ text, gold: i % 2 === 1 }))
     .filter((part) => part.text.length > 0);
 }
+
+/**
+ * Two landlines written the way people read them aloud: the first number in
+ * groups, the second reduced to what differs.
+ *
+ *   ('02128429966', '02128429965')  →  «۰۲۱ ۲۸۴۲ ۹۹۶۶ و ۵»
+ *
+ * When the lines do not share everything but the last digit, the second is
+ * written out in full instead, so nothing is ever abbreviated into ambiguity.
+ */
+export function formatLandlines(first: string, second?: string): string {
+  const group = (n: string) => {
+    const d = n.replace(/\D/g, '');
+    return d.length === 11 && d.startsWith('021')
+      ? `${d.slice(0, 3)} ${d.slice(3, 7)} ${d.slice(7)}`
+      : n.trim();
+  };
+
+  const a = first.replace(/\D/g, '');
+  const b = (second ?? '').replace(/\D/g, '');
+  if (!a) return '';
+  if (!b) return fa(group(first));
+
+  const sameButLast = a.length === b.length && a.slice(0, -1) === b.slice(0, -1);
+  return fa(`${group(first)} و ${sameButLast ? b.slice(-1) : group(second ?? '')}`);
+}

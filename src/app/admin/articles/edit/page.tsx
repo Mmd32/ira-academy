@@ -10,7 +10,7 @@ type Props = { searchParams: { slug?: string } };
 
 export default function EditArticlePage({ searchParams }: Props) {
   requireAdmin();
-  const existing = searchParams.slug ? getArticleBySlug(searchParams.slug) : undefined;
+  const existing = searchParams.slug ? getArticleBySlug(searchParams.slug, { includeDrafts: true }) : undefined;
 
   return (
     <>

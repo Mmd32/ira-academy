@@ -122,7 +122,7 @@ export function ArticleEditor({ article }: { article?: Article }) {
           <input
             type="checkbox"
             name="published"
-            defaultChecked={article ? true : true}
+            defaultChecked={article ? !article.hidden : true}
             className="h-4 w-4"
           />
           <span className="font-semibold text-ink">در سایت منتشر شود</span>

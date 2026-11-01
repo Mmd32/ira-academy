@@ -44,7 +44,12 @@ export function PageHeader({
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-5 max-w-2xl leading-9 text-white/65"
           >
-            {lead}
+            {/* A newline in the text is a deliberate line break. */}
+            {lead.split('\n').map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
           </motion.p>
         )}
       </div>

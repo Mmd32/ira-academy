@@ -23,9 +23,7 @@
       "port": 3100,
       "autoPort": true,
       "env": {
-        "PREVIEW_MODE": "on",
-        "PREVIEW_PASSWORD": "2332",
-        "PREVIEW_SECRET": "localtest"
+        "PREVIEW_MODE": "off"
       }
     }
   ]

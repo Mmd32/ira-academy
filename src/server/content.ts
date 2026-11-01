@@ -142,6 +142,7 @@ function toArticle(r: Row): Article {
     publishedAt: String(r.published_at),
     excerpt: String(r.excerpt),
     cover: { src: String(r.cover_src), alt: String(r.cover_alt) },
+    hidden: Number(r.published) === 0,
     keywords: json.parse<string[]>(String(r.keywords), []),
     body: json.parse<ArticleBlock[]>(String(r.body), []),
   };
@@ -165,8 +166,18 @@ export function getAllArticles(): readonly Article[] {
   return rows.map(toArticle);
 }
 
-export function getArticleBySlug(slug: string): Article | undefined {
-  const row = db().prepare(`SELECT * FROM articles WHERE slug = ?`).get(slug) as Row | undefined;
+/**
+ * One article by address. Unpublished articles are not returned unless the
+ * caller asks for drafts — the public page must not serve an article that has
+ * been taken off the site just because someone knows its address.
+ */
+export function getArticleBySlug(
+  slug: string,
+  options: { includeDrafts?: boolean } = {},
+): Article | undefined {
+  const row = db()
+    .prepare(`SELECT * FROM articles WHERE slug = ?${options.includeDrafts ? '' : ' AND published = 1'}`)
+    .get(slug) as Row | undefined;
   return row ? toArticle(row) : undefined;
 }
 

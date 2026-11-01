@@ -27,18 +27,18 @@ export type Seminar = { id: string; title: string; blurb: string; type: string }
 export const programModels = [
   {
     id: 'standard',
-    title: 'استاندارد',
-    desc: 'دوره‌های عمومی آکادمی با سرفصل ثابت و ثبت‌نام آزاد.'
+    title: 'دوره‌های عمومی',
+    desc: 'با سرفصل ثابت و ثبت‌نام آزاد'
   },
   {
     id: 'organization',
-    title: 'سازمانی — Custom-Made',
+    title: 'سازمانی',
     desc: 'این دوره‌ها بر اساس نیاز برندها شخصی‌سازی و در محل آن سازمان برگزار می‌شود.'
   },
   {
     id: 'institute',
-    title: 'همکاری با انستیتوها',
-    desc: 'دوره‌های مشترک با انستیتوها و مراکز آموزشی تخصصی.'
+    title: 'همکاری با مؤسسات آموزشی',
+    desc: 'دوره‌های مشترک با مراکز آموزشی تخصصی.'
   },
   {
     id: 'university',

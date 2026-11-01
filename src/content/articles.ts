@@ -9,6 +9,8 @@ export type ArticleBlock =
 
 export type Article = {
   slug: string;
+  /** Kept in the store but not shown on the site. */
+  hidden?: boolean;
   title: string;
   /** Short title for cards and breadcrumbs. */
   shortTitle: string;
@@ -31,6 +33,7 @@ export type Article = {
 export const articles: readonly Article[] = [
   {
     slug: 'supermarket-layout-case-study',
+    hidden: true,
     title: 'مورد کاوی: بازطراحی چیدمان یک سوپرمارکت محلی',
     shortTitle: 'بازطراحی چیدمان یک سوپرمارکت',
     kind: 'مورد کاوی',
@@ -150,6 +153,7 @@ export const articles: readonly Article[] = [
   },
   {
     slug: 'why-shoppers-leave-without-buying',
+    hidden: true,
     title: 'چرا مشتری وارد فروشگاه می‌شود ولی نمی‌خرد؟',
     shortTitle: 'چرا مشتری می‌آید ولی نمی‌خرد؟',
     kind: 'مقاله',

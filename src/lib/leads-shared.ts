@@ -25,6 +25,8 @@ export type Lead = {
   name: string;
   phone: string;
   company: string;
+  /** Job title within the organisation (club membership form). */
+  position: string;
   note: string;
   status: LeadStatus;
   callNotes: string;

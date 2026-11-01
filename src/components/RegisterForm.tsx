@@ -6,11 +6,12 @@ import { useSearchParams } from 'next/navigation';
 import { Reveal } from '@/components/Reveal';
 
 
-import { fa } from '@/lib/text';
+import { LiteralText } from '@/components/LiteralText';
+import { formatLandlines } from '@/lib/text';
 
 /** Everything registrable, in one flat list for the <select>. */
 export type RegisterProgram = { id: string; label: string };
-export type RegisterContact = { email: string; phone: string };
+export type RegisterContact = { email: string; phone: string; phone2?: string };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? '';
 
@@ -34,12 +35,17 @@ export function RegisterForm({
   const [note, setNote] = useState('');
   const [state, setState] = useState<'idle' | 'busy' | 'done'>('idle');
 
+  /** Any edit after a success puts the form back to its ordinary state. */
+  const touched = () => setState((cur) => (cur === 'done' ? 'idle' : cur));
+
   const program = programs.find((p) => p.id === programId);
   const subject = `ثبت‌نام — ${program?.label || 'بدون برنامه'}`;
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (state !== 'idle') return;
+    // Only a request already in flight blocks another: someone who has just
+    // enrolled must be able to enrol in the next programme straight away.
+    if (state === 'busy') return;
 
     setState('busy');
     try {
@@ -49,6 +55,10 @@ export function RegisterForm({
         body: JSON.stringify({ type: subject, program: program?.label, name, phone, note }),
       });
       if (!res.ok) throw new Error('lead failed');
+      // Ready for the next programme: the name and number stay, since the same
+      // person is likely to enrol again; the programme and note do not.
+      setProgramId('');
+      setNote('');
       setState('done');
     } catch {
       const body = [
@@ -73,11 +83,11 @@ export function RegisterForm({
           <p className="eyebrow">فرم ثبت‌نام</p>
           <h2 className="mt-5 text-2xl font-extrabold sm:text-3xl">یک قدم تا شروع</h2>
           <p className="mt-4 max-w-md leading-8 text-ink-soft">
-            پس از ارسال فرم، کارشناس ثبت‌نام برای اعلام جزئیات (زمان‌بندی، شهریه و نحوه‌ی پرداخت) با
-            شما تماس می‌گیرد. برای مشاوره‌ی فوری:
+            پس از ارسال فرم، کارشناس ثبت‌نام برای اعلام جزئیات دوره مورد نظرتان (زمان‌بندی، شهریه و
+            نحوه پرداخت) با شما تماس می‌گیرد. برای مشاوره فوری:
           </p>
-          <div className="ltr mt-5 w-fit rounded-full border border-brand/15 bg-brand/5 px-6 py-3 font-black tracking-wide text-brand">
-            {fa(site.phone)}
+          <div className="mt-5 w-fit rounded-full border border-brand/15 bg-brand/5 px-6 py-3 font-black text-brand">
+            <LiteralText value={formatLandlines(site.phone, site.phone2)} />
           </div>
         </div>
       </Reveal>
@@ -87,7 +97,10 @@ export function RegisterForm({
           <select
             required
             value={programId}
-            onChange={(e) => setProgramId(e.target.value)}
+            onChange={(e) => {
+              setProgramId(e.target.value);
+              touched();
+            }}
             className="w-full rounded-full border border-line bg-paper px-4 py-3 text-sm outline-none focus:border-brand-400"
           >
             <option value="">انتخاب برنامه‌ی آموزشی…</option>
@@ -101,21 +114,31 @@ export function RegisterForm({
             required
             placeholder="نام و نام خانوادگی"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              touched();
+            }}
             className="w-full rounded-full border border-line bg-paper px-4 py-3 text-sm outline-none focus:border-brand-400"
           />
           <input
             required
             placeholder="شماره تماس"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="ltr w-full rounded-full border border-line bg-paper px-4 py-3 text-left text-sm outline-none focus:border-brand-400"
+            onChange={(e) => {
+              setPhone(e.target.value);
+              touched();
+            }}
+            dir="ltr"
+            className="w-full rounded-full border border-line bg-paper px-4 py-3 text-right text-sm outline-none focus:border-brand-400"
           />
           <textarea
             rows={3}
             placeholder="توضیحات (اختیاری)"
             value={note}
-            onChange={(e) => setNote(e.target.value)}
+            onChange={(e) => {
+              setNote(e.target.value);
+              touched();
+            }}
             className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-sm outline-none focus:border-brand-400"
           />
           <button type="submit" disabled={state === 'busy'} className="btn-primary w-full disabled:opacity-60">

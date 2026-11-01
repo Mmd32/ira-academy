@@ -49,7 +49,7 @@ const sections = [
     href: '/corporate/',
     num: '۰۳',
     title: 'خدمات سازمانی',
-    desc: 'آموزش‌های Custom-Made، مشاوره و طراحی برنامه‌ی آموزشی برای سازمان‌ها.',
+    desc: 'آموزش‌های ویژه‌سازی‌شده، مشاوره و طراحی برنامه‌ی آموزشی برای سازمان‌ها.',
   },
   {
     href: '/community/',
@@ -60,7 +60,7 @@ const sections = [
   {
     href: '/knowledge/',
     num: '۰۵',
-    title: 'دانشنامه ریتیل',
+    title: 'کتابخانه ریتیل',
     desc: 'اخبار، مقالات و مورد کاوی، ویدیو و پادکست، ابزارهای کاربردی و لغت‌نامه.',
   },
   {
@@ -121,7 +121,7 @@ export function ArticlesPreview() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="eyebrow">دانشنامه ریتیل</p>
+              <p className="eyebrow">کتابخانه ریتیل</p>
               <h2 className="mt-5 text-3xl sm:text-4xl">تازه‌ترین مقالات</h2>
             </div>
             <Link href="/knowledge/#articles" className="btn-secondary !py-2.5 text-xs">

@@ -16,10 +16,13 @@ import { getPage, getSite } from '@/server/content';
 
 export const metadata: Metadata = {
   description:
-    'باشگاه اعضا و رویدادهای آکادمی ریتیل ایران — جایی برای یادگیری از هم‌صنف‌ها، شبکه‌سازی و رشد حرفه‌ای مشترک.',
+    'باشگاه اعضای آکادمی، جایی برای شبکه‌سازی، ایجاد ارتباطات ارزشمند، تبادل تجربه و آگاهی از رویدادهای جامعه‌ی ریتیل.',
   title: 'جامعه حرفه‌ای ARI',
   alternates: { canonical: '/community/' },
 };
+
+/** The album grid is hidden until there are event photographs. The markup stays. */
+const SHOW_ALBUMS = false;
 
 export default function CommunityPage() {
   const site = getSite();
@@ -29,7 +32,7 @@ export default function CommunityPage() {
       <PageHeader
         eyebrow="جامعه حرفه‌ای ARI"
         title="شبکه‌ای پویا از اهالی ریتیل"
-        lead="باشگاه اعضا و رویدادهای آکادمی — جایی برای یادگیری از هم‌صنف‌ها، شبکه‌سازی و رشد حرفه‌ای مشترک."
+        lead="باشگاه اعضای آکادمی، جایی برای شبکه‌سازی، ایجاد ارتباطات ارزشمند، تبادل تجربه و آگاهی از رویدادهای جامعه‌ی ریتیل."
       />
 
       <section id="club" className="section bg-white">
@@ -37,7 +40,7 @@ export default function CommunityPage() {
           <div>
             <Reveal>
               <p className="eyebrow">باشگاه اعضاء</p>
-              <h2 className="mt-5 text-3xl sm:text-4xl">معرفی باشگاه</h2>
+              <h2 className="mt-5 text-3xl sm:text-4xl">باشگاه اعضای ARI</h2>
               <p className="mt-4 max-w-xl leading-8 text-ink-soft">{community.clubIntro}</p>
             </Reveal>
             <Reveal>
@@ -65,6 +68,8 @@ export default function CommunityPage() {
                 subject="درخواست عضویت در باشگاه ARI"
                 cta="ارسال درخواست عضویت"
                 email={String(site.email ?? '')}
+                fields={['name', 'phone', 'company', 'position', 'note']}
+                labels={{ company: 'سازمان' }}
               />
             </div>
           </Reveal>
@@ -81,6 +86,7 @@ export default function CommunityPage() {
             </p>
           </Reveal>
 
+          {SHOW_ALBUMS && (
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {community.albums.map((album) => (
               <Reveal key={album.title}>
@@ -97,6 +103,7 @@ export default function CommunityPage() {
               </Reveal>
             ))}
           </div>
+          )}
         </div>
       </section>
     </>

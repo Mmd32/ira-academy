@@ -82,6 +82,7 @@ export async function POST(request: Request) {
     name,
     phone,
     company: body.company as string,
+    position: body.position as string,
     note: body.note as string,
   });
 

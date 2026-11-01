@@ -47,6 +47,11 @@ export default function ArticlesPage() {
                 >
                   {a.kind}
                 </span>
+                {a.hidden && (
+                  <span className="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-black text-amber-800">
+                    پنهان از سایت
+                  </span>
+                )}
                 <h2 className="font-extrabold text-ink">{a.title}</h2>
               </div>
               <p className="mt-2 max-w-2xl text-sm leading-7 text-ink-soft">{a.excerpt}</p>

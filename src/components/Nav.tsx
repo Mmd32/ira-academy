@@ -10,7 +10,7 @@ const links = [
   { href: '/programs/', label: 'برنامه‌های آموزشی' },
   { href: '/corporate/', label: 'خدمات سازمانی' },
   { href: '/community/', label: 'جامعه ARI' },
-  { href: '/knowledge/', label: 'دانشنامه' },
+  { href: '/knowledge/', label: 'کتابخانه' },
   { href: '/knowledge/#articles', label: 'مقالات' },
   { href: '/contact/', label: 'تماس' },
 ];

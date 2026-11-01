@@ -37,8 +37,12 @@ export function LeadRow({ lead, when }: { lead: Lead; when: string }) {
             {lead.type}
             {lead.program && <span className="text-ink-mute"> — {lead.program}</span>}
           </p>
-          {lead.company && (
-            <p className="text-sm text-ink-mute">سازمان: {lead.company}</p>
+          {(lead.company || lead.position) && (
+            <p className="text-sm text-ink-mute">
+              {lead.company && <>سازمان: {lead.company}</>}
+              {lead.company && lead.position && ' · '}
+              {lead.position && <>سمت: {lead.position}</>}
+            </p>
           )}
           {lead.note && (
             <p className="mt-2 rounded-xl bg-paper px-4 py-3 text-sm leading-7 text-ink-soft">

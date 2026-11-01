@@ -23,8 +23,8 @@ import {
 
 export const metadata: Metadata = {
   description:
-    'مرجع تخصصی دانش ریتیل — اخبار، مقالات و مورد کاوی، ویدیو و پادکست، ابزارهای کاربردی و واژه‌نامه‌ی ریتیل.',
-  title: 'دانشنامه ریتیل',
+    'منبع تخصصی اخبار، مقالات و مِدیای صنعت ریتیل.',
+  title: 'کتابخانه ریتیل',
   alternates: { canonical: '/knowledge/' },
 };
 
@@ -34,15 +34,15 @@ export default function KnowledgePage() {
   return (
     <>
       <PageHeader
-        eyebrow="دانشنامه ریتیل"
+        eyebrow="کتابخانه ریتیل"
         title="دانشنامه ریتیل و فروشگاه‌داری"
-        lead="مرجع تخصصی و قابل اتکای دانش ریتیل — اخبار، مقالات و مورد کاوی، ویدیو و پادکست، ابزارهای کاربردی و لغت‌نامه."
+        lead="منبع تخصصی اخبار، مقالات و مِدیای صنعت ریتیل."
       />
 
       <section id="news" className="section bg-white">
         <div className="container-x">
           <Reveal>
-            <p className="eyebrow">اخبار روز — جهان و ایران</p>
+            <p className="eyebrow">جدیدترین اخبار صنعت ریتیل</p>
             <h2 className="mt-5 text-3xl sm:text-4xl">تازه‌های ریتیل</h2>
           </Reveal>
           <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
@@ -68,7 +68,7 @@ export default function KnowledgePage() {
       <section id="articles" className="section border-y border-line bg-paper-soft">
         <div className="container-x">
           <Reveal>
-            <p className="eyebrow">مقالات + مورد کاوی + گزارشات برندها</p>
+            <p className="eyebrow">مقالات / مورد کاوی / گزارشات برندها</p>
             <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">خواندنی‌های عمیق‌تر</h2>
           </Reveal>
 

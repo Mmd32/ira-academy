@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 
-export type LeadField = 'name' | 'phone' | 'company' | 'note';
+export type LeadField = 'name' | 'phone' | 'company' | 'position' | 'note';
 
 const LABELS: Record<LeadField, string> = {
   name: 'نام و نام خانوادگی',
   phone: 'شماره تماس',
   company: 'نام مجموعه / برند',
+  position: 'سمت سازمانی',
   note: 'توضیحات',
 };
 
@@ -24,11 +25,14 @@ export function LeadForm({
   // The address the fallback writes to. Passed in rather than written here, so
   // changing it in the panel changes it everywhere.
   email = 'info@academyretailiran.com',
+  // Per-form wording for a field, e.g. «سازمان» instead of «نام مجموعه / برند».
+  labels = {},
 }: {
   subject: string;
   cta?: string;
   fields?: LeadField[];
   email?: string;
+  labels?: Partial<Record<LeadField, string>>;
 }) {
   const [values, setValues] = useState<Partial<Record<LeadField, string>>>({});
   const [state, setState] = useState<'idle' | 'busy' | 'done'>('idle');
@@ -53,6 +57,7 @@ export function LeadForm({
       const body = [
         values.name && `نام: ${values.name}`,
         values.company && `مجموعه: ${values.company}`,
+        values.position && `سمت: ${values.position}`,
         values.phone && `تلفن: ${values.phone}`,
         values.note && `توضیحات: ${values.note}`,
       ]
@@ -86,7 +91,7 @@ export function LeadForm({
           <textarea
             key={field}
             rows={4}
-            placeholder={LABELS[field]}
+            placeholder={labels[field] ?? LABELS[field]}
             value={values[field] || ''}
             onChange={bind(field)}
             className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400"
@@ -94,12 +99,15 @@ export function LeadForm({
         ) : (
           <input
             key={field}
-            required={field !== 'company'}
-            placeholder={LABELS[field]}
+            required={field !== 'company' && field !== 'position'}
+            placeholder={labels[field] ?? LABELS[field]}
             value={values[field] || ''}
             onChange={bind(field)}
+            // The number keeps its own left-to-right order, but the field sits
+            // on the right like every other one on the page.
+            dir={field === 'phone' ? 'ltr' : undefined}
             className={`w-full rounded-full border border-line bg-paper px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400 ${
-              field === 'phone' ? 'ltr text-left' : ''
+              field === 'phone' ? 'text-right' : ''
             }`}
           />
         ),

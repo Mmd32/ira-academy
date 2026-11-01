@@ -105,7 +105,7 @@ export default function ArticlePage({ params }: Props) {
           __html: JSON.stringify(
             breadcrumbSchema([
               { name: 'خانه', path: '/' },
-              { name: 'دانشنامه ریتیل', path: '/knowledge/' },
+              { name: 'کتابخانه ریتیل', path: '/knowledge/' },
               { name: article.shortTitle || article.title, path: `/knowledge/${article.slug}/` },
             ]),
           ),
@@ -121,7 +121,7 @@ export default function ArticlePage({ params }: Props) {
             </Link>
             <span className="h-px w-8 bg-gold/50" />
             <Link href="/knowledge/" className="text-white/50 transition-colors hover:text-gold-soft">
-              دانشنامه ریتیل
+              کتابخانه ریتیل
             </Link>
             <span className="h-px w-8 bg-gold/50" />
             {article.kind}
@@ -251,7 +251,7 @@ export default function ArticlePage({ params }: Props) {
               <div>
                 <p className="eyebrow">ادامه بدهید</p>
                 <h2 className="mt-5 text-2xl font-extrabold sm:text-3xl">
-                  {others.length > 0 ? 'مقالات دیگر دانشنامه' : 'دوره‌های تخصصی آکادمی'}
+                  {others.length > 0 ? 'مقالات دیگر کتابخانه' : 'دوره‌های تخصصی آکادمی'}
                 </h2>
               </div>
               <Link href="/knowledge/#articles" className="btn-secondary !py-2.5 text-xs">

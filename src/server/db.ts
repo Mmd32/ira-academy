@@ -143,6 +143,13 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS sessions_user ON sessions (user_id);
   `);
+
+  // Columns added after the first release. CREATE TABLE IF NOT EXISTS leaves an
+  // existing table as it was, so a new column has to be added explicitly.
+  const leadColumns = (d.pragma('table_info(leads)') as { name: string }[]).map((c) => c.name);
+  if (!leadColumns.includes('position')) {
+    d.exec(`ALTER TABLE leads ADD COLUMN position TEXT NOT NULL DEFAULT ''`);
+  }
 }
 
 /** True once the content tables have been seeded. */

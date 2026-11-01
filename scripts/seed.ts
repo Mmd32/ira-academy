@@ -134,7 +134,7 @@ const seedAll = d.transaction(() => {
   articles.forEach((a, i) => {
     insArticle.run(
       a.slug,
-      1,
+      a.hidden ? 0 : 1,
       i,
       a.title,
       a.shortTitle,

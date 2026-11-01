@@ -15,7 +15,7 @@ import { getSeminars, getSite, getVisibleCourses } from '@/server/content';
 
 export const metadata: Metadata = {
   description:
-    'ثبت‌نام در دوره‌ها، کارگاه‌ها و سمینارهای آکادمی ریتیل ایران — برنامه را انتخاب کنید، کارشناسان برای تکمیل ثبت‌نام تماس می‌گیرند.',
+    'دوره موردنظر خود را انتخاب کنید و اطلاعات تماس‌تان را بگذارید؛ کارشناسان آکادمی برای تکمیل ثبت‌نام با شما تماس می‌گیرند.',
   title: 'ثبت‌نام',
   alternates: { canonical: '/register/' },
 };
@@ -33,14 +33,14 @@ export default function RegisterPage() {
       <PageHeader
         eyebrow="ثبت‌نام"
         title="ثبت‌نام در برنامه‌های آموزشی"
-        lead="برنامه‌ی موردنظر را انتخاب کنید و اطلاعات تماس‌تان را بگذارید؛ کارشناسان آکادمی برای تکمیل ثبت‌نام تماس می‌گیرند."
+        lead="دوره موردنظر خود را انتخاب کنید و اطلاعات تماس‌تان را بگذارید؛ کارشناسان آکادمی برای تکمیل ثبت‌نام با شما تماس می‌گیرند."
       />
 
       <section className="section bg-white">
         <div className="container-x">
           {/* useSearchParams forces client rendering under `output: export`. */}
           <Suspense>
-            <RegisterForm programs={programs} site={{ email: site.email, phone: site.phone }} />
+            <RegisterForm programs={programs} site={{ email: site.email, phone: site.phone, phone2: site.phone2 }} />
           </Suspense>
         </div>
       </section>

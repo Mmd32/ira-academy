@@ -72,8 +72,8 @@ export default function ProgramsPage() {
       <section id="courses" className="section bg-white">
         <div className="container-x">
           <Reveal>
-            <p className="eyebrow">دوره‌های تخصصی</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">دانش‌محور، با پروژه‌ی واقعی</h2>
+            <p className="eyebrow">دانش تخصصی</p>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">از یادگیری تا اجرا</h2>
           </Reveal>
 
           <div className="mt-12 space-y-4">

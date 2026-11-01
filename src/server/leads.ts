@@ -19,6 +19,7 @@ export type NewLead = {
   name?: string;
   phone?: string;
   company?: string;
+  position?: string;
   note?: string;
 };
 
@@ -30,8 +31,8 @@ function clean(value: unknown, max: number): string {
 export function createLead(input: NewLead): number {
   const info = db()
     .prepare(
-      `INSERT INTO leads (created_at, type, program, name, phone, company, note, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 'new')`,
+      `INSERT INTO leads (created_at, type, program, name, phone, company, position, note, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'new')`,
     )
     .run(
       new Date().toISOString(),
@@ -40,6 +41,7 @@ export function createLead(input: NewLead): number {
       clean(input.name, 120),
       clean(input.phone, 40),
       clean(input.company, 120),
+      clean(input.position, 120),
       clean(input.note, 2000),
     );
   return Number(info.lastInsertRowid);
@@ -54,6 +56,7 @@ function toLead(r: Record<string, unknown>): Lead {
     name: String(r.name),
     phone: String(r.phone),
     company: String(r.company),
+    position: String(r.position ?? ''),
     note: String(r.note),
     status: String(r.status) as LeadStatus,
     callNotes: String(r.call_notes),
