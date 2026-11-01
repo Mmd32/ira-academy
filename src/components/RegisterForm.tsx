@@ -11,7 +11,7 @@ import { formatLandlines } from '@/lib/text';
 
 /** Everything registrable, in one flat list for the <select>. */
 export type RegisterProgram = { id: string; label: string };
-export type RegisterContact = { email: string; phone: string; phone2?: string };
+export type RegisterContact = { email: string; phone: string; phone2?: string; address?: string };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? '';
 
@@ -89,6 +89,13 @@ export function RegisterForm({
           <div className="mt-5 w-fit rounded-full border border-brand/15 bg-brand/5 px-6 py-3 font-black text-brand">
             <LiteralText value={formatLandlines(site.phone, site.phone2)} />
           </div>
+
+          {site.address && (
+            <div className="mt-8 max-w-md">
+              <p className="text-sm font-extrabold text-ink">نشانی دفتر آکادمی ریتیل ایران</p>
+              <p className="mt-2 text-sm leading-8 text-ink-soft">{site.address}</p>
+            </div>
+          )}
         </div>
       </Reveal>
 

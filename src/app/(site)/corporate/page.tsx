@@ -74,7 +74,7 @@ export default function CorporatePage() {
                 تماس با مشاوران آموزش سازمانی
                 <span className="h-px w-12 bg-gold/50" />
               </p>
-              <h2 className="mt-5 text-3xl text-white sm:text-4xl">جلسه‌ی نیازسنجی رایگان</h2>
+              <h2 className="mt-5 text-3xl text-white sm:text-4xl">جلسه نیازسنجی رایگان</h2>
               <div className="mt-4 max-w-lg space-y-2 leading-9 text-white/65">
                 <p>
                   لطفاً اطلاعات خواسته‌شده در فرم را تکمیل و ارسال کنید، تا مشاوران آکادمی با شما

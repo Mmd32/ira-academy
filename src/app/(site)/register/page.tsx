@@ -40,7 +40,12 @@ export default function RegisterPage() {
         <div className="container-x">
           {/* useSearchParams forces client rendering under `output: export`. */}
           <Suspense>
-            <RegisterForm programs={programs} site={{ email: site.email, phone: site.phone, phone2: site.phone2 }} />
+            <RegisterForm programs={programs} site={{
+              email: site.email,
+              phone: site.phone,
+              phone2: site.phone2,
+              address: site.address,
+            }} />
           </Suspense>
         </div>
       </section>
