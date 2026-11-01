@@ -33,7 +33,7 @@ export function PageHeader({
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 text-3xl text-white sm:text-4xl lg:text-5xl"
+          className="mt-5 text-balance text-3xl text-white sm:text-4xl lg:text-5xl"
         >
           {title}
         </motion.h1>

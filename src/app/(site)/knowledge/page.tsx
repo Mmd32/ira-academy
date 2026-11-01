@@ -35,15 +35,13 @@ export default function KnowledgePage() {
     <>
       <PageHeader
         eyebrow="کتابخانه ریتیل"
-        title="دانشنامه ریتیل و فروشگاه‌داری"
-        lead="منبع تخصصی اخبار، مقالات و مِدیای صنعت ریتیل."
+        title="منبع تخصصی اخبار، مقالات و مِدیای صنعت ریتیل."
       />
 
       <section id="news" className="section bg-white">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">جدیدترین اخبار صنعت ریتیل</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">تازه‌های ریتیل</h2>
           </Reveal>
           <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
             {news.map((item) => (
@@ -69,7 +67,6 @@ export default function KnowledgePage() {
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">مقالات / مورد کاوی / گزارشات برندها</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">خواندنی‌های عمیق‌تر</h2>
           </Reveal>
 
           {/* Published articles first, then the ones still being written. */}
@@ -113,7 +110,6 @@ export default function KnowledgePage() {
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">ویدیو و پادکست</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl">ببینید و بشنوید</h2>
           </Reveal>
           <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
             {media.map((item) => (
