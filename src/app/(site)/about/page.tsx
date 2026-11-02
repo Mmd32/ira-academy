@@ -44,15 +44,32 @@ export default function AboutPage() {
 
       <section className="section bg-white">
         <div className="container-x">
-          <Reveal>
-            <div className="max-w-3xl space-y-5">
-              {about.intro.map((paragraph, i) => (
-                <p key={i} className="leading-9 text-ink-soft">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </Reveal>
+          {/* Text beside a photograph. The photograph sits beside the text rather
+              than behind it: text over an image has to fight the image for
+              legibility, and the paragraphs here are long. */}
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <Reveal>
+              <div className="space-y-5">
+                {about.intro.map((paragraph, i) => (
+                  <p key={i} className="whitespace-pre-line leading-9 text-ink-soft">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/media/academy-about.webp"
+                alt="شرکت‌کنندگان در یک برنامه‌ی آموزشی آکادمی، در فضایی شبیه فروشگاه"
+                width={1400}
+                height={788}
+                loading="eager"
+                className="aspect-[4/3] w-full rounded-3xl border border-line object-cover shadow-lift"
+              />
+            </Reveal>
+          </div>
 
           {/* Two pillars, so each takes half the row rather than leaving a gap. */}
           <div className="mt-14 grid gap-6 lg:grid-cols-2">
@@ -60,7 +77,7 @@ export default function AboutPage() {
               <Reveal key={pillar.label}>
                 <div className="card h-full p-8 sm:p-10">
                   <p className="eyebrow">{pillar.label}</p>
-                  <p className="mt-5 text-lg leading-9 text-ink-soft">{pillar.text}</p>
+                  <p className="mt-5 whitespace-pre-line text-lg leading-9 text-ink-soft">{pillar.text}</p>
                 </div>
               </Reveal>
             ))}
@@ -72,7 +89,7 @@ export default function AboutPage() {
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">کادر علمی</p>
-            <p className="mt-5 max-w-3xl leading-9 text-ink-soft">{about.facultyText}</p>
+            <p className="mt-5 max-w-3xl whitespace-pre-line leading-9 text-ink-soft">{about.facultyText}</p>
           </Reveal>
 
           <div className="mt-10 space-y-10">
