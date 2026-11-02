@@ -155,7 +155,7 @@ export function ArticlesPreview() {
                     {post.excerpt}
                   </span>
                   <span className="mt-4 text-xs font-bold text-brand transition-colors group-hover:text-gold-soft">
-                    ادامه‌ی مطلب ←
+                    ادامه مطلب ←
                   </span>
                 </span>
               </Link>

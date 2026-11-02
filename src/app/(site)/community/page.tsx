@@ -16,7 +16,7 @@ import { getPage, getSite } from '@/server/content';
 
 export const metadata: Metadata = {
   description:
-    'باشگاه اعضای آکادمی، جایی برای شبکه‌سازی، ایجاد ارتباطات ارزشمند، تبادل تجربه و آگاهی از رویدادهای جامعه‌ی ریتیل.',
+    'باشگاه اعضای آکادمی، جایی برای شبکه‌سازی، ایجاد ارتباطات ارزشمند، تبادل تجربه و آگاهی از رویدادهای جامعه ریتیل.',
   title: 'جامعه حرفه‌ای ARI',
   alternates: { canonical: '/community/' },
 };
@@ -32,15 +32,14 @@ export default function CommunityPage() {
       <PageHeader
         eyebrow="جامعه حرفه‌ای ARI"
         title="شبکه‌ای پویا از اهالی ریتیل"
-        lead="باشگاه اعضای آکادمی، جایی برای شبکه‌سازی، ایجاد ارتباطات ارزشمند، تبادل تجربه و آگاهی از رویدادهای جامعه‌ی ریتیل."
+        lead={`باشگاه اعضای آکادمی، جایی برای شبکه‌سازی، ایجاد ارتباطات ارزشمند، تبادل تجربه\nو آگاهی از رویدادهای جامعه ریتیل.`}
       />
 
       <section id="club" className="section bg-white">
         <div className="container-x grid gap-12 lg:grid-cols-2">
           <div>
             <Reveal>
-              <p className="eyebrow">باشگاه اعضاء</p>
-              <h2 className="mt-5 text-3xl sm:text-4xl">باشگاه اعضای ARI</h2>
+              <h2 className="text-3xl sm:text-4xl">باشگاه اعضای ARI</h2>
               <p className="mt-4 max-w-xl leading-8 text-ink-soft">{community.clubIntro}</p>
             </Reveal>
             <Reveal>
@@ -66,7 +65,7 @@ export default function CommunityPage() {
               </p>
               <LeadForm
                 subject="درخواست عضویت در باشگاه ARI"
-                cta="ارسال درخواست عضویت"
+                cta="ارسال درخواست"
                 email={String(site.email ?? '')}
                 fields={['name', 'phone', 'company', 'position', 'note']}
                 labels={{ company: 'سازمان' }}

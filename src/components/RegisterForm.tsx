@@ -75,15 +75,16 @@ export function RegisterForm({
     }
   }
 
+  // The intro is set in two lines, and the second needs about 620px: on a wide
+  // screen the text column takes the larger share and the form the rest.
   return (
-    <div className="grid gap-10 lg:grid-cols-2">
+    <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-[1.6fr_1fr]">
       <Reveal>
         <div>
           <p className="eyebrow">فرم ثبت‌نام</p>
           <h2 className="mt-5 text-2xl font-extrabold sm:text-3xl">یک قدم تا شروع</h2>
-          <p className="mt-4 max-w-md leading-8 text-ink-soft">
-            پس از ارسال فرم، کارشناس ثبت‌نام برای اعلام جزئیات دوره مورد نظرتان (زمان‌بندی، شهریه و
-            نحوه پرداخت) با شما تماس می‌گیرد. برای مشاوره فوری:
+          <p className="mt-4 whitespace-pre-line leading-8 text-ink-soft">
+            {'پس از ارسال فرم، کارشناس ثبت‌نام برای اعلام جزئیات دوره\nمورد نظرتان (زمان‌بندی، شهریه و نحوه پرداخت) با شما تماس می‌گیرد. برای مشاوره فوری:'}
           </p>
           <div className="mt-5 w-fit rounded-full border border-brand/15 bg-brand/5 px-6 py-3 font-black text-brand">
             {formatLandlines(site.phone, site.phone2)}
