@@ -106,13 +106,7 @@ export default function AboutPage() {
                           {fa(i + 1)}
                         </span>
                         <div>
-                          <h4 className="font-extrabold text-ink">
-                            {/* A trailing «(…)» stays in one piece, so a wrap falls before it. */}
-                            {person.name.replace(/\s*\([^)]*\)$/, '')}
-                            {person.name.match(/\([^)]*\)$/) && (
-                              <span className="whitespace-nowrap"> {person.name.match(/\([^)]*\)$/)?.[0]}</span>
-                            )}
-                          </h4>
+                          <h4 className="whitespace-pre-line font-extrabold text-ink">{person.name}</h4>
                           {person.role && <p className="mt-1 text-sm text-ink-mute">{person.role}</p>}
                         </div>
                       </div>
@@ -156,7 +150,7 @@ export default function AboutPage() {
               <p className="eyebrow">پارتنرهای آموزشی آکادمی ریتیل ایران</p>
               <div className="mt-5 space-y-3 leading-9 text-ink-soft">
                 {about.partnersText.map((line: string) => (
-                  <p key={line}>{line}</p>
+                  <p key={line} className="whitespace-pre-line">{line}</p>
                 ))}
               </div>
             </div>

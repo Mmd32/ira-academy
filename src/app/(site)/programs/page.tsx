@@ -21,6 +21,7 @@ import {
 import { getProgramModels, getVisibleCourses, getWorkshops, getSeminars } from '@/server/content';
 import { fa } from '@/lib/text';
 import { BilingualTerm } from '@/components/BilingualTerm';
+import { CourseBlurb } from '@/components/CourseBlurb';
 import { JsonLd } from '@/components/JsonLd';
 import { breadcrumbSchema, courseListSchema } from '@/lib/seo';
 import { getSite } from '@/server/content';
@@ -43,6 +44,8 @@ const SHOW_WORKSHOPS = false;
 const SHOW_SEMINARS = false;
 const SHOW_PAST_EVENTS = false;
 const SHOW_CALENDAR = false;
+/** The MBA block duplicates the «همکاری با دانشگاه‌ها» group above it. */
+const SHOW_MBA = false;
 
 export default function ProgramsPage() {
   const programModels = getProgramModels();
@@ -128,7 +131,9 @@ export default function ProgramsPage() {
                           دوره‌های این بخش به‌زودی اعلام می‌شود.
                         </p>
                       ) : (
-                        <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                        /* Three across, not four: the descriptions are written as short lines and a
+                           card four across leaves about 210px, which wraps most of them. */
+                        <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
                           {modelCourses.map((course) => (
                             <div
                               key={course.id}
@@ -141,9 +146,7 @@ export default function ProgramsPage() {
                               <h4 className="mt-3 text-base font-extrabold leading-8 text-ink">
                                 {course.title}
                               </h4>
-                              <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">
-                                {course.blurb}
-                              </p>
+                              <CourseBlurb text={course.blurb} className="mt-2 flex-1 text-sm leading-7 text-ink-soft" />
                               <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
                                 <span className="text-xs font-semibold text-ink-mute">
                                   {fa(course.sessions)} مبحث · {fa(course.hours)} ساعت
@@ -224,6 +227,7 @@ export default function ProgramsPage() {
         </section>
       )}
 
+      {(SHOW_PAST_EVENTS || SHOW_MBA) && (
       <section className="section border-t border-line bg-paper-soft">
         <div
           className={`container-x grid gap-10 ${SHOW_PAST_EVENTS ? 'lg:grid-cols-2' : ''}`}
@@ -246,6 +250,7 @@ export default function ProgramsPage() {
               </div>
             </Reveal>
           )}
+          {SHOW_MBA && (
           <Reveal>
             <div className="card h-full p-8 opacity-80">
               <p className="eyebrow">
@@ -261,8 +266,10 @@ export default function ProgramsPage() {
               </Link>
             </div>
           </Reveal>
+          )}
         </div>
       </section>
+      )}
 
       {SHOW_CALENDAR && (
   <section id="calendar" className="section border-t border-line bg-white">

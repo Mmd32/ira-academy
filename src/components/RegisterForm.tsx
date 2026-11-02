@@ -6,7 +6,6 @@ import { useSearchParams } from 'next/navigation';
 import { Reveal } from '@/components/Reveal';
 
 
-import { LiteralText } from '@/components/LiteralText';
 import { formatLandlines } from '@/lib/text';
 
 /** Everything registrable, in one flat list for the <select>. */
@@ -87,7 +86,7 @@ export function RegisterForm({
             نحوه پرداخت) با شما تماس می‌گیرد. برای مشاوره فوری:
           </p>
           <div className="mt-5 w-fit rounded-full border border-brand/15 bg-brand/5 px-6 py-3 font-black text-brand">
-            <LiteralText value={formatLandlines(site.phone, site.phone2)} />
+            {formatLandlines(site.phone, site.phone2)}
           </div>
 
           {site.address && (

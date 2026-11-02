@@ -14,7 +14,6 @@ import { LeadForm } from '@/components/LeadForm';
 import { corporate as corporateSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { getSite } from '@/server/content';
-import { LiteralText } from '@/components/LiteralText';
 import { fa, formatLandlines } from '@/lib/text';
 
 export const metadata: Metadata = {
@@ -32,22 +31,35 @@ export default function CorporatePage() {
       <PageHeader
         eyebrow="خدمات سازمانی"
         title="آموزش‌های سازمانی ویژه‌سازی‌شده"
-        lead="برنامه‌های توسعه سرمایه انسانی برای سازمان‌های فعال در صنعت ریتیل و فروشگاه‌داری؛ از نیازسنجی و طراحی مسیر آموزشی تا اجرا و ارزیابی یادگیری."
+        lead={`برنامه‌های توسعه سرمایه انسانی برای سازمان‌های فعال در صنعت ریتیل و فروشگاه‌داری؛\nاز نیازسنجی و طراحی مسیر آموزشی تا اجرا و ارزیابی یادگیری.`}
       />
 
       <section className="section bg-white">
         <div className="container-x">
-          <Reveal>
-            <p className="eyebrow">ضرورت و مزایا</p>
-            <h2 className="mt-5 max-w-2xl text-3xl sm:text-4xl">
-              چرا آموزش سازمانیِ ویژه‌سازی‌شده؟
-            </h2>
-            <div className="mt-4 max-w-2xl space-y-4 leading-8 text-ink-soft">
-              {corporate.intro.map((paragraph: string, i: number) => (
-                <p key={i}>{paragraph}</p>
-              ))}
-            </div>
-          </Reveal>
+          {/* Text beside a photograph — beside, not behind, so the paragraphs stay legible. */}
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <Reveal>
+              <p className="eyebrow">اهمیت و مزایا</p>
+              <h2 className="mt-5 text-3xl sm:text-4xl">چرا آموزش سازمانیِ ویژه‌سازی‌شده؟</h2>
+              <div className="mt-4 space-y-4 leading-8 text-ink-soft">
+                {corporate.intro.map((paragraph: string, i: number) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/media/articles/retail-boutique.webp"
+                alt="فضای داخلی یک فروشگاه ریتیل"
+                width={936}
+                height={562}
+                loading="lazy"
+                className="aspect-[4/3] w-full rounded-3xl border border-line object-cover shadow-lift"
+              />
+            </Reveal>
+          </div>
 
           <div className="mt-12 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {corporate.benefits.map((benefit, i) => (
@@ -75,15 +87,16 @@ export default function CorporatePage() {
                 <span className="h-px w-12 bg-gold/50" />
               </p>
               <h2 className="mt-5 text-3xl text-white sm:text-4xl">فرم نیازسنجی</h2>
-              <div className="mt-4 max-w-lg space-y-2 leading-9 text-white/65">
-                <p>
-                  لطفاً اطلاعات خواسته‌شده در فرم را تکمیل و ارسال کنید، تا مشاوران آکادمی با شما
-                  تماس بگیرند.
+              <div className="mt-4 max-w-xl space-y-2 leading-9 text-white/65">
+                <p className="whitespace-pre-line">
+                  {'لطفاً اطلاعات خواسته‌شده در فرم را تکمیل و ارسال کنید،\nتا مشاوران آکادمی با شما تماس بگیرند.'}
                 </p>
-                <p>همچنین، می‌توانید از طریق شماره تلفن درج شده، مستقیماً با ما در ارتباط باشید.</p>
+                <p>همچنین، می‌توانید از طریق شماره تلفن درج شده، با ما در ارتباط باشید.</p>
               </div>
+              {/* No direction override: in a right-to-left page the groups read from the
+                  right, «۰۲۱» first and «و ۵» last, which is the order they were given in. */}
               <div className="mt-6 w-fit rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-lg font-black text-gold-soft">
-                <LiteralText value={formatLandlines(String(site.phone ?? ''), String(site.phone2 ?? ''))} />
+                {formatLandlines(String(site.phone ?? ''), String(site.phone2 ?? ''))}
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

@@ -42,7 +42,7 @@ export function PageHeader({
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-5 max-w-2xl leading-9 text-white/65"
+            className={`mt-5 leading-9 text-white/65 ${lead.includes('\n') ? 'max-w-4xl' : 'max-w-2xl'}`}
           >
             {/* A newline in the text is a deliberate line break. */}
             {lead.split('\n').map((line, i) => (

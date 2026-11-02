@@ -11,7 +11,7 @@
  */
 import { db, json } from '../src/server/db';
 import { pages } from '../src/content/pages';
-import { programModels } from '../src/content/programs';
+import { courses, programModels } from '../src/content/programs';
 import { articles } from '../src/content/articles';
 
 const d = db();
@@ -34,6 +34,13 @@ d.prepare(
   `INSERT INTO settings (key, value) VALUES ('programModels', ?)
    ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
 ).run(json.stringify(programModels));
+
+// Course descriptions written as lines (a bold opening line, then one per line).
+const LINED = ['store-management-1', 'store-management-2', 'visual-merchandising', 'fnb-cafe-management'];
+const setBlurb = d.prepare(`UPDATE courses SET blurb = ? WHERE id = ?`);
+for (const c of courses) {
+  if (LINED.includes(c.id)) setBlurb.run(c.blurb, c.id);
+}
 
 // Which articles are on the site.
 const setPublished = d.prepare(`UPDATE articles SET published = ? WHERE slug = ?`);
