@@ -14,6 +14,7 @@ import { LeadForm } from '@/components/LeadForm';
 import { corporate as corporateSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { getSite } from '@/server/content';
+import { LiteralText } from '@/components/LiteralText';
 import { fa, formatLandlines } from '@/lib/text';
 
 export const metadata: Metadata = {
@@ -93,10 +94,12 @@ export default function CorporatePage() {
                 </p>
                 <p>همچنین، می‌توانید از طریق شماره تلفن درج شده، با ما در ارتباط باشید.</p>
               </div>
-              {/* No direction override: in a right-to-left page the groups read from the
-                  right, «۰۲۱» first and «و ۵» last, which is the order they were given in. */}
+              {/* Left to right, each group kept whole: «۰۲۱ ۲۸۴۲ ۹۹۶۶ و ۵» with the area code on the
+                  left, the way the academy's document shows it. Left to right on its own splits
+                  «و ۵» (the Persian «و» drags the digit that follows it), so LiteralText isolates
+                  each piece. */}
               <div className="mt-6 w-fit rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-lg font-black text-gold-soft">
-                {formatLandlines(String(site.phone ?? ''), String(site.phone2 ?? ''))}
+                <LiteralText value={formatLandlines(String(site.phone ?? ''), String(site.phone2 ?? ''))} />
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
