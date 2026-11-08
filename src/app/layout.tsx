@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { siteUrl } from '@/lib/site-url';
-import { organizationSchema, verification, websiteSchema } from '@/lib/seo';
+import { organizationSchema, websiteSchema } from '@/lib/seo';
+import { getSeoSettings } from '@/server/seo-settings';
 import { JsonLd } from '@/components/JsonLd';
 import { getSite } from '@/server/content';
 import './globals.css';
@@ -32,7 +33,9 @@ const lahzeh = localFont({
   fallback: ['system-ui', 'sans-serif'],
 });
 
-export const metadata: Metadata = {
+export function generateMetadata(): Metadata {
+  const seo = getSeoSettings();
+  return {
   // Without this, Open Graph and canonical URLs stay relative and break when shared.
   metadataBase: new URL(siteUrl),
   title: {
@@ -41,7 +44,11 @@ export const metadata: Metadata = {
   },
   description:
     'مرجع آموزش تخصصی ریتیل در ایران — دوره‌های حرفه‌ای فروش، مدیریت فروشگاه، ویژوال مرچندایزینگ و تجربه‌ی مشتری برای فروشگاه‌داران و برندهای زنجیره‌ای.',
-  verification: verification(),
+  verification: {
+    google: seo.googleVerification || undefined,
+    other: seo.bingVerification ? { 'msvalidate.01': seo.bingVerification } : undefined,
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
   keywords: [
     'آموزش ریتیل',
     'مدیریت فروشگاه',
@@ -67,7 +74,8 @@ export const metadata: Metadata = {
     description:
       'آموزش تخصصی فروش، مدیریت فروشگاه و تجربه‌ی مشتری — برای فروشگاه‌داران و برندهای زنجیره‌ای.',
   },
-};
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const site = getSite();

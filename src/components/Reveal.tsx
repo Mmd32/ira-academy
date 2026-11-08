@@ -18,11 +18,10 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      style={{ transformPerspective: 1200 }}
-      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 36, rotateX: 8 }}
-      whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0, rotateX: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 20 }}
+      whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+      transition={{ duration: 0.45, delay: Math.min(delay, 0.2), ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>

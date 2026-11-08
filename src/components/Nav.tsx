@@ -41,8 +41,8 @@ export function Nav() {
         scrolled || open ? 'border-b border-line bg-paper/95 backdrop-blur-xl' : 'bg-transparent'
       }`}
     >
-      <div className="container-x flex h-[var(--nav-h)] items-center justify-between gap-4">
-        <Link href="/" className="flex shrink-0 items-center gap-3">
+      <div className="container-x flex h-[var(--nav-h)] items-center justify-between gap-2 sm:gap-4">
+        <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -54,7 +54,7 @@ export function Nav() {
             />
           </span>
           <span
-            className={`text-sm font-extrabold transition-colors duration-300 ${
+            className={`truncate text-[13px] font-extrabold transition-colors duration-300 sm:text-sm ${
               overHero ? 'text-white' : 'text-ink'
             }`}
           >
@@ -83,20 +83,20 @@ export function Nav() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {/* Two actions, one control: enrol on the right, sign in on the left. */}
           <div
             className={`flex items-center overflow-hidden rounded-full ${
               overHero ? 'bg-gold text-ink' : 'bg-brand text-white'
             }`}
           >
-            <Link href="/register/" className="px-4 py-2.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5">
+            <Link href="/register/" className="flex min-h-11 items-center px-3.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5">
               ثبت‌نام
             </Link>
             <span className={`h-4 w-px ${overHero ? 'bg-ink/25' : 'bg-white/30'}`} aria-hidden />
             <Link
               href="/portal/"
-              className="px-4 py-2.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5"
+              className="flex min-h-11 items-center px-3.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5"
               title="ورود دانش‌پذیران"
             >
               ورود
@@ -105,7 +105,7 @@ export function Nav() {
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="منو"
-            className={`grid h-10 w-10 place-items-center rounded-full border lg:hidden ${
+            className={`grid h-11 w-11 shrink-0 place-items-center rounded-full border lg:hidden ${
               overHero ? 'border-white/25 text-white' : 'border-line text-ink'
             }`}
           >

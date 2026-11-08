@@ -88,19 +88,22 @@ export function LeadForm({
     <form onSubmit={onSubmit} className="space-y-4">
       {fields.map((field) =>
         field === 'note' ? (
+          <label key={field} className="block">
+            <span className="mb-1.5 block text-xs font-bold text-ink-soft">{labels[field] ?? LABELS[field]}</span>
           <textarea
-            key={field}
             rows={4}
-            placeholder={labels[field] ?? LABELS[field]}
             value={values[field] || ''}
             onChange={bind(field)}
             className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400"
           />
+          </label>
         ) : (
+          <label key={field} className="block">
+            <span className="mb-1.5 block text-xs font-bold text-ink-soft">{labels[field] ?? LABELS[field]}</span>
           <input
-            key={field}
             required={field !== 'company' && field !== 'position'}
-            placeholder={labels[field] ?? LABELS[field]}
+            autoComplete={field === 'name' ? 'name' : field === 'phone' ? 'tel' : field === 'company' ? 'organization' : undefined}
+            inputMode={field === 'phone' ? 'tel' : undefined}
             value={values[field] || ''}
             onChange={bind(field)}
             // The number keeps its own left-to-right order, but the field sits
@@ -110,6 +113,7 @@ export function LeadForm({
               field === 'phone' ? 'text-right' : ''
             }`}
           />
+          </label>
         ),
       )}
       <button type="submit" disabled={state === 'busy'} className="btn-primary w-full disabled:opacity-60">

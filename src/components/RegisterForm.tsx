@@ -102,6 +102,8 @@ export function RegisterForm({
 
       <Reveal delay={0.1}>
         <form onSubmit={onSubmit} className="card space-y-4 p-8">
+          <label className="block">
+          <span className="mb-1.5 block text-xs font-bold text-ink-soft">برنامه‌ی آموزشی</span>
           <select
             required
             value={programId}
@@ -118,8 +120,12 @@ export function RegisterForm({
               </option>
             ))}
           </select>
+          </label>
+          <label className="block">
+          <span className="mb-1.5 block text-xs font-bold text-ink-soft">نام و نام خانوادگی</span>
           <input
             required
+            autoComplete="name"
             placeholder="نام و نام خانوادگی"
             value={name}
             onChange={(e) => {
@@ -128,8 +134,13 @@ export function RegisterForm({
             }}
             className="w-full rounded-full border border-line bg-paper px-4 py-3 text-sm outline-none focus:border-brand-400"
           />
+          </label>
+          <label className="block">
+          <span className="mb-1.5 block text-xs font-bold text-ink-soft">شماره تماس</span>
           <input
             required
+            autoComplete="tel"
+            inputMode="tel"
             placeholder="شماره تماس"
             value={phone}
             onChange={(e) => {
@@ -139,6 +150,9 @@ export function RegisterForm({
             dir="ltr"
             className="w-full rounded-full border border-line bg-paper px-4 py-3 text-right text-sm outline-none focus:border-brand-400"
           />
+          </label>
+          <label className="block">
+          <span className="mb-1.5 block text-xs font-bold text-ink-soft">توضیحات (اختیاری)</span>
           <textarea
             rows={3}
             placeholder="توضیحات (اختیاری)"
@@ -149,6 +163,7 @@ export function RegisterForm({
             }}
             className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-sm outline-none focus:border-brand-400"
           />
+          </label>
           <button type="submit" disabled={state === 'busy'} className="btn-primary w-full disabled:opacity-60">
             {state === 'busy' ? 'در حال ارسال…' : 'ارسال درخواست ثبت‌نام'}
           </button>

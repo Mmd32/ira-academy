@@ -3,12 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-type Message = { role: 'user' | 'assistant'; content: string };
+type Link = { label: string; href: string };
+type Message = { role: 'user' | 'assistant'; content: string; links?: Link[] };
 
 const GREETING: Message = {
   role: 'assistant',
   content:
-    'سلام! من مشاور هوشمند آکادمی ریتیل ایران هستم 🌟 بفرمایید چه نوع فروشگاه یا کسب‌وکاری دارید تا بهترین دوره را پیشنهاد بدهم؟',
+    'سلام! من مشاور آکادمی ریتیل ایران هستم. بگویید چه نوع فروشگاه یا کسب‌وکاری دارید تا دوره‌ی مناسب را معرفی کنم.',
 };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? '';
@@ -34,7 +35,7 @@ export function ConsultWidget() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // The greeting is local-only; the API receives the real exchange.
-        body: JSON.stringify({ messages: next.slice(1) }),
+        body: JSON.stringify({ messages: next.slice(1).map(({ role, content }) => ({ role, content })) }),
       });
       const data = await res.json();
       setMessages((prev) => [
@@ -43,6 +44,7 @@ export function ConsultWidget() {
           role: 'assistant',
           content:
             data.reply || 'مشکلی پیش آمد؛ لطفاً دوباره تلاش کنید یا از بخش تماس پیام بگذارید.',
+          links: Array.isArray(data.links) ? data.links : undefined,
         },
       ]);
     } catch {
@@ -68,10 +70,11 @@ export function ConsultWidget() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="گفت‌وگو با مشاور آکادمی"
-        className="fixed bottom-6 left-6 z-50 flex h-14 items-center gap-2 rounded-full bg-brand px-5 text-sm font-bold text-white shadow-glow-navy transition-all hover:-translate-y-0.5 hover:bg-brand-500"
+        aria-expanded={open}
+        className="fixed bottom-4 left-4 z-50 flex h-12 w-12 items-center justify-center gap-2 rounded-full bg-brand text-sm font-bold text-white shadow-glow-navy transition-all hover:-translate-y-0.5 hover:bg-brand-500 sm:bottom-6 sm:left-6 sm:h-14 sm:w-auto sm:px-5"
       >
         <span className="grid h-7 w-7 place-items-center rounded-full bg-gold text-xs text-ink">✦</span>
-        مشاور هوشمند
+        <span className="hidden sm:inline">مشاور آکادمی</span>
       </button>
 
       <AnimatePresence>
@@ -81,7 +84,7 @@ export function ConsultWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-24 left-6 z-50 flex h-[480px] w-[360px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-lift"
+            className="fixed bottom-20 left-4 z-50 flex h-[min(480px,calc(100vh-7rem))] w-[360px] max-w-[calc(100vw-2rem)] sm:bottom-24 sm:left-6 flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-lift"
           >
             <div className="navy-stage flex items-center gap-3 px-5 py-4 text-white">
               <span className="grid h-9 w-9 place-items-center rounded-full border border-gold/50 bg-gold/10 text-gold-soft">
@@ -89,7 +92,7 @@ export function ConsultWidget() {
               </span>
               <div>
                 <div className="text-sm font-extrabold">مشاور آکادمی</div>
-                <div className="text-[11px] text-white/60">پاسخ‌گویی هوشمند — نیازسنجی و معرفی دوره</div>
+                <div className="text-[11px] text-white/60">نیازسنجی و معرفی دوره</div>
               </div>
             </div>
 
@@ -104,6 +107,19 @@ export function ConsultWidget() {
                   }`}
                 >
                   {message.content}
+                  {message.links && message.links.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {message.links.map((l) => (
+                        <a
+                          key={l.href}
+                          href={l.href}
+                          className="rounded-full border border-brand/30 bg-brand/5 px-3 py-1.5 text-xs font-bold text-brand hover:bg-brand/10"
+                        >
+                          {l.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
               {pending && (
@@ -124,6 +140,7 @@ export function ConsultWidget() {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
+                aria-label="پیام شما"
                 placeholder="پیام خود را بنویسید…"
                 className="flex-1 rounded-full border border-line bg-paper px-4 py-2.5 text-sm outline-none transition-colors focus:border-brand-400"
               />

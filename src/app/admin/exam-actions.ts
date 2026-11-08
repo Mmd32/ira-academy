@@ -31,6 +31,7 @@ import {
   setExamGroups,
   validateQuestion,
 } from '@/server/exams';
+import { saveSeoSettings } from '@/server/seo-settings';
 import { RESULT_MODES, type ResultMode } from '@/lib/exam-shared';
 import { fromTehranInput } from '@/lib/tehran-time';
 
@@ -331,4 +332,28 @@ export async function deleteAttemptAction(formData: FormData) {
   if (id) deleteAttempt(id);
   revalidatePath('/admin/exams/results');
   if (examId) redirect(`/admin/exams/results/?id=${examId}`);
+}
+
+/* ------------------------------ seo / analytics ------------------------- */
+
+const SEO_LABELS: Record<string, string> = {
+  ga4: 'شناسه‌ی Google Analytics',
+  gtm: 'شناسه‌ی Tag Manager',
+  googleVerification: 'کد تأیید Search Console',
+  bingVerification: 'کد تأیید Bing',
+  clarity: 'شناسه‌ی Clarity',
+};
+
+export async function saveSeoAction(_prev: string | null, formData: FormData): Promise<string | null> {
+  requireUser();
+  const get = (k: string) => String(formData.get(k) ?? '');
+  const bad = saveSeoSettings({
+    ga4: get('ga4'),
+    gtm: get('gtm'),
+    googleVerification: get('googleVerification'),
+    bingVerification: get('bingVerification'),
+    clarity: get('clarity'),
+  });
+  revalidatePath('/', 'layout');
+  return bad.length ? `این مورد درست نبود و ذخیره نشد: ${bad.map((k) => SEO_LABELS[k]).join('، ')}` : 'ذخیره شد';
 }

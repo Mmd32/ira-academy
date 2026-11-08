@@ -58,10 +58,10 @@ export function Footer() {
         {columns.map((column) => (
           <div key={column.title}>
             <div className="eyebrow-light">{column.title}</div>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-3 text-sm">
               {column.links.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-white/65 transition-colors hover:text-gold-soft">
+                  <Link href={link.href} className="inline-flex min-h-11 items-center text-white/65 transition-colors hover:text-gold-soft">
                     {link.label}
                   </Link>
                 </li>

@@ -1,3 +1,4 @@
+import { Analytics } from '@/components/Analytics';
 import { ConsultWidget } from '@/components/ConsultWidget';
 import { Footer } from '@/components/Footer';
 import { Nav } from '@/components/Nav';
@@ -20,6 +21,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <main className="overflow-x-hidden">{children}</main>
       <Footer />
       <ConsultWidget />
+      <Analytics />
     </>
   );
 }

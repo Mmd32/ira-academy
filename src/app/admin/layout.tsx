@@ -25,6 +25,7 @@ const NAV = [
   { href: '/admin/orgs/', label: 'سازمان‌ها' },
   { href: '/admin/groups/', label: 'گروه‌ها' },
   { href: '/admin/exams/', label: 'آزمون‌ها' },
+  { href: '/admin/seo/', label: 'سئو و آنالیتیکس' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

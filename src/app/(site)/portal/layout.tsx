@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description:
     'درگاه دانش‌پذیران آکادمی ریتیل ایران — دسترسی به دوره‌ها، جزوه‌ها و پیگیری وضعیت ثبت‌نام.',
   title: 'درگاه دانش‌پذیران',
-  alternates: { canonical: '/portal/' },
+  // A sign-in page has nothing to offer a search result.
+  robots: { index: false, follow: false },
 };
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
