@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ reply: 'پیام‌های زیادی فرستاده شد. چند دقیقه بعد دوباره تلاش کنید.' }, { status: 429 });
   }
 
-  let body: { messages?: unknown };
+  let body: { messages?: unknown; name?: unknown };
   try {
     body = (await request.json()) as { messages?: unknown };
   } catch {
@@ -51,5 +51,7 @@ export async function POST(request: Request) {
   if (!messages.some((m) => m.role === 'user')) {
     return NextResponse.json({ reply: 'پیام خود را بنویسید.' }, { status: 422 });
   }
-  return NextResponse.json(answer(messages));
+  // The name was typed by the visitor: keep it to plain letters and spaces before it is echoed or stored.
+  const name = typeof body.name === 'string' ? body.name.replace(/[^a-zA-Z\u0600-\u06ff\s\u200c.-]/g, '').trim().slice(0, 40) : '';
+  return NextResponse.json(answer(messages, name));
 }

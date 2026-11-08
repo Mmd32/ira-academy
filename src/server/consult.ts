@@ -98,7 +98,17 @@ function callMe(site: Record<string, string>): string {
     : 'می‌توانید از بخش تماس هم پیام بگذارید.';
 }
 
-export function answer(messages: ChatMessage[]): ChatReply {
+/** Puts the visitor's first name in front of an answer, so it reads as addressed to them. */
+function addressed(reply: ChatReply, name: string): ChatReply {
+  const first = name.trim().split(/\s+/)[0];
+  return first ? { ...reply, reply: `${first} عزیز، ${reply.reply}` } : reply;
+}
+
+export function answer(messages: ChatMessage[], name = ''): ChatReply {
+  return addressed(answerPlain(messages, name), name);
+}
+
+function answerPlain(messages: ChatMessage[], name: string): ChatReply {
   const site = getSite() as Record<string, string>;
   const lastUser = [...messages].reverse().find((m) => m.role === 'user');
   const raw = (lastUser?.content ?? '').slice(0, 500);
@@ -112,10 +122,7 @@ export function answer(messages: ChatMessage[]): ChatReply {
       .map((m) => `${m.role === 'user' ? 'کاربر' : 'مشاور'}: ${m.content}`)
       .join('\n')
       .slice(0, 900);
-    const earlierName = messages
-      .filter((m) => m.role === 'user')
-      .map((m) => m.content.trim())
-      .find((c) => /^[^\d]{3,40}$/.test(c) && c.split(/\s+/).length <= 4);
+    const earlierName = name;
     createLead({
       type: 'مشاور سایت',
       name: earlierName || 'ثبت‌شده از گفت‌وگوی سایت',

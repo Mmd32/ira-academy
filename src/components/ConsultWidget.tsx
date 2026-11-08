@@ -6,24 +6,80 @@ import { motion, AnimatePresence } from 'framer-motion';
 type Link = { label: string; href: string };
 type Message = { role: 'user' | 'assistant'; content: string; links?: Link[] };
 
-const GREETING: Message = {
+const ASK_NAME: Message = {
   role: 'assistant',
-  content:
-    'سلام! من مشاور آکادمی ریتیل ایران هستم. بگویید چه نوع فروشگاه یا کسب‌وکاری دارید تا دوره‌ی مناسب را معرفی کنم.',
+  content: 'سلام! من مشاور آکادمی ریتیل ایران هستم. لطفاً نام و نام خانوادگی‌تان را بنویسید.',
 };
+
+const NAME_KEY = 'ira-consult-name';
+
+/** A name is words of letters; anything with digits or symbols is probably a question or a number. */
+function parseName(text: string): string | null {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length < 2 || clean.length > 40 || /[0-9۰-۹٠-٩@:/\\?!؟]/.test(clean)) return null;
+  const words = clean.split(' ');
+  return words.length <= 4 ? clean : null;
+}
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? '';
 
 export function ConsultWidget() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([GREETING]);
+  const [messages, setMessages] = useState<Message[]>([ASK_NAME]);
+  const [name, setName] = useState('');
   const [draft, setDraft] = useState('');
   const [pending, setPending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(NAME_KEY);
+      if (saved) {
+        setName(saved);
+        setMessages([
+          {
+            role: 'assistant',
+            content: `سلام ${saved.split(' ')[0]} عزیز، خوش برگشتید! بگویید چه نوع فروشگاه یا کسب‌وکاری دارید تا دوره‌ی مناسب را معرفی کنم.`,
+          },
+        ]);
+      }
+    } catch {
+      /* storage blocked: the name is simply asked again */
+    }
+  }, []);
+
   async function send() {
     const text = draft.trim();
     if (!text || pending) return;
+
+    // First message: the visitor's name. Greet them by it, then carry on.
+    if (!name) {
+      const given = parseName(text);
+      setDraft('');
+      if (!given) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'user', content: text },
+          { role: 'assistant', content: 'لطفاً فقط نام و نام خانوادگی‌تان را بنویسید، مثلاً «علی رضایی».' },
+        ]);
+        return;
+      }
+      setName(given);
+      try {
+        localStorage.setItem(NAME_KEY, given);
+      } catch {
+        /* storage blocked */
+      }
+      setMessages((prev) => [
+        ...prev,
+        { role: 'user', content: given },
+        {
+          role: 'assistant',
+          content: `سلام ${given.split(' ')[0]} عزیز، خوشحالم که با ما هستید! بگویید چه نوع فروشگاه یا کسب‌وکاری دارید و دنبال چه مهارتی هستید تا دوره‌ی مناسب را معرفی کنم.`,
+        },
+      ]);
+      return;
+    }
 
     setDraft('');
     const next: Message[] = [...messages, { role: 'user', content: text }];
@@ -35,7 +91,7 @@ export function ConsultWidget() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // The greeting is local-only; the API receives the real exchange.
-        body: JSON.stringify({ messages: next.slice(1).map(({ role, content }) => ({ role, content })) }),
+        body: JSON.stringify({ name, messages: next.slice(1).map(({ role, content }) => ({ role, content })) }),
       });
       const data = await res.json();
       setMessages((prev) => [
@@ -141,7 +197,7 @@ export function ConsultWidget() {
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
                 aria-label="پیام شما"
-                placeholder="پیام خود را بنویسید…"
+                placeholder={name ? 'پیام خود را بنویسید…' : 'نام و نام خانوادگی…'}
                 className="flex-1 rounded-full border border-line bg-paper px-4 py-2.5 text-sm outline-none transition-colors focus:border-brand-400"
               />
               <button
