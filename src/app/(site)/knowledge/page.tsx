@@ -1,3 +1,4 @@
+import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -34,8 +35,8 @@ export default function KnowledgePage() {
   return (
     <>
       <PageHeader
-        eyebrow="کتابخانه ریتیل"
-        title="منبع تخصصی اخبار، مقالات و مِدیای صنعت ریتیل."
+        eyebrow={ui('page.knowledge.eyebrow')}
+        title={ui('page.knowledge.title')}
       />
 
       <section id="news" className="section bg-white">

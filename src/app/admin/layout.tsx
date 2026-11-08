@@ -20,6 +20,8 @@ const NAV = [
   { href: '/admin/articles/', label: 'مقاله‌ها' },
   { href: '/admin/courses/', label: 'دوره‌ها' },
   { href: '/admin/texts/', label: 'متن‌های سایت' },
+  { href: '/admin/site/', label: 'هدر، فوتر و دکمه‌ها' },
+  { href: '/admin/pages/', label: 'متن صفحه‌ها' },
   { href: '/admin/glossary/', label: 'واژه‌نامه' },
   { href: '/admin/students/', label: 'دانش‌پذیران' },
   { href: '/admin/orgs/', label: 'سازمان‌ها' },

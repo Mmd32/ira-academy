@@ -5,17 +5,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const links = [
-  { href: '/about/', label: 'معرفی' },
-  { href: '/programs/', label: 'برنامه‌های آموزشی' },
-  { href: '/corporate/', label: 'خدمات سازمانی' },
-  { href: '/community/', label: 'جامعه ARI' },
-  { href: '/knowledge/', label: 'کتابخانه' },
-  { href: '/knowledge/#articles', label: 'مقالات' },
-  { href: '/contact/', label: 'تماس' },
-];
+type NavLink = { href: string; label: string };
+type NavLabels = {
+  links: NavLink[];
+  cta: NavLink;
+  login: NavLink;
+  mobileLogin: string;
+};
 
-export function Nav() {
+export function Nav({ labels }: { labels: NavLabels }) {
+  const { links, cta, login, mobileLogin } = labels;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -90,16 +89,16 @@ export function Nav() {
               overHero ? 'bg-gold text-ink' : 'bg-brand text-white'
             }`}
           >
-            <Link href="/register/" className="flex min-h-11 items-center px-3.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5">
-              ثبت‌نام
+            <Link href={cta.href} className="flex min-h-11 items-center px-3.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5">
+              {cta.label}
             </Link>
             <span className={`h-4 w-px ${overHero ? 'bg-ink/25' : 'bg-white/30'}`} aria-hidden />
             <Link
-              href="/portal/"
+              href={login.href}
               className="flex min-h-11 items-center px-3.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5"
-              title="ورود دانش‌پذیران"
+              title={mobileLogin}
             >
-              ورود
+              {login.label}
             </Link>
           </div>
           <button
@@ -134,10 +133,10 @@ export function Nav() {
                 </Link>
               ))}
               <Link
-                href="/portal/"
+                href={login.href}
                 className="py-3.5 text-sm font-bold text-brand"
               >
-                ورود دانش‌پذیران
+                {mobileLogin}
               </Link>
             </div>
           </motion.nav>

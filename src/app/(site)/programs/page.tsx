@@ -1,3 +1,4 @@
+import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -65,9 +66,9 @@ export default function ProgramsPage() {
       />
 
       <PageHeader
-        eyebrow="برنامه‌های آموزشی"
-        title="دوره‌ها، کارگاه‌ها و سمینارها"
-        lead="دوره‌های تخصصی دانش‌محور، کارگاه‌های مهارت‌محور و سمینارها و وبینارهای آکادمی — کنار هر برنامه، لینک ثبت‌نام همان برنامه."
+        eyebrow={ui('page.programs.eyebrow')}
+        title={ui('page.programs.title')}
+        lead={ui('page.programs.lead')}
       />
 
       <FeaturedCourse />

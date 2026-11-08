@@ -1,3 +1,4 @@
+import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
 /**
@@ -37,9 +38,9 @@ export default function AboutPage() {
   return (
     <>
       <PageHeader
-        eyebrow="معرفی آکادمی"
-        title="آکادمی ریتیل ایران"
-        lead={`مرجع آموزش‌های تخصصی صنعت ریتیل.\nنقطه تلاقی دانش آکادمیک، تجربیات عملی\nو شبکه‌سازی مؤثر.`}
+        eyebrow={ui('page.about.eyebrow')}
+        title={ui('page.about.title')}
+        lead={ui('page.about.lead')}
       />
 
       <section className="section bg-white">

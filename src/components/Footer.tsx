@@ -1,39 +1,19 @@
 import Link from 'next/link';
 import { getSite } from '@/server/content';
 import { SocialLinks } from '@/components/SocialLinks';
+import { uiAll } from '@/server/ui';
 
-const columns = [
-  {
-    title: 'آکادمی',
-    links: [
-      { href: '/about/', label: 'معرفی' },
-      { href: '/programs/', label: 'برنامه‌های آموزشی' },
-      { href: '/corporate/', label: 'خدمات سازمانی' },
-      { href: '/community/', label: 'جامعه حرفه‌ای ARI' },
-    ],
-  },
-  {
-    title: 'منابع',
-    links: [
-      { href: '/knowledge/#articles', label: 'مقالات' },
-      { href: '/knowledge/#glossary', label: 'لغت‌نامه ریتیل' },
-      { href: '/knowledge/#articles', label: 'موردکاوی‌های کاربردی' },
-      { href: '/portal/', label: 'ورود دانش‌پذیران' },
-    ],
-  },
-  {
-    title: 'ارتباط',
-    links: [
-      { href: '/contact/', label: 'تماس با آکادمی' },
-      { href: '/contact/#teach', label: 'مدرس شوید' },
-      { href: '/contact/#partner', label: 'مشارکت و همکاری' },
-      { href: '/register/', label: 'ثبت‌نام' },
-    ],
-  },
-];
 
 export function Footer() {
   const site = getSite();
+  const t = uiAll();
+  // Four slots per column; a slot with an empty title is left out.
+  const columns = [1, 2, 3].map((c) => ({
+    title: t[`footer.${c}.title`],
+    links: [1, 2, 3, 4]
+      .map((l) => ({ label: t[`footer.${c}.${l}.label`], href: t[`footer.${c}.${l}.href`] }))
+      .filter((l) => l.label && l.href),
+  }));
   const year = new Date().getFullYear().toLocaleString('fa-IR', { useGrouping: false });
 
   return (
@@ -72,7 +52,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 py-6 text-center text-xs text-white/40">
-        © {year} {site.brand} — همه‌ی حقوق محفوظ است.
+        © {year} {site.brand} — {t['footer.copyright']}
       </div>
     </footer>
   );

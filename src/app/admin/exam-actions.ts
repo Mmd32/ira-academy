@@ -32,6 +32,9 @@ import {
   validateQuestion,
 } from '@/server/exams';
 import { saveSeoSettings } from '@/server/seo-settings';
+import { saveUi } from '@/server/ui';
+import { getPage } from '@/server/content';
+import { savePage } from '@/server/pages-write';
 import { RESULT_MODES, type ResultMode } from '@/lib/exam-shared';
 import { fromTehranInput } from '@/lib/tehran-time';
 
@@ -356,4 +359,31 @@ export async function saveSeoAction(_prev: string | null, formData: FormData): P
   });
   revalidatePath('/', 'layout');
   return bad.length ? `این مورد درست نبود و ذخیره نشد: ${bad.map((k) => SEO_LABELS[k]).join('، ')}` : 'ذخیره شد';
+}
+
+/* ------------------------- header, footer, wording ---------------------- */
+
+export async function saveSiteWordingAction(_prev: string | null, formData: FormData): Promise<string | null> {
+  requireUser();
+  const values: Record<string, string> = {};
+  formData.forEach((v, k) => {
+    if (k.startsWith('ui:') && typeof v === 'string') values[k.slice(3)] = v;
+  });
+  const rejected = saveUi(values);
+  revalidatePath('/', 'layout');
+  return rejected.length
+    ? `این لینک‌ها معتبر نبودند و ذخیره نشدند (باید با / یا https:// شروع شوند): ${rejected.length} مورد`
+    : 'ذخیره شد و همین حالا روی سایت است';
+}
+
+export async function savePageAction(_prev: string | null, formData: FormData): Promise<string | null> {
+  requireUser();
+  const slug = String(formData.get('slug') ?? '');
+  const seed = ((await import('@/content/pages')).pages as Record<string, unknown>)[slug];
+  const current = getPage(slug, seed);
+  const error = savePage(slug, current, String(formData.get('content') ?? ''));
+  if (error) return error;
+  revalidatePath(`/${slug}`);
+  revalidatePath('/admin/pages');
+  return 'ذخیره شد و همین حالا روی سایت است';
 }

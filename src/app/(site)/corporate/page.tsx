@@ -1,3 +1,4 @@
+import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
 /**
@@ -30,9 +31,9 @@ export default function CorporatePage() {
   return (
     <>
       <PageHeader
-        eyebrow="خدمات سازمانی"
-        title="آموزش‌های سازمانی ویژه‌سازی‌شده"
-        lead={`برنامه‌های توسعه سرمایه انسانی برای سازمان‌های فعال در صنعت ریتیل و فروشگاه‌داری؛\nاز نیازسنجی و طراحی مسیر آموزشی تا اجرا و ارزیابی یادگیری.`}
+        eyebrow={ui('page.corporate.eyebrow')}
+        title={ui('page.corporate.title')}
+        lead={ui('page.corporate.lead')}
       />
 
       <section className="section bg-white">

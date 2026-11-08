@@ -1,3 +1,4 @@
+import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
@@ -31,9 +32,9 @@ export default function RegisterPage() {
   return (
     <>
       <PageHeader
-        eyebrow="ثبت‌نام"
-        title="ثبت‌نام در برنامه‌های آموزشی"
-        lead={`دوره موردنظر خود را انتخاب کنید و اطلاعات تماس‌تان را بگذارید؛\nکارشناسان آکادمی برای تکمیل ثبت‌نام با شما تماس می‌گیرند.`}
+        eyebrow={ui('page.register.eyebrow')}
+        title={ui('page.register.title')}
+        lead={ui('page.register.lead')}
       />
 
       <section className="section bg-white">

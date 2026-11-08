@@ -1,3 +1,4 @@
+import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
 /**
@@ -39,7 +40,7 @@ export default function ContactPage() {
         ])}
       />
 
-      <PageHeader eyebrow="ارتباط با آکادمی" title="در تماس باشیم" />
+      <PageHeader eyebrow={ui('page.contact.eyebrow')} title={ui('page.contact.title')} />
 
       <section className="section bg-white">
         <div className="container-x grid items-start gap-8 lg:grid-cols-3">

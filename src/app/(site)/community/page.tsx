@@ -1,3 +1,4 @@
+import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
 /**
@@ -30,9 +31,9 @@ export default function CommunityPage() {
   return (
     <>
       <PageHeader
-        eyebrow="جامعه حرفه‌ای ARI"
-        title="شبکه‌ای پویا از اهالی ریتیل"
-        lead={`باشگاه اعضای آکادمی، جایی برای شبکه‌سازی، ایجاد ارتباطات ارزشمند، تبادل تجربه\nو آگاهی از رویدادهای جامعه ریتیل.`}
+        eyebrow={ui('page.community.eyebrow')}
+        title={ui('page.community.title')}
+        lead={ui('page.community.lead')}
       />
 
       <section id="club" className="section bg-white">
