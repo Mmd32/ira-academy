@@ -21,6 +21,9 @@ const NAV = [
   { href: '/admin/courses/', label: 'دوره‌ها' },
   { href: '/admin/texts/', label: 'متن‌های سایت' },
   { href: '/admin/glossary/', label: 'واژه‌نامه' },
+  { href: '/admin/students/', label: 'دانش‌پذیران' },
+  { href: '/admin/groups/', label: 'گروه‌ها' },
+  { href: '/admin/exams/', label: 'آزمون‌ها' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

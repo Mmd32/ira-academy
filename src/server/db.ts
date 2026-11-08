@@ -142,6 +142,100 @@ function migrate(d: Database.Database) {
       expires_at TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS sessions_user ON sessions (user_id);
+
+    /* Student portal. A student is not an admin: separate table, separate cookie. */
+    CREATE TABLE IF NOT EXISTS students (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      phone         TEXT NOT NULL UNIQUE,
+      name          TEXT NOT NULL DEFAULT '',
+      password_hash TEXT NOT NULL,
+      active        INTEGER NOT NULL DEFAULT 1,
+      created_at    TEXT NOT NULL,
+      last_login_at TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS student_sessions (
+      token      TEXT PRIMARY KEY,
+      student_id INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+      created_at TEXT NOT NULL,
+      expires_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS student_sessions_student ON student_sessions (student_id);
+
+    CREATE TABLE IF NOT EXISTS student_groups (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      name       TEXT NOT NULL UNIQUE,
+      note       TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS group_members (
+      group_id   INTEGER NOT NULL REFERENCES student_groups(id) ON DELETE CASCADE,
+      student_id INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+      PRIMARY KEY (group_id, student_id)
+    );
+    CREATE INDEX IF NOT EXISTS group_members_student ON group_members (student_id);
+
+    /*
+     * Exams. start_at / end_at bound when a student may begin; duration_min is
+     * how long one attempt may take. Each is optional, so an exam can be
+     * windowed, timed, both, or open.
+     */
+    CREATE TABLE IF NOT EXISTS exams (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      title         TEXT NOT NULL DEFAULT '',
+      description   TEXT NOT NULL DEFAULT '',
+      published     INTEGER NOT NULL DEFAULT 0,
+      start_at      TEXT,
+      end_at        TEXT,
+      duration_min  INTEGER,
+      max_attempts  INTEGER NOT NULL DEFAULT 1,
+      shuffle_questions INTEGER NOT NULL DEFAULT 1,
+      shuffle_options   INTEGER NOT NULL DEFAULT 1,
+      result_mode   TEXT NOT NULL DEFAULT 'immediate',
+      show_answers  INTEGER NOT NULL DEFAULT 0,
+      pass_percent  INTEGER,
+      created_at    TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS exam_questions (
+      id        INTEGER PRIMARY KEY AUTOINCREMENT,
+      exam_id   INTEGER NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
+      position  INTEGER NOT NULL DEFAULT 0,
+      text      TEXT NOT NULL DEFAULT '',
+      options   TEXT NOT NULL DEFAULT '[]',
+      correct   INTEGER NOT NULL DEFAULT 0,
+      points    INTEGER NOT NULL DEFAULT 1
+    );
+    CREATE INDEX IF NOT EXISTS exam_questions_exam ON exam_questions (exam_id);
+
+    CREATE TABLE IF NOT EXISTS exam_groups (
+      exam_id  INTEGER NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
+      group_id INTEGER NOT NULL REFERENCES student_groups(id) ON DELETE CASCADE,
+      PRIMARY KEY (exam_id, group_id)
+    );
+
+    /*
+     * One sitting. question_order and option_orders freeze this student's own
+     * shuffle at the moment they start, so a refresh shows the same paper.
+     */
+    CREATE TABLE IF NOT EXISTS attempts (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      exam_id       INTEGER NOT NULL REFERENCES exams(id) ON DELETE CASCADE,
+      student_id    INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+      started_at    TEXT NOT NULL,
+      deadline_at   TEXT,
+      submitted_at  TEXT,
+      question_order TEXT NOT NULL DEFAULT '[]',
+      option_orders  TEXT NOT NULL DEFAULT '{}',
+      answers        TEXT NOT NULL DEFAULT '{}',
+      score         INTEGER,
+      max_score     INTEGER,
+      correct_count INTEGER,
+      question_count INTEGER
+    );
+    CREATE INDEX IF NOT EXISTS attempts_exam    ON attempts (exam_id);
+    CREATE INDEX IF NOT EXISTS attempts_student ON attempts (student_id);
   `);
 
   // Columns added after the first release. CREATE TABLE IF NOT EXISTS leaves an
