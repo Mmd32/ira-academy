@@ -37,7 +37,11 @@ export default function AttemptPage({ searchParams }: Props) {
         ← نمره‌های «{exam.title}»
       </Link>
       <div className="mt-3">
-        <PageTitle eyebrow={exam.title} title={student.name} />
+        <PageTitle
+          eyebrow={exam.title}
+          title={student.name}
+          lead={current.studentCode ? `کد دانشجویی ${current.studentCode}${current.orgName ? `، ${current.orgName}` : ''}` : undefined}
+        />
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">

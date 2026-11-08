@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { requireAdmin } from '@/server/guard';
-import { getGroup, groupMemberIds, listStudents } from '@/server/students';
+import { getGroup, groupMemberIds, listOrgs, listStudents } from '@/server/students';
 
 import { deleteGroupAction, saveGroupAction } from '../../exam-actions';
 import { Field, PageTitle, fieldBox } from '../../ui';
@@ -19,6 +19,7 @@ export default function EditGroupPage({ searchParams }: Props) {
 
   const members = new Set(groupMemberIds(group.id));
   const students = listStudents();
+  const orgs = listOrgs();
 
   return (
     <>
@@ -32,12 +33,22 @@ export default function EditGroupPage({ searchParams }: Props) {
       <form action={saveGroupAction} className="mt-8 grid gap-6">
         <input type="hidden" name="id" value={group.id} />
 
-        <section className="card grid gap-5 p-7 sm:grid-cols-2">
+        <section className="card grid gap-5 p-7 sm:grid-cols-3">
           <Field label="نام گروه">
             <input name="name" defaultValue={group.name} required className={fieldBox} />
           </Field>
           <Field label="توضیح">
             <input name="note" defaultValue={group.note} className={fieldBox} />
+          </Field>
+          <Field label="سازمان" hint="اعضا در این سازمان کد می‌گیرند">
+            <select name="orgId" defaultValue={group.orgId ?? ''} className={fieldBox}>
+              <option value="">بدون سازمان</option>
+              {orgs.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.name}
+                </option>
+              ))}
+            </select>
           </Field>
         </section>
 

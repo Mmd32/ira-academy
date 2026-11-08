@@ -32,6 +32,7 @@ export type Group = {
   note: string;
   createdAt: string;
   memberCount: number;
+  orgId: number | null;
 };
 
 const PERSIAN_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
@@ -296,6 +297,7 @@ export function listGroups(): Group[] {
     note: String(r.note),
     createdAt: String(r.created_at),
     memberCount: Number(r.member_count),
+    orgId: r.org_id == null ? null : Number(r.org_id),
   }));
 }
 
@@ -303,27 +305,27 @@ export function getGroup(id: number): Group | undefined {
   return listGroups().find((g) => g.id === id);
 }
 
-export function createGroup(name: string, note = ''): { id: number } | { error: string } {
+export function createGroup(name: string, note = '', orgId: number | null = null): { id: number } | { error: string } {
   const clean = name.trim().slice(0, 120);
   if (!clean) return { error: 'نام گروه خالی است' };
   if (db().prepare(`SELECT id FROM student_groups WHERE name = ?`).get(clean)) {
     return { error: 'گروهی با این نام هست' };
   }
   const info = db()
-    .prepare(`INSERT INTO student_groups (name, note, created_at) VALUES (?, ?, ?)`)
-    .run(clean, note.trim().slice(0, 500), new Date().toISOString());
+    .prepare(`INSERT INTO student_groups (name, note, org_id, created_at) VALUES (?, ?, ?, ?)`)
+    .run(clean, note.trim().slice(0, 500), orgId, new Date().toISOString());
   return { id: Number(info.lastInsertRowid) };
 }
 
-export function updateGroup(id: number, name: string, note: string): string | null {
+export function updateGroup(id: number, name: string, note: string, orgId: number | null): string | null {
   const clean = name.trim().slice(0, 120);
   if (!clean) return 'نام گروه خالی است';
   if (db().prepare(`SELECT id FROM student_groups WHERE name = ? AND id <> ?`).get(clean, id)) {
     return 'گروهی با این نام هست';
   }
   db()
-    .prepare(`UPDATE student_groups SET name = ?, note = ? WHERE id = ?`)
-    .run(clean, note.trim().slice(0, 500), id);
+    .prepare(`UPDATE student_groups SET name = ?, note = ?, org_id = ? WHERE id = ?`)
+    .run(clean, note.trim().slice(0, 500), orgId, id);
   return null;
 }
 
@@ -350,6 +352,7 @@ export function setGroupMembers(groupId: number, studentIds: number[]) {
     );
     for (const id of studentIds) ins.run(groupId, id);
   })();
+  enrollGroupMembers(groupId);
 }
 
 export function addStudentsToGroup(groupId: number, studentIds: number[]) {
@@ -358,4 +361,175 @@ export function addStudentsToGroup(groupId: number, studentIds: number[]) {
      SELECT ?, id FROM students WHERE id = ?`,
   );
   db().transaction(() => studentIds.forEach((id) => ins.run(groupId, id)))();
+  enrollGroupMembers(groupId);
+}
+
+/* ----------------------------- organisations ---------------------------- */
+
+export type Org = {
+  id: number;
+  name: string;
+  prefix: string;
+  note: string;
+  createdAt: string;
+  memberCount: number;
+};
+
+export type StudentCode = { orgId: number; orgName: string; code: string };
+
+/** 2 to 5 Latin letters, stored upper-case: the front of every code. */
+export function normalizePrefix(raw: string): string {
+  return raw.trim().toUpperCase();
+}
+
+export function isValidPrefix(prefix: string): boolean {
+  return /^[A-Z]{2,5}$/.test(prefix);
+}
+
+export function formatCode(prefix: string, seq: number): string {
+  return `${prefix}-${String(seq).padStart(4, '0')}`;
+}
+
+function toOrg(r: Record<string, unknown>): Org {
+  return {
+    id: Number(r.id),
+    name: String(r.name),
+    prefix: String(r.prefix),
+    note: String(r.note),
+    createdAt: String(r.created_at),
+    memberCount: Number(r.member_count),
+  };
+}
+
+export function listOrgs(): Org[] {
+  return (
+    db()
+      .prepare(
+        `SELECT o.*, (SELECT COUNT(*) FROM student_orgs m WHERE m.org_id = o.id) AS member_count
+           FROM organizations o ORDER BY o.name`,
+      )
+      .all() as Record<string, unknown>[]
+  ).map(toOrg);
+}
+
+export function getOrg(id: number): Org | undefined {
+  return listOrgs().find((o) => o.id === id);
+}
+
+export function createOrg(input: { name: string; prefix: string; note?: string }): { id: number } | { error: string } {
+  const name = input.name.trim().slice(0, 120);
+  const prefix = normalizePrefix(input.prefix);
+  if (!name) return { error: 'نام سازمان خالی است' };
+  if (!isValidPrefix(prefix)) return { error: 'پیشوند باید ۲ تا ۵ حرف انگلیسی باشد، مثلاً DK' };
+  if (db().prepare(`SELECT 1 FROM organizations WHERE name = ?`).get(name)) return { error: 'سازمانی با این نام هست' };
+  if (db().prepare(`SELECT 1 FROM organizations WHERE prefix = ?`).get(prefix)) {
+    return { error: `پیشوند ${prefix} برای سازمان دیگری است` };
+  }
+  const info = db()
+    .prepare(`INSERT INTO organizations (name, prefix, note, next_seq, created_at) VALUES (?, ?, ?, 1, ?)`)
+    .run(name, prefix, (input.note ?? '').trim().slice(0, 500), new Date().toISOString());
+  return { id: Number(info.lastInsertRowid) };
+}
+
+/**
+ * The prefix is part of every code already handed out, so it can only change
+ * while nobody holds one.
+ */
+export function updateOrg(id: number, input: { name: string; prefix: string; note: string }): string | null {
+  const current = getOrg(id);
+  if (!current) return 'سازمان پیدا نشد';
+  const name = input.name.trim().slice(0, 120);
+  const prefix = normalizePrefix(input.prefix);
+  if (!name) return 'نام سازمان خالی است';
+  if (db().prepare(`SELECT 1 FROM organizations WHERE name = ? AND id <> ?`).get(name, id)) return 'سازمانی با این نام هست';
+
+  if (prefix !== current.prefix) {
+    if (current.memberCount > 0) return 'پیشوند بعد از صدور کد قابل تغییر نیست';
+    if (!isValidPrefix(prefix)) return 'پیشوند باید ۲ تا ۵ حرف انگلیسی باشد';
+    if (db().prepare(`SELECT 1 FROM organizations WHERE prefix = ? AND id <> ?`).get(prefix, id)) {
+      return `پیشوند ${prefix} برای سازمان دیگری است`;
+    }
+  }
+  db()
+    .prepare(`UPDATE organizations SET name = ?, prefix = ?, note = ? WHERE id = ?`)
+    .run(name, current.memberCount > 0 ? current.prefix : prefix, input.note.trim().slice(0, 500), id);
+  return null;
+}
+
+export function deleteOrg(id: number) {
+  db().prepare(`DELETE FROM organizations WHERE id = ?`).run(id);
+}
+
+/** Gives the student a code in the organisation, or returns the one they have. */
+export function enroll(studentId: number, orgId: number): string | null {
+  const d = db();
+  return d.transaction(() => {
+    const have = d.prepare(`SELECT code FROM student_orgs WHERE student_id = ? AND org_id = ?`).get(studentId, orgId) as
+      | { code: string }
+      | undefined;
+    if (have) return have.code;
+
+    const org = d.prepare(`SELECT prefix, next_seq FROM organizations WHERE id = ?`).get(orgId) as
+      | { prefix: string; next_seq: number }
+      | undefined;
+    if (!org || !d.prepare(`SELECT 1 FROM students WHERE id = ?`).get(studentId)) return null;
+
+    const code = formatCode(org.prefix, org.next_seq);
+    d.prepare(`UPDATE organizations SET next_seq = next_seq + 1 WHERE id = ?`).run(orgId);
+    d.prepare(`INSERT INTO student_orgs (student_id, org_id, code, created_at) VALUES (?, ?, ?, ?)`).run(
+      studentId,
+      orgId,
+      code,
+      new Date().toISOString(),
+    );
+    return code;
+  })();
+}
+
+export function orgMembers(orgId: number): { studentId: number; code: string }[] {
+  return (
+    db().prepare(`SELECT student_id, code FROM student_orgs WHERE org_id = ? ORDER BY code`).all(orgId) as {
+      student_id: number;
+      code: string;
+    }[]
+  ).map((r) => ({ studentId: r.student_id, code: r.code }));
+}
+
+/** Makes exactly these students members: new ones get codes, removed ones lose theirs. */
+export function setOrgMembers(orgId: number, studentIds: number[]) {
+  const d = db();
+  const keep = new Set(studentIds);
+  d.transaction(() => {
+    for (const m of orgMembers(orgId)) {
+      if (!keep.has(m.studentId)) d.prepare(`DELETE FROM student_orgs WHERE student_id = ? AND org_id = ?`).run(m.studentId, orgId);
+    }
+    for (const id of studentIds) enroll(id, orgId);
+  })();
+}
+
+/** Every member of a group that sits for an organisation holds a code in it. */
+export function enrollGroupMembers(groupId: number) {
+  const g = db().prepare(`SELECT org_id FROM student_groups WHERE id = ?`).get(groupId) as
+    | { org_id: number | null }
+    | undefined;
+  if (!g || g.org_id == null) return;
+  for (const id of groupMemberIds(groupId)) enroll(id, g.org_id);
+}
+
+export function codesByStudent(): Map<number, StudentCode[]> {
+  const rows = db()
+    .prepare(
+      `SELECT m.student_id, m.org_id, m.code, o.name FROM student_orgs m
+         JOIN organizations o ON o.id = m.org_id ORDER BY o.name`,
+    )
+    .all() as { student_id: number; org_id: number; code: string; name: string }[];
+  const map = new Map<number, StudentCode[]>();
+  for (const r of rows) {
+    map.set(r.student_id, [...(map.get(r.student_id) ?? []), { orgId: r.org_id, orgName: r.name, code: r.code }]);
+  }
+  return map;
+}
+
+export function codesOf(studentId: number): StudentCode[] {
+  return codesByStudent().get(studentId) ?? [];
 }

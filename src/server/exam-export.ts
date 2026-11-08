@@ -9,6 +9,7 @@ import {
 } from './exams';
 import { formatJalaliPlain } from '@/lib/tehran-time';
 import { buildXlsx, type Cell } from './xlsx';
+import { getOrg, orgMembers } from './students';
 import type { Exam } from '@/lib/exam-shared';
 
 /**
@@ -36,7 +37,7 @@ export function examWorkbook(examId: number): { filename: string; data: Buffer }
   const rows = resultRows(exam);
 
   const summary: Cell[][] = [
-    ['ردیف', 'نام', 'موبایل', 'گروه', 'وضعیت', 'تعداد دفعات شرکت', 'بهترین نمره', 'نمره‌ی کل', 'درصد', 'نتیجه', 'زمان شروع', 'زمان ارسال', 'مدت (دقیقه)'],
+    ['ردیف', 'نام', 'کد دانشجویی', 'سازمان', 'موبایل', 'گروه', 'وضعیت', 'تعداد دفعات شرکت', 'بهترین نمره', 'نمره‌ی کل', 'درصد', 'نتیجه', 'زمان شروع', 'زمان ارسال', 'مدت (دقیقه)'],
   ];
   rows.forEach((r, i) => {
     const percent = r.best ? percentOf(r.best) : null;
@@ -44,6 +45,8 @@ export function examWorkbook(examId: number): { filename: string; data: Buffer }
     summary.push([
       i + 1,
       r.name,
+      r.code,
+      r.orgName,
       r.phone,
       r.groups.join('، '),
       status,
@@ -59,13 +62,15 @@ export function examWorkbook(examId: number): { filename: string; data: Buffer }
   });
 
   const detail: Cell[][] = [
-    ['نام', 'موبایل', 'تلاش', 'زمان شروع', 'زمان ارسال', 'مدت (دقیقه)', 'پاسخ صحیح', 'تعداد سؤال', 'نمره', 'نمره‌ی کل', 'درصد', 'نتیجه'],
+    ['نام', 'کد دانشجویی', 'سازمان', 'موبایل', 'تلاش', 'زمان شروع', 'زمان ارسال', 'مدت (دقیقه)', 'پاسخ صحیح', 'تعداد سؤال', 'نمره', 'نمره‌ی کل', 'درصد', 'نتیجه'],
   ];
   for (const r of rows) {
     r.attempts.forEach((a, i) => {
       const percent = percentOf(a);
       detail.push([
         r.name,
+        a.studentCode || r.code,
+        a.orgName || r.orgName,
         r.phone,
         i + 1,
         formatJalaliPlain(a.startedAt),
@@ -82,8 +87,8 @@ export function examWorkbook(examId: number): { filename: string; data: Buffer }
   }
 
   const data = buildXlsx([
-    { name: 'نمرات', rows: summary, widths: [6, 24, 16, 22, 14, 12, 12, 12, 10, 10, 18, 18, 12] },
-    { name: 'همه‌ی تلاش‌ها', rows: detail, widths: [24, 16, 8, 18, 18, 12, 12, 12, 10, 10, 10, 12] },
+    { name: 'نمرات', rows: summary, widths: [6, 24, 14, 20, 16, 22, 14, 12, 12, 12, 10, 10, 18, 18, 12] },
+    { name: 'همه‌ی تلاش‌ها', rows: detail, widths: [24, 14, 20, 16, 8, 18, 18, 12, 12, 12, 10, 10, 10, 12] },
   ]);
 
   return { filename: `${safeName(exam.title)}-نمرات.xlsx`, data };
@@ -99,7 +104,7 @@ export function allResultsWorkbook(): { filename: string; data: Buffer } {
   );
 
   const rows: Cell[][] = [
-    ['آزمون', 'نام', 'موبایل', 'زمان شروع', 'زمان ارسال', 'مدت (دقیقه)', 'پاسخ صحیح', 'تعداد سؤال', 'نمره', 'نمره‌ی کل', 'درصد', 'نتیجه'],
+    ['آزمون', 'نام', 'کد دانشجویی', 'سازمان', 'موبایل', 'زمان شروع', 'زمان ارسال', 'مدت (دقیقه)', 'پاسخ صحیح', 'تعداد سؤال', 'نمره', 'نمره‌ی کل', 'درصد', 'نتیجه'],
   ];
   for (const a of allAttempts()) {
     const exam = exams.get(a.examId);
@@ -109,6 +114,8 @@ export function allResultsWorkbook(): { filename: string; data: Buffer } {
     rows.push([
       exam.title,
       student.name,
+      a.studentCode,
+      a.orgName,
       student.phone,
       formatJalaliPlain(a.startedAt),
       formatJalaliPlain(a.submittedAt),
@@ -124,6 +131,31 @@ export function allResultsWorkbook(): { filename: string; data: Buffer } {
 
   return {
     filename: 'نمرات-همه-آزمون‌ها.xlsx',
-    data: buildXlsx([{ name: 'نمرات', rows, widths: [28, 24, 16, 18, 18, 12, 12, 12, 10, 10, 10, 12] }]),
+    data: buildXlsx([{ name: 'نمرات', rows, widths: [28, 24, 14, 20, 16, 18, 18, 12, 12, 12, 10, 10, 10, 12] }]),
+  };
+}
+
+/** One organisation's roster: who holds which code. */
+export function orgRosterWorkbook(orgId: number): { filename: string; data: Buffer } | null {
+  const org = getOrg(orgId);
+  if (!org) return null;
+
+  const students = new Map(
+    (db().prepare(`SELECT id, name, phone, active FROM students`).all() as {
+      id: number;
+      name: string;
+      phone: string;
+      active: number;
+    }[]).map((s) => [s.id, s]),
+  );
+
+  const rows: Cell[][] = [['کد دانشجویی', 'نام', 'موبایل', 'وضعیت حساب']];
+  for (const m of orgMembers(orgId)) {
+    const s = students.get(m.studentId);
+    if (s) rows.push([m.code, s.name, s.phone, s.active ? 'فعال' : 'غیرفعال']);
+  }
+  return {
+    filename: `${safeName(org.name)}-کد-دانشجویی.xlsx`,
+    data: buildXlsx([{ name: 'کدها', rows, widths: [16, 26, 16, 12] }]),
   };
 }

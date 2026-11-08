@@ -22,6 +22,7 @@ const NAV = [
   { href: '/admin/texts/', label: 'متن‌های سایت' },
   { href: '/admin/glossary/', label: 'واژه‌نامه' },
   { href: '/admin/students/', label: 'دانش‌پذیران' },
+  { href: '/admin/orgs/', label: 'سازمان‌ها' },
   { href: '/admin/groups/', label: 'گروه‌ها' },
   { href: '/admin/exams/', label: 'آزمون‌ها' },
 ];

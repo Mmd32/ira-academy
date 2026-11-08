@@ -279,6 +279,9 @@ export type Attempt = {
   maxScore: number | null;
   correctCount: number | null;
   questionCount: number | null;
+  /** The code and organisation the student sat this exam under; may be empty. */
+  studentCode: string;
+  orgName: string;
 };
 
 function toAttempt(r: Row): Attempt {
@@ -296,7 +299,35 @@ function toAttempt(r: Row): Attempt {
     maxScore: r.max_score == null ? null : Number(r.max_score),
     correctCount: r.correct_count == null ? null : Number(r.correct_count),
     questionCount: r.question_count == null ? null : Number(r.question_count),
+    studentCode: String(r.student_code ?? ''),
+    orgName: String(r.org_name ?? ''),
   };
+}
+
+/**
+ * Which code a student sits an exam under. A group assigned to the exam that
+ * sits for an organisation decides it; failing that, a student who belongs to
+ * exactly one organisation uses that one; otherwise there is no code.
+ */
+export function attributionFor(examId: number, studentId: number): { code: string; orgName: string } {
+  const viaGroup = db()
+    .prepare(
+      `SELECT m.code, o.name FROM exam_groups eg
+         JOIN student_groups g ON g.id = eg.group_id AND g.org_id IS NOT NULL
+         JOIN group_members gm ON gm.group_id = g.id AND gm.student_id = ?
+         JOIN student_orgs m ON m.org_id = g.org_id AND m.student_id = gm.student_id
+         JOIN organizations o ON o.id = g.org_id
+        WHERE eg.exam_id = ? ORDER BY o.name LIMIT 1`,
+    )
+    .get(studentId, examId) as { code: string; name: string } | undefined;
+  if (viaGroup) return { code: viaGroup.code, orgName: viaGroup.name };
+
+  const all = db()
+    .prepare(
+      `SELECT m.code, o.name FROM student_orgs m JOIN organizations o ON o.id = m.org_id WHERE m.student_id = ?`,
+    )
+    .all(studentId) as { code: string; name: string }[];
+  return all.length === 1 ? { code: all[0].code, orgName: all[0].name } : { code: '', orgName: '' };
 }
 
 /** Marks and stores an attempt from whatever answers it holds. */
@@ -441,12 +472,22 @@ export function startAttempt(exam: Exam, studentId: number): StartResult {
   if (exam.endAt) candidates.push(new Date(exam.endAt).getTime());
   const deadline = candidates.length ? new Date(Math.min(...candidates)).toISOString() : null;
 
+  const who = attributionFor(exam.id, studentId);
   const info = db()
     .prepare(
-      `INSERT INTO attempts (exam_id, student_id, started_at, deadline_at, question_order, option_orders)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO attempts (exam_id, student_id, started_at, deadline_at, question_order, option_orders, student_code, org_name)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     )
-    .run(exam.id, studentId, now.toISOString(), deadline, json.stringify(order), json.stringify(optionOrders));
+    .run(
+      exam.id,
+      studentId,
+      now.toISOString(),
+      deadline,
+      json.stringify(order),
+      json.stringify(optionOrders),
+      who.code,
+      who.orgName,
+    );
 
   return { ok: true, attemptId: Number(info.lastInsertRowid) };
 }
@@ -525,6 +566,8 @@ export type ResultRow = {
   name: string;
   phone: string;
   groups: string[];
+  code: string;
+  orgName: string;
   attempts: Attempt[];
   best: Attempt | null;
 };
@@ -556,7 +599,12 @@ export function resultRows(exam: Exam): ResultRow[] {
       const mine = attempts.filter((a) => a.studentId === s.id);
       const done = mine.filter((a) => a.submittedAt && a.score != null);
       const best = done.length ? done.reduce((x, y) => ((y.score ?? 0) > (x.score ?? 0) ? y : x)) : null;
+      // What the student actually sat under wins; before they sit, what they would sit under.
+      const sat = best ?? mine[mine.length - 1];
+      const who = sat?.studentCode ? { code: sat.studentCode, orgName: sat.orgName } : attributionFor(exam.id, s.id);
       return {
+        code: who.code,
+        orgName: who.orgName,
         studentId: s.id,
         name: s.name,
         phone: s.phone,

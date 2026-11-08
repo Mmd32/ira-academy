@@ -96,24 +96,42 @@ function Errors({ list }: { list: string[] }) {
   );
 }
 
-function GroupSelect({ groups }: { groups: GroupOption[] }) {
-  if (groups.length === 0) return null;
+function GroupSelect({ groups, orgs }: { groups: GroupOption[]; orgs: GroupOption[] }) {
+  if (groups.length === 0 && orgs.length === 0) return null;
   return (
-    <label className="block text-sm">
-      <span className="font-semibold text-ink">افزودن به گروه</span>
-      <select name="groupId" defaultValue="" className={fieldBox}>
-        <option value="">بدون گروه</option>
-        {groups.map((g) => (
-          <option key={g.id} value={g.id}>
-            {g.name}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className="grid gap-4 sm:grid-cols-2">
+      {groups.length > 0 && (
+        <label className="block text-sm">
+          <span className="font-semibold text-ink">افزودن به گروه</span>
+          <select name="groupId" defaultValue="" className={fieldBox}>
+            <option value="">بدون گروه</option>
+            {groups.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      {orgs.length > 0 && (
+        <label className="block text-sm">
+          <span className="font-semibold text-ink">سازمان</span>
+          <span className="mr-2 text-xs text-ink-mute">کد دانشجویی ساخته می‌شود</span>
+          <select name="orgId" defaultValue="" className={fieldBox}>
+            <option value="">بدون سازمان</option>
+            {orgs.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+    </div>
   );
 }
 
-export function AddStudentForm({ groups }: { groups: GroupOption[] }) {
+export function AddStudentForm({ groups, orgs }: { groups: GroupOption[]; orgs: GroupOption[] }) {
   const [state, action] = useFormState<StudentsState, FormData>(createStudentAction, null);
   return (
     <form action={action} className="grid gap-4">
@@ -133,7 +151,7 @@ export function AddStudentForm({ groups }: { groups: GroupOption[] }) {
           <input name="password" className={`${fieldBox} ltr`} autoComplete="off" />
         </label>
       </div>
-      <GroupSelect groups={groups} />
+      <GroupSelect groups={groups} orgs={orgs} />
       <div>
         <Submit pendingText="در حال ساخت…">ساخت حساب</Submit>
       </div>
@@ -143,7 +161,7 @@ export function AddStudentForm({ groups }: { groups: GroupOption[] }) {
   );
 }
 
-export function ImportForm({ groups }: { groups: GroupOption[] }) {
+export function ImportForm({ groups, orgs }: { groups: GroupOption[]; orgs: GroupOption[] }) {
   const [state, action] = useFormState<StudentsState, FormData>(importStudentsAction, null);
   return (
     <form action={action} className="grid gap-4">
@@ -160,7 +178,7 @@ export function ImportForm({ groups }: { groups: GroupOption[] }) {
           placeholder={'علی رضایی\t09121234567\nمریم احمدی,09351234567'}
         />
       </label>
-      <GroupSelect groups={groups} />
+      <GroupSelect groups={groups} orgs={orgs} />
       <div>
         <Submit pendingText="در حال ساخت…">ساخت همه‌ی حساب‌ها</Submit>
       </div>
@@ -177,6 +195,7 @@ export type StudentRowData = {
   active: boolean;
   lastLogin: string;
   groups: string[];
+  codes: { code: string; orgName: string }[];
 };
 
 export function StudentRow({ student }: { student: StudentRowData }) {
@@ -202,6 +221,15 @@ export function StudentRow({ student }: { student: StudentRowData }) {
             {student.groups.length ? student.groups.join('، ') : 'بدون گروه'} ·{' '}
             {student.lastLogin ? `آخرین ورود: ${student.lastLogin}` : 'هنوز وارد نشده'}
           </p>
+          {student.codes.length > 0 && (
+            <p className="mt-2 flex flex-wrap gap-2">
+              {student.codes.map((c) => (
+                <span key={c.code} className="rounded-full bg-brand/10 px-3 py-1 text-[11px] font-bold text-brand">
+                  <span className="ltr inline-block">{c.code}</span> · {c.orgName}
+                </span>
+              ))}
+            </p>
+          )}
         </div>
       </div>
 

@@ -7,6 +7,11 @@ import { currentUser } from '@/server/auth';
 import {
   addStudentsToGroup,
   createGroup,
+  createOrg,
+  deleteOrg,
+  enroll,
+  setOrgMembers,
+  updateOrg,
   createStudent,
   deleteGroup,
   deleteStudent,
@@ -63,6 +68,8 @@ export async function createStudentAction(_prev: StudentsState, formData: FormDa
 
   const groupId = Number(formData.get('groupId'));
   if (groupId) addStudentsToGroup(groupId, [result.id]);
+  const orgId = Number(formData.get('orgId'));
+  if (orgId) enroll(result.id, orgId);
   return { created: [{ name: result.name, phone: result.phone, password: result.password }], errors: [] };
 }
 
@@ -104,6 +111,8 @@ export async function importStudentsAction(_prev: StudentsState, formData: FormD
 
   const groupId = Number(formData.get('groupId'));
   if (groupId && newIds.length) addStudentsToGroup(groupId, newIds);
+  const orgId = Number(formData.get('orgId'));
+  if (orgId) newIds.forEach((id) => enroll(id, orgId));
 
   revalidatePath('/admin/students');
   return { created, errors };
@@ -143,7 +152,11 @@ export async function deleteStudentAction(formData: FormData) {
 
 export async function createGroupAction(formData: FormData) {
   requireUser();
-  const result = createGroup(String(formData.get('name') ?? ''), String(formData.get('note') ?? ''));
+  const result = createGroup(
+    String(formData.get('name') ?? ''),
+    String(formData.get('note') ?? ''),
+    Number(formData.get('orgId')) || null,
+  );
   if ('error' in result) redirect(`/admin/groups/?error=${encodeURIComponent(result.error)}`);
   redirect(`/admin/groups/edit/?id=${result.id}`);
 }
@@ -153,10 +166,16 @@ export async function saveGroupAction(formData: FormData) {
   const id = Number(formData.get('id'));
   if (!id) redirect('/admin/groups/');
 
-  const error = updateGroup(id, String(formData.get('name') ?? ''), String(formData.get('note') ?? ''));
+  const error = updateGroup(
+    id,
+    String(formData.get('name') ?? ''),
+    String(formData.get('note') ?? ''),
+    Number(formData.get('orgId')) || null,
+  );
   if (error) redirect(`/admin/groups/edit/?id=${id}&error=${encodeURIComponent(error)}`);
 
   setGroupMembers(id, ids(formData, 'member'));
+  revalidatePath('/admin/orgs');
   revalidatePath('/admin/groups');
   revalidatePath('/admin/students');
   redirect(`/admin/groups/edit/?id=${id}&saved=1`);
@@ -168,6 +187,45 @@ export async function deleteGroupAction(formData: FormData) {
   if (id) deleteGroup(id);
   revalidatePath('/admin/groups');
   redirect('/admin/groups/');
+}
+
+/* ----------------------------- organisations ---------------------------- */
+
+export async function createOrgAction(formData: FormData) {
+  requireUser();
+  const result = createOrg({
+    name: String(formData.get('name') ?? ''),
+    prefix: String(formData.get('prefix') ?? ''),
+    note: String(formData.get('note') ?? ''),
+  });
+  if ('error' in result) redirect(`/admin/orgs/?error=${encodeURIComponent(result.error)}`);
+  redirect(`/admin/orgs/edit/?id=${result.id}`);
+}
+
+export async function saveOrgAction(formData: FormData) {
+  requireUser();
+  const id = Number(formData.get('id'));
+  if (!id) redirect('/admin/orgs/');
+
+  const error = updateOrg(id, {
+    name: String(formData.get('name') ?? ''),
+    prefix: String(formData.get('prefix') ?? ''),
+    note: String(formData.get('note') ?? ''),
+  });
+  if (error) redirect(`/admin/orgs/edit/?id=${id}&error=${encodeURIComponent(error)}`);
+
+  setOrgMembers(id, ids(formData, 'member'));
+  revalidatePath('/admin/orgs');
+  revalidatePath('/admin/students');
+  redirect(`/admin/orgs/edit/?id=${id}&saved=1`);
+}
+
+export async function deleteOrgAction(formData: FormData) {
+  requireUser();
+  const id = Number(formData.get('id'));
+  if (id) deleteOrg(id);
+  revalidatePath('/admin/orgs');
+  redirect('/admin/orgs/');
 }
 
 /* --------------------------------- exams -------------------------------- */

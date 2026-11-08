@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { requireAdmin } from '@/server/guard';
-import { listGroups } from '@/server/students';
+import { listGroups, listOrgs } from '@/server/students';
 import { fa } from '@/lib/text';
 
 import { createGroupAction } from '../exam-actions';
@@ -14,6 +14,8 @@ type Props = { searchParams: { error?: string } };
 export default function GroupsPage({ searchParams }: Props) {
   requireAdmin();
   const groups = listGroups();
+  const orgs = listOrgs();
+  const orgName = new Map(orgs.map((o) => [o.id, o.name]));
 
   return (
     <>
@@ -23,12 +25,22 @@ export default function GroupsPage({ searchParams }: Props) {
         lead="گروه، فهرستی از دانش‌پذیران است، مثلاً «دوره‌ی اصول فروش، پاییز ۱۴۰۵». آزمون را به گروه می‌دهید و همه‌ی اعضا آن را در درگاه می‌بینند."
       />
 
-      <form action={createGroupAction} className="card mt-8 grid gap-4 p-6 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+      <form action={createGroupAction} className="card mt-8 grid gap-4 p-6 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
         <Field label="نام گروه">
           <input name="name" required className={fieldBox} />
         </Field>
         <Field label="توضیح" hint="اختیاری">
           <input name="note" className={fieldBox} />
+        </Field>
+        <Field label="سازمان" hint="اختیاری">
+          <select name="orgId" defaultValue="" className={fieldBox}>
+            <option value="">بدون سازمان</option>
+            {orgs.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.name}
+              </option>
+            ))}
+          </select>
         </Field>
         <button type="submit" className="btn-primary !py-2.5 text-xs">
           گروه جدید
@@ -53,6 +65,7 @@ export default function GroupsPage({ searchParams }: Props) {
               <div>
                 <h2 className="font-extrabold text-ink">{g.name}</h2>
                 {g.note && <p className="mt-1 text-xs text-ink-mute">{g.note}</p>}
+                {g.orgId && <p className="mt-1 text-xs text-brand">سازمان: {orgName.get(g.orgId)}</p>}
               </div>
               <span className="text-sm text-ink-soft">{fa(g.memberCount)} عضو</span>
             </Link>

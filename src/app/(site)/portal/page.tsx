@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { LeadForm } from '@/components/LeadForm';
 import { availability, attemptsFor, canSeeResult, examsForStudent, percentOf } from '@/server/exams';
-import { currentStudent } from '@/server/students';
+import { codesOf, currentStudent } from '@/server/students';
 import { formatFa } from '@/lib/tehran-time';
 import { fa } from '@/lib/text';
 
@@ -48,6 +48,7 @@ export default function PortalPage() {
   }
 
   const exams = examsForStudent(student.id);
+  const codes = codesOf(student.id);
 
   return (
     <>
@@ -63,6 +64,17 @@ export default function PortalPage() {
                   <SignOut />
                 </div>
               </div>
+
+              {codes.length > 0 && (
+                <p className="mt-4 flex flex-wrap gap-2 text-xs text-ink-soft">
+                  کد دانشجویی شما:
+                  {codes.map((c) => (
+                    <span key={c.code} className="rounded-full bg-brand/10 px-3 py-1 font-bold text-brand">
+                      <span className="ltr inline-block">{c.code}</span> · {c.orgName}
+                    </span>
+                  ))}
+                </p>
+              )}
 
               {exams.length === 0 ? (
                 <p className="mt-6 rounded-2xl border border-dashed border-line bg-paper p-6 text-center text-sm leading-7 text-ink-soft">

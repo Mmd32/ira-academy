@@ -236,6 +236,29 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS attempts_exam    ON attempts (exam_id);
     CREATE INDEX IF NOT EXISTS attempts_student ON attempts (student_id);
+
+    /*
+     * Organisations a student may take part through. A student keeps one
+     * account but gets one code per organisation; the code is PREFIX-0001,
+     * counted per organisation and never reused.
+     */
+    CREATE TABLE IF NOT EXISTS organizations (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      name       TEXT NOT NULL UNIQUE,
+      prefix     TEXT NOT NULL UNIQUE,
+      note       TEXT NOT NULL DEFAULT '',
+      next_seq   INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS student_orgs (
+      student_id INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+      org_id     INTEGER NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+      code       TEXT NOT NULL UNIQUE,
+      created_at TEXT NOT NULL,
+      PRIMARY KEY (student_id, org_id)
+    );
+    CREATE INDEX IF NOT EXISTS student_orgs_org ON student_orgs (org_id);
   `);
 
   // Columns added after the first release. CREATE TABLE IF NOT EXISTS leaves an
@@ -244,6 +267,17 @@ function migrate(d: Database.Database) {
   if (!leadColumns.includes('position')) {
     d.exec(`ALTER TABLE leads ADD COLUMN position TEXT NOT NULL DEFAULT ''`);
   }
+
+  const addColumn = (table: string, column: string, definition: string) => {
+    const cols = (d.pragma(`table_info(${table})`) as { name: string }[]).map((c) => c.name);
+    if (!cols.includes(column)) d.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  };
+  // A group may sit for an organisation; its members are enrolled in it.
+  addColumn('student_groups', 'org_id', 'INTEGER REFERENCES organizations(id) ON DELETE SET NULL');
+  // The code a student sat the exam under, frozen on the attempt so a later
+  // change of organisation never rewrites an old result.
+  addColumn('attempts', 'student_code', "TEXT NOT NULL DEFAULT ''");
+  addColumn('attempts', 'org_name', "TEXT NOT NULL DEFAULT ''");
 }
 
 /** True once the content tables have been seeded. */

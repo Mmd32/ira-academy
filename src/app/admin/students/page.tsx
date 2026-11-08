@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { requireAdmin } from '@/server/guard';
-import { listGroups, listStudents, normalizePhone } from '@/server/students';
+import { codesByStudent, listGroups, listOrgs, listStudents, normalizePhone } from '@/server/students';
 import { formatFa } from '@/lib/tehran-time';
 import { fa } from '@/lib/text';
 
@@ -10,22 +10,30 @@ import { AddStudentForm, ImportForm, StudentRow } from './StudentForms';
 
 export const dynamic = 'force-dynamic';
 
-type Props = { searchParams: { q?: string; group?: string } };
+type Props = { searchParams: { q?: string; group?: string; org?: string } };
 
 export default function StudentsPage({ searchParams }: Props) {
   requireAdmin();
   const groups = listGroups();
   const groupName = new Map(groups.map((g) => [g.id, g.name]));
   const all = listStudents();
+  const orgs = listOrgs();
+  const codes = codesByStudent();
 
   const q = (searchParams.q ?? '').trim();
   const phoneQ = normalizePhone(q);
   const groupFilter = Number(searchParams.group) || 0;
+  const orgFilter = Number(searchParams.org) || 0;
 
   const students = all.filter((s) => {
     if (groupFilter && !s.groupIds.includes(groupFilter)) return false;
+    if (orgFilter && !(codes.get(s.id) ?? []).some((c) => c.orgId === orgFilter)) return false;
     if (!q) return true;
-    return s.name.includes(q) || (phoneQ.length >= 3 && s.phone.includes(phoneQ));
+    return (
+      s.name.includes(q) ||
+      (phoneQ.length >= 3 && s.phone.includes(phoneQ)) ||
+      (codes.get(s.id) ?? []).some((c) => c.code.toLowerCase().includes(q.toLowerCase()))
+    );
   });
 
   return (
@@ -40,13 +48,19 @@ export default function StudentsPage({ searchParams }: Props) {
         <details className="card p-6" open={all.length === 0}>
           <summary className="cursor-pointer font-extrabold text-ink">افزودن یک دانش‌پذیر</summary>
           <div className="mt-5">
-            <AddStudentForm groups={groups.map((g) => ({ id: g.id, name: g.name }))} />
+            <AddStudentForm
+              groups={groups.map((g) => ({ id: g.id, name: g.name }))}
+              orgs={orgs.map((o) => ({ id: o.id, name: o.name }))}
+            />
           </div>
         </details>
         <details className="card p-6">
           <summary className="cursor-pointer font-extrabold text-ink">افزودن گروهی (از Excel)</summary>
           <div className="mt-5">
-            <ImportForm groups={groups.map((g) => ({ id: g.id, name: g.name }))} />
+            <ImportForm
+              groups={groups.map((g) => ({ id: g.id, name: g.name }))}
+              orgs={orgs.map((o) => ({ id: o.id, name: o.name }))}
+            />
           </div>
         </details>
       </div>
@@ -57,7 +71,7 @@ export default function StudentsPage({ searchParams }: Props) {
           <input
             name="q"
             defaultValue={q}
-            placeholder="نام یا موبایل"
+            placeholder="نام، موبایل یا کد"
             className="mt-2 w-56 rounded-xl border border-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-400"
           />
         </label>
@@ -76,10 +90,27 @@ export default function StudentsPage({ searchParams }: Props) {
             ))}
           </select>
         </label>
+        {orgs.length > 0 && (
+          <label className="block text-sm">
+            <span className="font-semibold text-ink">سازمان</span>
+            <select
+              name="org"
+              defaultValue={orgFilter || ''}
+              className="mt-2 w-56 rounded-xl border border-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-400"
+            >
+              <option value="">همه</option>
+              {orgs.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <button type="submit" className="btn-secondary !py-2.5 text-xs">
           اعمال
         </button>
-        {(q || groupFilter > 0) && (
+        {(q || groupFilter > 0 || orgFilter > 0) && (
           <Link href="/admin/students/" className="text-xs font-bold text-brand hover:underline">
             پاک کردن فیلتر
           </Link>
@@ -105,6 +136,7 @@ export default function StudentsPage({ searchParams }: Props) {
                 active: s.active,
                 lastLogin: formatFa(s.lastLoginAt),
                 groups: s.groupIds.map((id) => groupName.get(id) ?? '').filter(Boolean),
+                codes: (codes.get(s.id) ?? []).map((c) => ({ code: c.code, orgName: c.orgName })),
               }}
             />
           ))}

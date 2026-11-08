@@ -69,10 +69,11 @@ export default function ResultsPage({ searchParams }: Props) {
         </div>
       ) : (
         <div className="card mt-8 overflow-x-auto">
-          <table className="w-full min-w-[44rem] text-sm">
+          <table className="w-full min-w-[50rem] text-sm">
             <thead>
               <tr className="border-b border-line text-right text-xs text-ink-mute">
                 <th className="p-4 font-semibold">نام</th>
+                <th className="p-4 font-semibold">کد دانشجویی</th>
                 <th className="p-4 font-semibold">موبایل</th>
                 <th className="p-4 font-semibold">گروه</th>
                 <th className="p-4 font-semibold">وضعیت</th>
@@ -89,6 +90,10 @@ export default function ResultsPage({ searchParams }: Props) {
                 return (
                   <tr key={r.studentId} className="border-b border-line last:border-0">
                     <td className="p-4 font-bold text-ink">{r.name}</td>
+                    <td className="p-4 text-xs">
+                      <span className="ltr inline-block font-bold text-brand">{r.code}</span>
+                      {r.orgName && <span className="block text-ink-mute">{r.orgName}</span>}
+                    </td>
                     <td className="ltr p-4 text-ink-soft">{r.phone}</td>
                     <td className="p-4 text-xs text-ink-mute">{r.groups.join('، ')}</td>
                     <td className="p-4 text-xs">
