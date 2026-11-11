@@ -12,6 +12,16 @@
     scroll-padding-top: var(--nav-h);
   }
 
+  /*
+    Running text is justified. :where() keeps this at the lowest specificity,
+    so a paragraph that sets its own alignment (centred captions, labels)
+    still wins; a one-line paragraph is unaffected either way.
+  */
+  :where(main, footer) p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
   body {
     @apply bg-paper text-ink antialiased;
     font-family: var(--font-brand);
@@ -74,13 +84,18 @@
     @apply rounded-2xl border border-line bg-white/70 shadow-card backdrop-blur-sm;
   }
 
+  /**
+   * No letter-spacing on these. Persian letters join, and spacing them pulls
+   * the joins apart so a word reads as loose characters. The label reads as a
+   * label through its size, weight and colour instead.
+   */
   .eyebrow {
-    @apply flex items-center gap-3 text-[13px] font-bold tracking-[0.22em] text-brand-600 sm:text-sm;
+    @apply flex items-center gap-3 text-[13px] font-bold text-brand-600 sm:text-sm;
   }
 
   /* The same small label as .eyebrow, for use on the navy stage. */
   .eyebrow-light {
-    @apply text-[13px] font-bold tracking-[0.22em] text-gold-soft sm:text-sm;
+    @apply text-[13px] font-bold text-gold-soft sm:text-sm;
   }
 
   .eyebrow::after {

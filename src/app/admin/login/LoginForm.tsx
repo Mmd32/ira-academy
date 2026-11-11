@@ -1,0 +1,49 @@
+'use client';
+
+import { useFormState, useFormStatus } from 'react-dom';
+
+import { signInAction } from '../actions';
+
+function Submit() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending} className="btn-primary w-full disabled:opacity-60">
+      {pending ? 'در حال بررسی…' : 'ورود'}
+    </button>
+  );
+}
+
+const field =
+  'mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400';
+
+export function LoginForm() {
+  const [error, formAction] = useFormState(signInAction, null);
+
+  return (
+    <form action={formAction} className="grid gap-5">
+      <label className="block text-sm">
+        <span className="font-semibold text-ink">نام کاربری</span>
+        <input name="username" autoComplete="username" required className={`${field} ltr`} />
+      </label>
+
+      <label className="block text-sm">
+        <span className="font-semibold text-ink">رمز عبور</span>
+        <input
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          className={`${field} ltr`}
+        />
+      </label>
+
+      {error && (
+        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+          {error}
+        </p>
+      )}
+
+      <Submit />
+    </form>
+  );
+}

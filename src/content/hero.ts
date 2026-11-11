@@ -41,7 +41,7 @@ export const hero = {
     {
       id: 'corporate',
       enabled: false,
-      eyebrow: 'خدمات سازمانی — Custom-Made',
+      eyebrow: 'خدمات سازمانی — ویژه‌سازی‌شده',
       title: 'برای زنجیره‌ها، یک *دانشگاه داخلی* بسازید',
       lead: 'نیازسنجی اختصاصی، محتوای سفارشی، برگزاری در محل شعب و گزارش اثربخشی با شاخص‌های قبل و بعد — از فروشنده‌ی تازه‌کار تا مدیر منطقه.',
       primary: {
@@ -50,7 +50,7 @@ export const hero = {
       },
       secondary: {
         href: '/corporate/#request',
-        label: 'درخواست جلسه‌ی نیازسنجی'
+        label: 'درخواست جلسه نیازسنجی'
       },
       visual: 'image',
       image: '/media/academy.jpg',

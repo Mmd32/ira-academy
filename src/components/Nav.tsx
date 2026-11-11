@@ -5,17 +5,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const links = [
-  { href: '/about/', label: 'معرفی' },
-  { href: '/programs/', label: 'برنامه‌های آموزشی' },
-  { href: '/corporate/', label: 'خدمات سازمانی' },
-  { href: '/community/', label: 'جامعه ARI' },
-  { href: '/knowledge/', label: 'دانشنامه' },
-  { href: '/portal/', label: 'دانش‌پذیران' },
-  { href: '/contact/', label: 'تماس' },
-];
+type NavLink = { href: string; label: string };
+type NavLabels = {
+  links: NavLink[];
+  cta: NavLink;
+  login: NavLink;
+  mobileLogin: string;
+  logo: string;
+};
 
-export function Nav() {
+export function Nav({ labels }: { labels: NavLabels }) {
+  const { links, cta, login, mobileLogin, logo } = labels;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -41,12 +41,12 @@ export function Nav() {
         scrolled || open ? 'border-b border-line bg-paper/95 backdrop-blur-xl' : 'bg-transparent'
       }`}
     >
-      <div className="container-x flex h-[var(--nav-h)] items-center justify-between gap-4">
-        <Link href="/" className="flex shrink-0 items-center gap-3">
+      <div className="container-x flex h-[var(--nav-h)] items-center justify-between gap-2 sm:gap-4">
+        <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/logo-mark.png"
+              src={logo}
               alt="آکادمی ریتیل ایران"
               className={`h-full w-full object-contain transition-[filter] duration-300 ${
                 overHero ? 'brightness-0 invert' : ''
@@ -54,7 +54,7 @@ export function Nav() {
             />
           </span>
           <span
-            className={`text-sm font-extrabold tracking-tight transition-colors duration-300 ${
+            className={`truncate text-[13px] font-extrabold transition-colors duration-300 sm:text-sm ${
               overHero ? 'text-white' : 'text-ink'
             }`}
           >
@@ -83,14 +83,29 @@ export function Nav() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Link href="/register/" className={`${overHero ? 'btn-gold' : 'btn-primary'} !px-5 !py-2.5 text-xs`}>
-            ثبت‌نام
-          </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          {/* Two actions, one control: enrol on the right, sign in on the left. */}
+          <div
+            className={`flex items-center overflow-hidden rounded-full ${
+              overHero ? 'bg-gold text-ink' : 'bg-brand text-white'
+            }`}
+          >
+            <Link href={cta.href} className="flex min-h-11 items-center px-3.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5">
+              {cta.label}
+            </Link>
+            <span className={`h-4 w-px ${overHero ? 'bg-ink/25' : 'bg-white/30'}`} aria-hidden />
+            <Link
+              href={login.href}
+              className="flex min-h-11 items-center px-3.5 text-xs font-bold transition-opacity hover:opacity-85 sm:px-5"
+              title={mobileLogin}
+            >
+              {login.label}
+            </Link>
+          </div>
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="منو"
-            className={`grid h-10 w-10 place-items-center rounded-full border lg:hidden ${
+            className={`grid h-11 w-11 shrink-0 place-items-center rounded-full border lg:hidden ${
               overHero ? 'border-white/25 text-white' : 'border-line text-ink'
             }`}
           >
@@ -113,11 +128,17 @@ export function Nav() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="border-b border-line/60 py-3.5 text-sm font-medium text-ink-soft last:border-b-0"
+                  className="border-b border-line/60 py-3.5 text-sm font-medium text-ink-soft"
                 >
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href={login.href}
+                className="py-3.5 text-sm font-bold text-brand"
+              >
+                {mobileLogin}
+              </Link>
             </div>
           </motion.nav>
         )}

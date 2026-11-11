@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 
-export type LeadField = 'name' | 'phone' | 'company' | 'note';
+export type LeadField = 'name' | 'phone' | 'company' | 'position' | 'note';
 
 const LABELS: Record<LeadField, string> = {
   name: 'نام و نام خانوادگی',
   phone: 'شماره تماس',
   company: 'نام مجموعه / برند',
+  position: 'سمت سازمانی',
   note: 'توضیحات',
 };
 
@@ -21,10 +22,17 @@ export function LeadForm({
   subject,
   cta = 'ارسال درخواست',
   fields = ['name', 'phone', 'note'],
+  // The address the fallback writes to. Passed in rather than written here, so
+  // changing it in the panel changes it everywhere.
+  email = 'info@academyretailiran.com',
+  // Per-form wording for a field, e.g. «سازمان» instead of «نام مجموعه / برند».
+  labels = {},
 }: {
   subject: string;
   cta?: string;
   fields?: LeadField[];
+  email?: string;
+  labels?: Partial<Record<LeadField, string>>;
 }) {
   const [values, setValues] = useState<Partial<Record<LeadField, string>>>({});
   const [state, setState] = useState<'idle' | 'busy' | 'done'>('idle');
@@ -38,7 +46,7 @@ export function LeadForm({
 
     setState('busy');
     try {
-      const res = await fetch(`${API_BASE}/api/lead`, {
+      const res = await fetch(`${API_BASE}/api/lead/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: subject, ...values }),
@@ -49,12 +57,13 @@ export function LeadForm({
       const body = [
         values.name && `نام: ${values.name}`,
         values.company && `مجموعه: ${values.company}`,
+        values.position && `سمت: ${values.position}`,
         values.phone && `تلفن: ${values.phone}`,
         values.note && `توضیحات: ${values.note}`,
       ]
         .filter(Boolean)
         .join('\n');
-      window.location.href = `mailto:info@iranretailacademy.com?subject=${encodeURIComponent(
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(
         subject,
       )}&body=${encodeURIComponent(body)}`;
       setState('idle');
@@ -79,25 +88,32 @@ export function LeadForm({
     <form onSubmit={onSubmit} className="space-y-4">
       {fields.map((field) =>
         field === 'note' ? (
+          <label key={field} className="block">
+            <span className="mb-1.5 block text-xs font-bold text-ink-soft">{labels[field] ?? LABELS[field]}</span>
           <textarea
-            key={field}
             rows={4}
-            placeholder={LABELS[field]}
             value={values[field] || ''}
             onChange={bind(field)}
             className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400"
           />
+          </label>
         ) : (
+          <label key={field} className="block">
+            <span className="mb-1.5 block text-xs font-bold text-ink-soft">{labels[field] ?? LABELS[field]}</span>
           <input
-            key={field}
-            required={field !== 'company'}
-            placeholder={LABELS[field]}
+            required={field !== 'company' && field !== 'position'}
+            autoComplete={field === 'name' ? 'name' : field === 'phone' ? 'tel' : field === 'company' ? 'organization' : undefined}
+            inputMode={field === 'phone' ? 'tel' : undefined}
             value={values[field] || ''}
             onChange={bind(field)}
+            // The number keeps its own left-to-right order, but the field sits
+            // on the right like every other one on the page.
+            dir={field === 'phone' ? 'ltr' : undefined}
             className={`w-full rounded-full border border-line bg-paper px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400 ${
-              field === 'phone' ? 'ltr text-left' : ''
+              field === 'phone' ? 'text-right' : ''
             }`}
           />
+          </label>
         ),
       )}
       <button type="submit" disabled={state === 'busy'} className="btn-primary w-full disabled:opacity-60">

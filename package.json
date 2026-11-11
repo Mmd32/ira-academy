@@ -7,16 +7,25 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx scripts/seed.ts",
+    "create-admin": "tsx scripts/create-admin.ts",
+    "reset-admin": "tsx scripts/reset-admin.ts",
+    "content-fixes": "tsx scripts/content-fixes.ts",
+    "import-students": "tsx scripts/import-students.ts",
+    "backup": "tsx scripts/backup.ts",
+    "sync-copy": "tsx scripts/sync-copy.ts"
   },
   "dependencies": {
     "@google/model-viewer": "^4.0.0",
+    "better-sqlite3": "^13.0.3",
     "framer-motion": "^11.3.19",
     "next": "14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -25,6 +34,7 @@
     "eslint-config-next": "14.2.35",
     "postcss": "^8.4.40",
     "tailwindcss": "3.4.19",
+    "tsx": "^4.23.15",
     "typescript": "^5.5.4"
   }
 }
