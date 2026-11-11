@@ -30,11 +30,11 @@ function CredentialsBox({ list }: { list: Credential[] }) {
   const [copied, setCopied] = useState(false);
   if (list.length === 0) return null;
 
-  const text = list.map((c) => `${c.name}\t${c.phone}\t${c.password}`).join('\n');
+  const text = list.map((c) => `${c.name}\t${c.nationalId}\t${c.password}`).join('\n');
 
   const download = () => {
-    const csv = `﻿نام,نام کاربری (موبایل),رمز عبور\n${list
-      .map((c) => [c.name, c.phone, c.password].map((v) => `"${v.replace(/"/g, '""')}"`).join(','))
+    const csv = `﻿نام,نام کاربری (کد ملی),رمز عبور\n${list
+      .map((c) => [c.name, c.nationalId, c.password].map((v) => `"${v.replace(/"/g, '""')}"`).join(','))
       .join('\n')}`;
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const a = document.createElement('a');
@@ -52,8 +52,8 @@ function CredentialsBox({ list }: { list: Credential[] }) {
       </p>
       <div className="ltr mt-3 max-h-56 overflow-auto rounded-xl border border-line bg-white p-3 text-xs leading-7">
         {list.map((c) => (
-          <div key={c.phone} className="flex flex-wrap gap-x-4">
-            <span className="font-bold">{c.phone}</span>
+          <div key={c.nationalId} className="flex flex-wrap gap-x-4">
+            <span className="font-bold">{c.nationalId}</span>
             <span className="font-mono">{c.password}</span>
             <span className="text-ink-mute" dir="rtl">
               {c.name}
@@ -135,15 +135,25 @@ export function AddStudentForm({ groups, orgs }: { groups: GroupOption[]; orgs: 
   const [state, action] = useFormState<StudentsState, FormData>(createStudentAction, null);
   return (
     <form action={action} className="grid gap-4">
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <label className="block text-sm">
           <span className="font-semibold text-ink">نام و نام خانوادگی</span>
           <input name="name" required className={fieldBox} />
         </label>
         <label className="block text-sm">
-          <span className="font-semibold text-ink">موبایل</span>
+          <span className="font-semibold text-ink">کد ملی</span>
           <span className="mr-2 text-xs text-ink-mute">نام کاربری ورود</span>
-          <input name="phone" required inputMode="tel" className={`${fieldBox} ltr`} placeholder="09121234567" />
+          <input name="nationalId" required inputMode="numeric" maxLength={10} className={`${fieldBox} ltr`} placeholder="0151081026" />
+        </label>
+        <label className="block text-sm">
+          <span className="font-semibold text-ink">فروشگاه / مجموعه</span>
+          <span className="mr-2 text-xs text-ink-mute">اختیاری</span>
+          <input name="store" className={fieldBox} />
+        </label>
+        <label className="block text-sm">
+          <span className="font-semibold text-ink">موبایل</span>
+          <span className="mr-2 text-xs text-ink-mute">اختیاری</span>
+          <input name="phone" inputMode="tel" className={`${fieldBox} ltr`} placeholder="09121234567" />
         </label>
         <label className="block text-sm">
           <span className="font-semibold text-ink">رمز</span>
@@ -168,14 +178,14 @@ export function ImportForm({ groups, orgs }: { groups: GroupOption[]; orgs: Grou
       <label className="block text-sm">
         <span className="font-semibold text-ink">فهرست دانش‌پذیران</span>
         <span className="mr-2 text-xs text-ink-mute">
-          هر خط یک نفر: نام، موبایل و (اختیاری) رمز. از Excel می‌توانید مستقیم کپی کنید.
+          هر خط یک نفر: نام، کد ملی و به‌ترتیب (اختیاری) فروشگاه و رمز. موبایل هم اگر باشد شناخته می‌شود. از Excel می‌توانید مستقیم کپی کنید.
         </span>
         <textarea
           name="rows"
           rows={7}
           required
           className={`${fieldBox} font-mono`}
-          placeholder={'علی رضایی\t09121234567\nمریم احمدی,09351234567'}
+          placeholder={'علی رضایی\tاپال\t0151081026\nمریم احمدی,اصفهان,0150630441'}
         />
       </label>
       <GroupSelect groups={groups} orgs={orgs} />
@@ -191,7 +201,9 @@ export function ImportForm({ groups, orgs }: { groups: GroupOption[]; orgs: Grou
 export type StudentRowData = {
   id: number;
   name: string;
+  nationalId: string;
   phone: string;
+  store: string;
   active: boolean;
   lastLogin: string;
   groups: string[];
@@ -215,9 +227,10 @@ export function StudentRow({ student }: { student: StudentRowData }) {
               {student.active ? 'فعال' : 'غیرفعال'}
             </span>
             <h2 className="font-extrabold text-ink">{student.name}</h2>
-            <span className="ltr text-sm text-ink-soft">{student.phone}</span>
+            <span className="ltr text-sm text-ink-soft">{student.nationalId || student.phone}</span>
           </div>
           <p className="mt-2 text-xs text-ink-mute">
+            {student.store ? `${student.store} · ` : ''}
             {student.groups.length ? student.groups.join('، ') : 'بدون گروه'} ·{' '}
             {student.lastLogin ? `آخرین ورود: ${student.lastLogin}` : 'هنوز وارد نشده'}
           </p>
@@ -244,8 +257,17 @@ export function StudentRow({ student }: { student: StudentRowData }) {
               <input name="name" defaultValue={student.name} required className={fieldBox} />
             </label>
             <label className="block text-sm">
+              <span className="font-semibold text-ink">کد ملی</span>
+              <input name="nationalId" defaultValue={student.nationalId} required maxLength={10} className={`${fieldBox} ltr`} />
+            </label>
+            <label className="block text-sm">
+              <span className="font-semibold text-ink">فروشگاه / مجموعه</span>
+              <input name="store" defaultValue={student.store} className={fieldBox} />
+            </label>
+            <label className="block text-sm">
               <span className="font-semibold text-ink">موبایل</span>
-              <input name="phone" defaultValue={student.phone} required className={`${fieldBox} ltr`} />
+              <span className="mr-2 text-xs text-ink-mute">اختیاری</span>
+              <input name="phone" defaultValue={student.phone} className={`${fieldBox} ltr`} />
             </label>
             <label className="flex items-center gap-3 text-sm">
               <input type="checkbox" name="active" defaultChecked={student.active} className="h-4 w-4" />

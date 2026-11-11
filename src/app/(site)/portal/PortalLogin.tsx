@@ -22,8 +22,8 @@ export function PortalLogin() {
   return (
     <form action={action} className="mt-6 grid gap-4">
       <label className="block text-sm">
-        <span className="font-semibold text-ink">شماره‌ی موبایل</span>
-        <input name="phone" inputMode="tel" autoComplete="username" required className={`${field} ltr`} />
+        <span className="font-semibold text-ink">کد ملی</span>
+        <input name="identifier" inputMode="numeric" autoComplete="username" required className={`${field} ltr`} />
       </label>
       <label className="block text-sm">
         <span className="font-semibold text-ink">رمز عبور</span>

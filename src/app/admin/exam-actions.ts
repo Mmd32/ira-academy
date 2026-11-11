@@ -16,6 +16,7 @@ import {
   deleteGroup,
   deleteStudent,
   normalizePhone,
+  toLatinDigits,
   resetStudentPassword,
   setGroupMembers,
   updateGroup,
@@ -53,7 +54,7 @@ const ids = (formData: FormData, key: string) =>
 
 /* ------------------------------- students ------------------------------- */
 
-export type Credential = { name: string; phone: string; password: string };
+export type Credential = { name: string; nationalId: string; password: string };
 export type StudentsState = {
   created: Credential[];
   errors: string[];
@@ -63,7 +64,9 @@ export async function createStudentAction(_prev: StudentsState, formData: FormDa
   requireUser();
   const result = createStudent({
     name: String(formData.get('name') ?? ''),
+    nationalId: String(formData.get('nationalId') ?? ''),
     phone: String(formData.get('phone') ?? ''),
+    store: String(formData.get('store') ?? ''),
     password: String(formData.get('password') ?? ''),
   });
 
@@ -74,13 +77,15 @@ export async function createStudentAction(_prev: StudentsState, formData: FormDa
   if (groupId) addStudentsToGroup(groupId, [result.id]);
   const orgId = Number(formData.get('orgId'));
   if (orgId) enroll(result.id, orgId);
-  return { created: [{ name: result.name, phone: result.phone, password: result.password }], errors: [] };
+  return { created: [{ name: result.name, nationalId: result.nationalId, password: result.password }], errors: [] };
 }
 
 /**
- * Bulk add. One student per line: name, phone, optional password, separated by
- * a tab (pasted from Excel), a comma or a semicolon. Rows that fail are listed
- * and do not stop the others.
+ * Bulk add. One student per line, parts separated by a tab (pasted from Excel),
+ * a comma or a semicolon. The national ID (ten digits) and an optional mobile
+ * number (09…) are recognised wherever they are; the remaining parts are, in
+ * order: name, store, password. Rows that fail are listed and do not stop the
+ * others.
  */
 export async function importStudentsAction(_prev: StudentsState, formData: FormData): Promise<StudentsState> {
   requireUser();
@@ -95,21 +100,30 @@ export async function importStudentsAction(_prev: StudentsState, formData: FormD
   const newIds: number[] = [];
 
   lines.forEach((line, i) => {
-    const parts = line.split(/\t|;|,|،/).map((p) => p.trim());
-    // Accept "name, phone" and "phone, name": whichever part looks like a number is the phone.
-    const phoneIdx = parts.findIndex((p) => normalizePhone(p).length >= 10 && /\d/.test(p));
-    if (phoneIdx < 0) {
-      errors.push(`سطر ${i + 1}: شماره‌ی موبایل پیدا نشد`);
+    const parts = line.split(/\t|;|,|،/).map((p) => p.trim()).filter(Boolean);
+    const digitsOf = (p: string) => toLatinDigits(p);
+    const idIdx = parts.findIndex((p) => /^\d{10}$/.test(digitsOf(p)) && !digitsOf(p).startsWith('09'));
+    if (idIdx < 0) {
+      errors.push(`سطر ${i + 1}: کد ملی (۱۰ رقم) پیدا نشد`);
       return;
     }
-    const phone = parts[phoneIdx];
-    const rest = parts.filter((_, idx) => idx !== phoneIdx);
-    const result = createStudent({ name: rest[0] ?? '', phone, password: rest[1] ?? '' });
+    const rest = parts.filter((_, idx) => idx !== idIdx);
+    const phoneIdx = rest.findIndex((p) => /^09\d{9}$/.test(normalizePhone(p)));
+    const phone = phoneIdx >= 0 ? rest[phoneIdx] : '';
+    const words = rest.filter((_, idx) => idx !== phoneIdx);
+
+    const result = createStudent({
+      nationalId: parts[idIdx],
+      name: words[0] ?? '',
+      store: words[1] ?? '',
+      password: words[2] ?? '',
+      phone,
+    });
     if (result.ok) {
-      created.push({ name: result.name, phone: result.phone, password: result.password });
+      created.push({ name: result.name, nationalId: result.nationalId, password: result.password });
       newIds.push(result.id);
     } else {
-      errors.push(`سطر ${i + 1} (${result.name || result.phone}): ${result.error}`);
+      errors.push(`سطر ${i + 1} (${result.name || result.nationalId}): ${result.error}`);
     }
   });
 
@@ -129,7 +143,9 @@ export async function updateStudentAction(_prev: string | null, formData: FormDa
 
   const error = updateStudent(id, {
     name: String(formData.get('name') ?? ''),
+    nationalId: String(formData.get('nationalId') ?? ''),
     phone: String(formData.get('phone') ?? ''),
+    store: String(formData.get('store') ?? ''),
     active: formData.get('active') === 'on',
   });
   revalidatePath('/admin/students');

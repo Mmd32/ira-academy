@@ -20,9 +20,9 @@ function requireStudent() {
 }
 
 export async function studentSignInAction(_prev: string | null, formData: FormData): Promise<string | null> {
-  const phone = String(formData.get('phone') ?? '');
+  const phone = String(formData.get('identifier') ?? '');
   const password = String(formData.get('password') ?? '');
-  if (!phone.trim() || !password) return 'شماره‌ی موبایل و رمز را وارد کنید.';
+  if (!phone.trim() || !password) return 'کد ملی و رمز را وارد کنید.';
 
   const h = headers();
   const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || h.get('x-real-ip') || 'unknown';

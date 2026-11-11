@@ -36,7 +36,7 @@ export default function PortalPage() {
               <div className="mx-auto max-w-md rounded-3xl border border-line bg-paper p-8 shadow-card">
                 <h2 className="text-xl font-extrabold text-ink">ورود دانش‌پذیران</h2>
                 <p className="mt-2 text-sm leading-7 text-ink-mute">
-                  نام کاربری شما همان شماره‌ی موبایل است. رمز را آکادمی پس از ثبت‌نام قطعی در دوره به شما می‌دهد.
+                  نام کاربری شما همان کد ملی است. رمز را آکادمی پس از ثبت‌نام قطعی در دوره به شما می‌دهد.
                 </p>
                 <PortalLogin />
               </div>

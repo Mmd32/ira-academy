@@ -68,7 +68,7 @@ export default function EditGroupPage({ searchParams }: Props) {
                 >
                   <input type="checkbox" name="member" value={s.id} defaultChecked={members.has(s.id)} className="h-4 w-4" />
                   <span className="font-semibold text-ink">{s.name}</span>
-                  <span className="ltr mr-auto text-xs text-ink-mute">{s.phone}</span>
+                  <span className="ltr mr-auto text-xs text-ink-mute">{s.nationalId || s.phone}</span>
                 </label>
               ))}
             </div>

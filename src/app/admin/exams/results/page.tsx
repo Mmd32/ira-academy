@@ -74,7 +74,7 @@ export default function ResultsPage({ searchParams }: Props) {
               <tr className="border-b border-line text-right text-xs text-ink-mute">
                 <th className="p-4 font-semibold">نام</th>
                 <th className="p-4 font-semibold">کد دانشجویی</th>
-                <th className="p-4 font-semibold">موبایل</th>
+                <th className="p-4 font-semibold">کد ملی</th>
                 <th className="p-4 font-semibold">گروه</th>
                 <th className="p-4 font-semibold">وضعیت</th>
                 <th className="p-4 font-semibold">بهترین نمره</th>
@@ -94,8 +94,11 @@ export default function ResultsPage({ searchParams }: Props) {
                       <span className="ltr inline-block font-bold text-brand">{r.code}</span>
                       {r.orgName && <span className="block text-ink-mute">{r.orgName}</span>}
                     </td>
-                    <td className="ltr p-4 text-ink-soft">{r.phone}</td>
-                    <td className="p-4 text-xs text-ink-mute">{r.groups.join('، ')}</td>
+                    <td className="ltr p-4 text-ink-soft">{r.nationalId}</td>
+                    <td className="p-4 text-xs text-ink-mute">
+                      {r.store && <span className="block">{r.store}</span>}
+                      {r.groups.join('، ')}
+                    </td>
                     <td className="p-4 text-xs">
                       {r.best ? (
                         <span className="text-emerald-700">شرکت کرد ({fa(r.attempts.length)} بار)</span>

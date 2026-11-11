@@ -18,7 +18,11 @@ const SESSION_DAYS = 30;
 
 export type Student = {
   id: number;
+  /** What the student signs in with. */
+  nationalId: string;
+  /** Optional contact number; may be empty. */
   phone: string;
+  store: string;
   name: string;
   active: boolean;
   createdAt: string;
@@ -58,6 +62,31 @@ export function isValidPhone(phone: string): boolean {
   return /^09\d{9}$/.test(phone);
 }
 
+/** Digits only, Latin: "۰۱۵۱ ۰۸۱۰۲۶" → "0151081026". */
+export function toLatinDigits(raw: string): string {
+  let out = '';
+  for (const ch of raw) {
+    const p = PERSIAN_DIGITS.indexOf(ch);
+    const a = ARABIC_DIGITS.indexOf(ch);
+    if (p >= 0) out += String(p);
+    else if (a >= 0) out += String(a);
+    else if (ch >= '0' && ch <= '9') out += ch;
+  }
+  return out;
+}
+
+/** An Iranian national ID: ten digits whose last is the check digit of the first nine. */
+export function isValidNationalId(id: string): boolean {
+  if (!/^\d{10}$/.test(id) || /^(\d)\1{9}$/.test(id)) return false;
+  const sum = id
+    .slice(0, 9)
+    .split('')
+    .reduce((n, d, i) => n + Number(d) * (10 - i), 0);
+  const r = sum % 11;
+  const check = Number(id[9]);
+  return r < 2 ? check === r : check === 11 - r;
+}
+
 // No 0/O/1/l/I, so a password read over the phone is not misheard.
 const ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789';
 
@@ -70,7 +99,9 @@ export function generatePassword(length = 8): string {
 function toStudent(r: Record<string, unknown>, groupIds: number[]): Student {
   return {
     id: Number(r.id),
-    phone: String(r.phone),
+    nationalId: String(r.national_id ?? ''),
+    phone: String(r.phone ?? ''),
+    store: String(r.store ?? ''),
     name: String(r.name),
     active: Number(r.active) === 1,
     createdAt: String(r.created_at),
@@ -110,49 +141,64 @@ export function getStudent(id: number): Student | undefined {
 }
 
 export type CreateResult =
-  | { ok: true; id: number; phone: string; name: string; password: string }
-  | { ok: false; phone: string; name: string; error: string };
+  | { ok: true; id: number; nationalId: string; name: string; password: string }
+  | { ok: false; nationalId: string; name: string; error: string };
 
 /** Creates one student. A blank password is generated and returned once. */
 export function createStudent(input: {
-  phone: string;
+  nationalId: string;
   name: string;
+  phone?: string;
+  store?: string;
   password?: string;
 }): CreateResult {
-  const phone = normalizePhone(input.phone);
+  const nationalId = toLatinDigits(input.nationalId);
   const name = input.name.trim().slice(0, 120);
+  const fail = (error: string): CreateResult => ({ ok: false, nationalId: input.nationalId.trim(), name, error });
 
-  if (!isValidPhone(phone)) {
-    return { ok: false, phone: input.phone, name, error: 'شماره‌ی موبایل درست نیست' };
-  }
-  if (!name) return { ok: false, phone, name, error: 'نام خالی است' };
+  if (!isValidNationalId(nationalId)) return fail('کد ملی درست نیست');
+  if (!name) return fail('نام خالی است');
 
-  const exists = db().prepare(`SELECT id FROM students WHERE phone = ?`).get(phone);
-  if (exists) return { ok: false, phone, name, error: 'این شماره قبلاً ثبت شده' };
+  const phoneRaw = (input.phone ?? '').trim();
+  const phone = phoneRaw ? normalizePhone(phoneRaw) : '';
+  if (phone && !isValidPhone(phone)) return fail('شماره‌ی موبایل درست نیست');
+
+  if (db().prepare(`SELECT id FROM students WHERE national_id = ?`).get(nationalId)) return fail('این کد ملی قبلاً ثبت شده');
+  if (phone && db().prepare(`SELECT id FROM students WHERE phone = ?`).get(phone)) return fail('این موبایل قبلاً ثبت شده');
 
   const password = (input.password ?? '').trim() || generatePassword();
-  if (password.length < 6) return { ok: false, phone, name, error: 'رمز باید حداقل ۶ نویسه باشد' };
+  if (password.length < 6) return fail('رمز باید حداقل ۶ نویسه باشد');
 
   const info = db()
     .prepare(
-      `INSERT INTO students (phone, name, password_hash, active, created_at) VALUES (?, ?, ?, 1, ?)`,
+      `INSERT INTO students (national_id, phone, name, store, password_hash, active, created_at)
+       VALUES (?, ?, ?, ?, ?, 1, ?)`,
     )
-    .run(phone, name, hashPassword(password), new Date().toISOString());
+    .run(nationalId, phone || null, name, (input.store ?? '').trim().slice(0, 120), hashPassword(password), new Date().toISOString());
 
-  return { ok: true, id: Number(info.lastInsertRowid), phone, name, password };
+  return { ok: true, id: Number(info.lastInsertRowid), nationalId, name, password };
 }
 
-export function updateStudent(id: number, patch: { name: string; phone: string; active: boolean }) {
-  const phone = normalizePhone(patch.phone);
-  if (!isValidPhone(phone)) return 'شماره‌ی موبایل درست نیست';
+export function updateStudent(
+  id: number,
+  patch: { name: string; nationalId: string; phone: string; store: string; active: boolean },
+) {
+  const nationalId = toLatinDigits(patch.nationalId);
+  if (!isValidNationalId(nationalId)) return 'کد ملی درست نیست';
   if (!patch.name.trim()) return 'نام خالی است';
+  const phone = patch.phone.trim() ? normalizePhone(patch.phone) : '';
+  if (phone && !isValidPhone(phone)) return 'شماره‌ی موبایل درست نیست';
 
-  const clash = db().prepare(`SELECT id FROM students WHERE phone = ? AND id <> ?`).get(phone, id);
-  if (clash) return 'این شماره برای دانش‌پذیر دیگری ثبت شده';
+  if (db().prepare(`SELECT id FROM students WHERE national_id = ? AND id <> ?`).get(nationalId, id)) {
+    return 'این کد ملی برای دانش‌پذیر دیگری ثبت شده';
+  }
+  if (phone && db().prepare(`SELECT id FROM students WHERE phone = ? AND id <> ?`).get(phone, id)) {
+    return 'این موبایل برای دانش‌پذیر دیگری ثبت شده';
+  }
 
   db()
-    .prepare(`UPDATE students SET name = ?, phone = ?, active = ? WHERE id = ?`)
-    .run(patch.name.trim().slice(0, 120), phone, patch.active ? 1 : 0, id);
+    .prepare(`UPDATE students SET name = ?, national_id = ?, phone = ?, store = ?, active = ? WHERE id = ?`)
+    .run(patch.name.trim().slice(0, 120), nationalId, phone || null, patch.store.trim().slice(0, 120), patch.active ? 1 : 0, id);
 
   if (!patch.active) db().prepare(`DELETE FROM student_sessions WHERE student_id = ?`).run(id);
   return null;
@@ -199,23 +245,27 @@ function noteFailure(key: string) {
 
 export type SignInResult = { ok: true } | { ok: false; error: string };
 
-export function studentSignIn(phoneRaw: string, password: string, ip: string): SignInResult {
-  const phone = normalizePhone(phoneRaw);
-  const key = `${phone}|${ip}`;
-  const keyPhone = `phone|${phone}`;
+/** Signs in by national ID; a mobile number set on the account works too. */
+export function studentSignIn(identifier: string, password: string, ip: string): SignInResult {
+  const digits = toLatinDigits(identifier);
+  const phone = normalizePhone(identifier);
+  const key = `${digits}|${ip}`;
+  const keyPhone = `id|${digits}`;
 
   if (tooManyFailures(key) || tooManyFailures(keyPhone)) {
     return { ok: false, error: 'تلاش‌های ناموفق زیاد بود. ۱۵ دقیقه بعد دوباره امتحان کنید.' };
   }
 
-  const row = db().prepare(`SELECT * FROM students WHERE phone = ?`).get(phone) as
+  const row = db()
+    .prepare(`SELECT * FROM students WHERE national_id = ? OR (phone IS NOT NULL AND phone = ?)`)
+    .get(digits, phone) as
     | { id: number; password_hash: string; active: number }
     | undefined;
 
   if (!row || !verifyPassword(password, row.password_hash)) {
     noteFailure(key);
     noteFailure(keyPhone);
-    return { ok: false, error: 'شماره یا رمز درست نیست.' };
+    return { ok: false, error: 'کد ملی یا رمز درست نیست.' };
   }
   if (row.active !== 1) {
     return { ok: false, error: 'این حساب غیرفعال است. با آکادمی تماس بگیرید.' };

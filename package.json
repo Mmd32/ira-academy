@@ -12,6 +12,7 @@
     "create-admin": "tsx scripts/create-admin.ts",
     "reset-admin": "tsx scripts/reset-admin.ts",
     "content-fixes": "tsx scripts/content-fixes.ts",
+    "import-students": "tsx scripts/import-students.ts",
     "backup": "tsx scripts/backup.ts",
     "sync-copy": "tsx scripts/sync-copy.ts"
   },

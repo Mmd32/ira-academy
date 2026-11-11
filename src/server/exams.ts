@@ -564,6 +564,8 @@ export function canSeeResult(exam: Exam, now = new Date()): boolean {
 export type ResultRow = {
   studentId: number;
   name: string;
+  nationalId: string;
+  store: string;
   phone: string;
   groups: string[];
   code: string;
@@ -582,8 +584,8 @@ export function resultRows(exam: Exam): ResultRow[] {
 
   const idList = Array.from(ids);
   const students = db()
-    .prepare(`SELECT id, name, phone FROM students WHERE id IN (${idList.map(() => '?').join(',')})`)
-    .all(...idList) as { id: number; name: string; phone: string }[];
+    .prepare(`SELECT id, name, phone, national_id, store FROM students WHERE id IN (${idList.map(() => '?').join(',')})`)
+    .all(...idList) as { id: number; name: string; phone: string | null; national_id: string | null; store: string }[];
 
   const groupRows = db()
     .prepare(
@@ -607,7 +609,9 @@ export function resultRows(exam: Exam): ResultRow[] {
         orgName: who.orgName,
         studentId: s.id,
         name: s.name,
-        phone: s.phone,
+        nationalId: s.national_id ?? '',
+        store: s.store,
+        phone: s.phone ?? '',
         groups: groupRows.filter((g) => g.student_id === s.id).map((g) => g.name),
         attempts: mine,
         best,

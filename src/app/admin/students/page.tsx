@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { requireAdmin } from '@/server/guard';
-import { codesByStudent, listGroups, listOrgs, listStudents, normalizePhone } from '@/server/students';
+import { codesByStudent, listGroups, listOrgs, listStudents, normalizePhone, toLatinDigits } from '@/server/students';
 import { formatFa } from '@/lib/tehran-time';
 import { fa } from '@/lib/text';
 
@@ -22,6 +22,7 @@ export default function StudentsPage({ searchParams }: Props) {
 
   const q = (searchParams.q ?? '').trim();
   const phoneQ = normalizePhone(q);
+  const digitsQ = toLatinDigits(q);
   const groupFilter = Number(searchParams.group) || 0;
   const orgFilter = Number(searchParams.org) || 0;
 
@@ -31,7 +32,8 @@ export default function StudentsPage({ searchParams }: Props) {
     if (!q) return true;
     return (
       s.name.includes(q) ||
-      (phoneQ.length >= 3 && s.phone.includes(phoneQ)) ||
+      s.store.includes(q) ||
+      (digitsQ.length >= 3 && (s.nationalId.includes(digitsQ) || (!!s.phone && s.phone.includes(phoneQ)))) ||
       (codes.get(s.id) ?? []).some((c) => c.code.toLowerCase().includes(q.toLowerCase()))
     );
   });
@@ -41,7 +43,7 @@ export default function StudentsPage({ searchParams }: Props) {
       <PageTitle
         eyebrow="درگاه دانش‌پذیران"
         title="دانش‌پذیران"
-        lead="هر دانش‌پذیر با شماره‌ی موبایل و رمزی که شما می‌دهید وارد درگاه می‌شود. حساب‌ها را اینجا بسازید و در «گروه‌ها» دسته‌بندی کنید."
+        lead="هر دانش‌پذیر با کد ملی و رمزی که شما می‌دهید وارد درگاه می‌شود. حساب‌ها را اینجا بسازید و در «گروه‌ها» دسته‌بندی کنید."
       />
 
       <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -71,7 +73,7 @@ export default function StudentsPage({ searchParams }: Props) {
           <input
             name="q"
             defaultValue={q}
-            placeholder="نام، موبایل یا کد"
+            placeholder="نام، کد ملی، فروشگاه یا کد دانشجویی"
             className="mt-2 w-56 rounded-xl border border-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-400"
           />
         </label>
@@ -132,7 +134,9 @@ export default function StudentsPage({ searchParams }: Props) {
               student={{
                 id: s.id,
                 name: s.name,
+                nationalId: s.nationalId,
                 phone: s.phone,
+                store: s.store,
                 active: s.active,
                 lastLogin: formatFa(s.lastLoginAt),
                 groups: s.groupIds.map((id) => groupName.get(id) ?? '').filter(Boolean),

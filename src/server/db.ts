@@ -146,8 +146,10 @@ function migrate(d: Database.Database) {
     /* Student portal. A student is not an admin: separate table, separate cookie. */
     CREATE TABLE IF NOT EXISTS students (
       id            INTEGER PRIMARY KEY AUTOINCREMENT,
-      phone         TEXT NOT NULL UNIQUE,
+      national_id   TEXT,
+      phone         TEXT,
       name          TEXT NOT NULL DEFAULT '',
+      store         TEXT NOT NULL DEFAULT '',
       password_hash TEXT NOT NULL,
       active        INTEGER NOT NULL DEFAULT 1,
       created_at    TEXT NOT NULL,
@@ -268,6 +270,8 @@ function migrate(d: Database.Database) {
     d.exec(`ALTER TABLE leads ADD COLUMN position TEXT NOT NULL DEFAULT ''`);
   }
 
+  rebuildStudents(d);
+
   const addColumn = (table: string, column: string, definition: string) => {
     const cols = (d.pragma(`table_info(${table})`) as { name: string }[]).map((c) => c.name);
     if (!cols.includes(column)) d.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
@@ -278,6 +282,50 @@ function migrate(d: Database.Database) {
   // change of organisation never rewrites an old result.
   addColumn('attempts', 'student_code', "TEXT NOT NULL DEFAULT ''");
   addColumn('attempts', 'org_name', "TEXT NOT NULL DEFAULT ''");
+}
+
+/**
+ * Students used to be identified by a mobile number that could not be empty.
+ * They are now identified by national ID, and the mobile number is optional,
+ * which SQLite can only express by rebuilding the table. Runs once, on a
+ * database made before the change; the other tables keep pointing at it by name.
+ */
+function rebuildStudents(d: Database.Database) {
+  const cols = (d.pragma('table_info(students)') as { name: string }[]).map((c) => c.name);
+  if (cols.includes('national_id')) {
+    d.exec(`
+      CREATE UNIQUE INDEX IF NOT EXISTS students_national ON students (national_id) WHERE national_id IS NOT NULL;
+      CREATE UNIQUE INDEX IF NOT EXISTS students_phone_u ON students (phone) WHERE phone IS NOT NULL;
+    `);
+    return;
+  }
+
+  d.pragma('foreign_keys = OFF');
+  try {
+    d.exec(`
+      BEGIN;
+      CREATE TABLE students_new (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        national_id   TEXT,
+        phone         TEXT,
+        name          TEXT NOT NULL DEFAULT '',
+        store         TEXT NOT NULL DEFAULT '',
+        password_hash TEXT NOT NULL,
+        active        INTEGER NOT NULL DEFAULT 1,
+        created_at    TEXT NOT NULL,
+        last_login_at TEXT
+      );
+      INSERT INTO students_new (id, phone, name, password_hash, active, created_at, last_login_at)
+        SELECT id, NULLIF(phone, ''), name, password_hash, active, created_at, last_login_at FROM students;
+      DROP TABLE students;
+      ALTER TABLE students_new RENAME TO students;
+      CREATE UNIQUE INDEX students_national ON students (national_id) WHERE national_id IS NOT NULL;
+      CREATE UNIQUE INDEX students_phone_u ON students (phone) WHERE phone IS NOT NULL;
+      COMMIT;
+    `);
+  } finally {
+    d.pragma('foreign_keys = ON');
+  }
 }
 
 /** True once the content tables have been seeded. */
