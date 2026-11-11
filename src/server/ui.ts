@@ -19,7 +19,8 @@ export function uiAll(): Record<string, string> {
     const v = saved[key];
     // A saved link is re-checked on read, so nothing unsafe can reach a page even if the row was edited by hand.
     const usable = typeof v === 'string' && v.trim() !== '' && (!key.endsWith('href') && !key.endsWith('.href') ? true : isSafeHref(v));
-    out[key] = usable ? v : UI_DEFAULTS[key];
+    // An earlier build saved line breaks as the two characters \\n; show them as real breaks.
+    out[key] = usable ? (v as string).replace(/\\n/g, '\n') : UI_DEFAULTS[key];
   }
   return out;
 }
