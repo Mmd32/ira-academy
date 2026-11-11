@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 import { currentUser } from '@/server/auth';
 import { leadCounts } from '@/server/leads';
 
-import { SignOutButton } from './SignOutButton';
+import { AdminShell } from './AdminShell';
 
 export const metadata: Metadata = {
   title: 'پنل مدیریت',
@@ -29,6 +28,7 @@ const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { href: '/admin/pages/', label: 'متن صفحه‌ها' },
       { href: '/admin/site/', label: 'هدر، فوتر و دکمه‌ها' },
       { href: '/admin/sections/', label: 'نمایش بخش‌ها' },
+      { href: '/admin/images/', label: 'تصاویر سایت' },
       { href: '/admin/glossary/', label: 'واژه‌نامه' },
     ],
   },
@@ -58,50 +58,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!user) return <div className="min-h-screen bg-paper">{children}</div>;
 
   const counts = leadCounts();
+  const groups = NAV_GROUPS.map((g) => ({
+    title: g.title,
+    items: g.items.map((i) => ({ href: i.href, label: i.label, badge: i.badge === 'leads' ? counts.new : undefined })),
+  }));
 
   return (
-    <div className="min-h-screen bg-paper">
-      <header className="border-b border-line bg-white">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-5 py-4">
-          <Link href="/admin/" className="font-extrabold text-brand">
-            پنل مدیریت
-          </Link>
-
-          <nav className="flex flex-1 flex-wrap items-start gap-x-8 gap-y-3 text-sm">
-            {NAV_GROUPS.map((group) => (
-              <div key={group.title || 'home'}>
-                {group.title && <p className="mb-1 text-[11px] font-bold text-ink-mute">{group.title}</p>}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                  {group.items.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="py-1 text-ink-soft transition-colors hover:text-brand"
-                    >
-                      {item.label}
-                      {item.badge === 'leads' && counts.new > 0 && (
-                        <span className="mr-2 rounded-full bg-gold px-2 py-0.5 text-[11px] font-black text-ink">
-                          {counts.new}
-                        </span>
-                      )}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-4 text-sm">
-            <Link href="/" target="_blank" className="text-ink-mute hover:text-brand">
-              دیدن سایت ↗
-            </Link>
-            <span className="text-ink-mute">{user.displayName || user.username}</span>
-            <SignOutButton />
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-5 py-10">{children}</main>
-    </div>
+    <AdminShell groups={groups} userName={user.displayName || user.username}>
+      {children}
+    </AdminShell>
   );
 }

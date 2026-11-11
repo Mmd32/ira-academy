@@ -147,6 +147,10 @@ export async function saveGlossaryAction(formData: FormData) {
   revalidatePath('/knowledge');
 }
 
+import { isSafeImage } from '@/server/images';
+
+const safeImage = (v: string) => (v && isSafeImage(v) ? v : '');
+
 export async function saveTextsAction(formData: FormData) {
   requireUser();
 
@@ -157,6 +161,8 @@ export async function saveTextsAction(formData: FormData) {
       title: str(formData, `title:${id}`),
       lead: str(formData, `lead:${id}`),
       enabled: on(formData, `enabled:${id}`),
+      // Only slides that show a photo have the field; the others keep whatever they had.
+      image: formData.has(`image:${id}`) ? safeImage(str(formData, `image:${id}`)) : undefined,
     });
   }
 

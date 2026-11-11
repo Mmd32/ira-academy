@@ -3,6 +3,7 @@ import { listHeroSlidesForAdmin } from '@/server/content-write';
 import { requireAdmin } from '@/server/guard';
 
 import { saveTextsAction } from '../content-actions';
+import { ImageInput } from '../ImageInput';
 import { Field, PageTitle, fieldBox } from '../ui';
 
 export const dynamic = 'force-dynamic';
@@ -51,6 +52,13 @@ export default function TextsPage() {
                 />
                 <span className="font-semibold text-ink">این اسلاید نمایش داده شود</span>
               </label>
+
+              {s.visual === 'image' && (
+                <div>
+                  <span className="text-sm font-semibold text-ink">تصویر اسلاید</span>
+                  <ImageInput name={`image:${s.id}`} defaultValue={s.image} />
+                </div>
+              )}
 
               <Field label="بالانویس">
                 <input name={`eyebrow:${s.id}`} defaultValue={s.eyebrow} className={fieldBox} />

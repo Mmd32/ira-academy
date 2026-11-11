@@ -1,3 +1,4 @@
+import { img } from '@/server/images';
 import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
@@ -13,7 +14,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { about as aboutSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
-import { getSections } from '@/server/sections';
+import { getSections, isOn } from '@/server/sections';
 import { listPeople } from '@/server/people';
 import Link from 'next/link';
 import { fa } from '@/lib/text';
@@ -89,7 +90,7 @@ export default function AboutPage() {
             <Reveal delay={0.1}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/media/academy-about.webp"
+                src={img('about.photo')}
                 alt="شرکت‌کنندگان در یک برنامه‌ی آموزشی آکادمی، در فضایی شبیه فروشگاه"
                 width={1400}
                 height={788}
@@ -113,7 +114,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section border-y border-line bg-paper-soft">
+      {isOn('about.faculty') && (
+<section className="section border-y border-line bg-paper-soft">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">کادر علمی</p>
@@ -164,8 +166,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      )}
 
-      {founders.length > 0 && (
+      {isOn('about.founders') && founders.length > 0 && (
         <section className="section bg-white">
           <div className="container-x">
             <Reveal>

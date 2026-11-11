@@ -1,3 +1,4 @@
+import { img } from '@/server/images';
 import Link from 'next/link';
 import { getSite } from '@/server/content';
 import { SocialLinks } from '@/components/SocialLinks';
@@ -24,7 +25,7 @@ export function Footer() {
             <span className="grid h-10 w-10 shrink-0 place-items-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/media/logo-mark.png"
+                src={img('site.logo')}
                 alt={site.brand}
                 className="h-full w-full object-contain brightness-0 invert"
               />

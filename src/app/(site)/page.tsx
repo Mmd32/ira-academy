@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
 
+import { isOn } from '@/server/sections';
 import { Hero } from '@/components/home/Hero';
 import { getHeroAutoplayMs, getHeroSlides, getStats } from '@/server/content';
 import {
@@ -26,11 +27,11 @@ export default function HomePage() {
   return (
     <>
       <Hero slides={getHeroSlides()} autoplayMs={getHeroAutoplayMs()} stats={getStats()} />
-      <CourseMarquee />
-      <SectionsGrid />
-      <ArticlesPreview />
-      <NewsTicker />
-      <HomeCta />
+      {isOn('home.marquee') && <CourseMarquee />}
+      {isOn('home.tiles') && <SectionsGrid />}
+      {isOn('home.articles') && <ArticlesPreview />}
+      {isOn('home.news') && <NewsTicker />}
+      {isOn('home.cta') && <HomeCta />}
     </>
   );
 }

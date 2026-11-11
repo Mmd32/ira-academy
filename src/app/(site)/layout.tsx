@@ -3,6 +3,7 @@ import { ConsultWidget } from '@/components/ConsultWidget';
 import { Footer } from '@/components/Footer';
 import { Nav } from '@/components/Nav';
 import { uiAll } from '@/server/ui';
+import { img } from '@/server/images';
 
 /**
  * The public site's chrome. The admin panel lives outside this group, so it
@@ -21,6 +22,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     cta: { label: t['nav.cta.label'], href: t['nav.cta.href'] },
     login: { label: t['nav.login.label'], href: t['nav.login.href'] },
     mobileLogin: t['nav.mobileLogin'],
+    logo: img('site.logo'),
   };
 
   return (

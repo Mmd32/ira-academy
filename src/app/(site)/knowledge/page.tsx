@@ -14,6 +14,7 @@ import { PageHeader, ComingSoon } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { BilingualTerm } from '@/components/BilingualTerm';
 import { getArticles, getGlossary } from '@/server/content';
+import { isOn } from '@/server/sections';
 import {
   news,
   media,
@@ -39,7 +40,8 @@ export default function KnowledgePage() {
         title={ui('page.knowledge.title')}
       />
 
-      <section id="news" className="section bg-white">
+      {isOn('knowledge.news') && (
+<section id="news" className="section bg-white">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">جدیدترین اخبار صنعت ریتیل</p>
@@ -63,8 +65,10 @@ export default function KnowledgePage() {
           </div>
         </div>
       </section>
+      )}
 
-      <section id="articles" className="section border-y border-line bg-paper-soft">
+      {isOn('knowledge.articles') && (
+<section id="articles" className="section border-y border-line bg-paper-soft">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">مقالات / مورد کاوی / گزارشات برندها</p>
@@ -106,8 +110,10 @@ export default function KnowledgePage() {
           </div>
         </div>
       </section>
+      )}
 
-      <section id="media" className="section bg-white">
+      {isOn('knowledge.media') && (
+<section id="media" className="section bg-white">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">ویدیو و پادکست</p>
@@ -131,9 +137,11 @@ export default function KnowledgePage() {
           </div>
         </div>
       </section>
+      )}
 
 
-      <section id="library" className="section border-y border-line bg-paper-soft">
+      {isOn('knowledge.library') && (
+<section id="library" className="section border-y border-line bg-paper-soft">
         <div className="container-x">
           <Reveal>
             <div className="card p-8">
@@ -145,8 +153,10 @@ export default function KnowledgePage() {
           </Reveal>
         </div>
       </section>
+      )}
 
-      <section id="tools" className="section border-y border-line bg-paper-soft">
+      {isOn('knowledge.tools') && (
+<section id="tools" className="section border-y border-line bg-paper-soft">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">ابزارهای کاربردی</p>
@@ -174,8 +184,10 @@ export default function KnowledgePage() {
           </div>
         </div>
       </section>
+      )}
 
-      <section id="glossary" className="section bg-white">
+      {isOn('knowledge.glossary') && (
+<section id="glossary" className="section bg-white">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">لغت‌نامه ریتیل</p>
@@ -198,8 +210,10 @@ export default function KnowledgePage() {
           </div>
         </div>
       </section>
+      )}
 
-      <section id="handouts" className="section border-t border-line bg-paper-soft">
+      {isOn('knowledge.handouts') && (
+<section id="handouts" className="section border-t border-line bg-paper-soft">
         <div className="container-x">
           <Reveal>
             <div className="card p-8">
@@ -211,6 +225,7 @@ export default function KnowledgePage() {
           </Reveal>
         </div>
       </section>
+      )}
     </>
   );
 }

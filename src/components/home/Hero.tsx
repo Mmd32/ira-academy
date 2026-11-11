@@ -17,7 +17,7 @@ import { fa, splitTitle } from '@/lib/text';
 import { Emblem3D } from './Emblem3D';
 
 /** Slide 1 — the emblem floating in a parallax 3D stage. */
-function Scene3D() {
+function Scene3D({ fallback }: { fallback: string }) {
   const reduced = useReducedMotion();
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
@@ -56,7 +56,7 @@ function Scene3D() {
           style={{ transform: 'translate(-50%,-50%) translateZ(10px)' }}
         />
         <div className="absolute inset-4" style={{ transform: 'translateZ(50px)' }}>
-          <Emblem3D />
+          <Emblem3D fallback={fallback} />
         </div>
 
         <div
@@ -98,7 +98,7 @@ function ImageVisual({ slide }: { slide: HeroSlide }) {
     <div className="relative mx-auto w-full max-w-[440px]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={slide.image || '/media/academy.jpg'}
+        src={slide.image}
         alt={slide.eyebrow}
         className="aspect-[4/3] w-full rounded-3xl border border-white/10 object-cover shadow-lift"
       />
@@ -154,7 +154,7 @@ function ChatDemo() {
 function SlideVisual({ slide }: { slide: HeroSlide }) {
   switch (slide.visual) {
     case 'scene3d':
-      return <Scene3D />;
+      return <Scene3D fallback={slide.image} />;
     case 'chat-demo':
       return <ChatDemo />;
     case 'image':

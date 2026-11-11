@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
  * only after a HEAD request confirms the .glb is actually being served;
  * anything short of that falls back to the flat PNG.
  */
-export function Emblem3D() {
+export function Emblem3D({ fallback = '/media/emblem.png' }: { fallback?: string }) {
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
@@ -39,7 +39,7 @@ export function Emblem3D() {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src="/media/emblem.png"
+        src={fallback}
         alt="نشان آکادمی ریتیل ایران"
         className="h-full w-full object-contain"
       />

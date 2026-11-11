@@ -17,20 +17,33 @@ type Item = { key: string; page: string; label: string; hint: string; on: boolea
 
 export function SectionsForm({ items }: { items: Item[] }) {
   const [message, action] = useFormState(saveSectionsAction, null);
+  const pages = Array.from(new Set(items.map((i) => i.page)));
+
   return (
-    <form action={action} className="grid gap-4">
-      {items.map((it) => (
-        <label key={it.key} className="card flex items-start gap-4 p-5">
-          <input type="checkbox" name="on" value={it.key} defaultChecked={it.on} className="mt-1.5 h-4 w-4" />
-          <span>
-            <span className="block font-extrabold text-ink">
-              {it.label} <span className="text-xs font-normal text-ink-mute">· صفحه‌ی {it.page}</span>
-            </span>
-            <span className="mt-1 block text-xs leading-6 text-ink-soft">{it.hint}</span>
-          </span>
-        </label>
+    <form action={action} className="grid gap-6">
+      {pages.map((page) => (
+        <section key={page} className="card p-6">
+          <h2 className="font-extrabold text-ink">{page}</h2>
+          <div className="mt-4 divide-y divide-line">
+            {items
+              .filter((i) => i.page === page)
+              .map((it) => (
+                <label key={it.key} className="flex cursor-pointer items-center justify-between gap-4 py-3">
+                  <span>
+                    <span className="block text-sm font-bold text-ink">{it.label}</span>
+                    {it.hint && <span className="mt-0.5 block text-xs leading-6 text-ink-mute">{it.hint}</span>}
+                  </span>
+                  <span className="relative shrink-0">
+                    <input type="checkbox" name="on" value={it.key} defaultChecked={it.on} className="peer sr-only" />
+                    <span className="block h-6 w-11 rounded-full bg-neutral-300 transition-colors peer-checked:bg-brand peer-focus-visible:ring-2 peer-focus-visible:ring-brand-400" />
+                    <span className="absolute right-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:-translate-x-5" />
+                  </span>
+                </label>
+              ))}
+          </div>
+        </section>
       ))}
-      <div className="flex items-center gap-4">
+      <div className="sticky bottom-4 z-10 flex items-center gap-4 rounded-2xl border border-line bg-white/95 p-4 shadow-card">
         <Submit />
         {message && <span className="text-sm text-emerald-700" role="status">{message}</span>}
       </div>

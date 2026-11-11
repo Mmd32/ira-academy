@@ -1,3 +1,4 @@
+import { img } from '@/server/images';
 import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
@@ -54,7 +55,7 @@ export default function CorporatePage() {
             <Reveal delay={0.1}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/media/articles/retail-boutique.webp"
+                src={img('corporate.photo1')}
                 alt="فضای داخلی یک فروشگاه ریتیل"
                 width={936}
                 height={562}
@@ -105,7 +106,7 @@ export default function CorporatePage() {
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/media/academy.jpg"
+                src={img('corporate.photo2')}
                 alt="کارگاه آموزش سازمانی"
                 className="mt-8 hidden aspect-video w-full rounded-3xl border border-white/10 object-cover lg:block"
               />

@@ -34,7 +34,7 @@ export function organizationSchema(site: Site) {
     name: text(site, 'brand'),
     alternateName: text(site, 'brandEn') || undefined,
     url: `${siteUrl}/`,
-    logo: { '@type': 'ImageObject', url: `${siteUrl}/media/logo-mark.png` },
+    logo: { '@type': 'ImageObject', url: `${siteUrl}${site.logoPath ?? '/media/logo-mark.png'}` },
     description: text(site, 'tagline') || undefined,
     email: text(site, 'email') || undefined,
     telephone: phones[0] || undefined,

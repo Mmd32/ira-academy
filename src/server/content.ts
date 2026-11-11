@@ -1,4 +1,5 @@
 import { db, json } from './db';
+import { img } from './images';
 
 import type { Article, ArticleBlock } from '@/content/articles';
 import type { Course, CourseModel, ProgramModel, Seminar, Workshop } from '@/content/programs';
@@ -71,7 +72,8 @@ export function getHeroSlides(): HeroSlide[] {
     primary: { href: String(r.primary_href), label: String(r.primary_label) },
     secondary: { href: String(r.secondary_href), label: String(r.secondary_label) },
     visual: String(r.visual) as HeroSlide['visual'],
-    image: String(r.image),
+    // A slide with no picture of its own takes the site's default (or, for the 3D scene, the flat emblem).
+    image: String(r.image) || (String(r.visual) === 'scene3d' ? img('home.emblem') : img('hero.fallback')),
     ...(r.image_badge ? { imageBadge: String(r.image_badge) } : {}),
   }));
 }

@@ -37,6 +37,7 @@ import { saveUi } from '@/server/ui';
 import { getPage } from '@/server/content';
 import { savePage } from '@/server/pages-write';
 import { saveSections } from '@/server/sections';
+import { saveImages } from '@/server/images';
 import { deletePerson, savePerson, PERSON_KINDS, type PersonKind } from '@/server/people';
 import { RESULT_MODES, type ResultMode } from '@/lib/exam-shared';
 import { fromTehranInput } from '@/lib/tehran-time';
@@ -450,4 +451,15 @@ export async function deletePersonAction(formData: FormData) {
   if (slug) deletePerson(slug);
   revalidatePath('/', 'layout');
   redirect('/admin/people/');
+}
+
+export async function saveImagesAction(_prev: string | null, formData: FormData): Promise<string | null> {
+  requireUser();
+  const values: Record<string, string> = {};
+  formData.forEach((v, k) => {
+    if (k.startsWith('img:') && typeof v === 'string') values[k.slice(4)] = v;
+  });
+  saveImages(values);
+  revalidatePath('/', 'layout');
+  return 'ذخیره شد و همین حالا روی سایت است';
 }

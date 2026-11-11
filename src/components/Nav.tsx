@@ -11,10 +11,11 @@ type NavLabels = {
   cta: NavLink;
   login: NavLink;
   mobileLogin: string;
+  logo: string;
 };
 
 export function Nav({ labels }: { labels: NavLabels }) {
-  const { links, cta, login, mobileLogin } = labels;
+  const { links, cta, login, mobileLogin, logo } = labels;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -45,7 +46,7 @@ export function Nav({ labels }: { labels: NavLabels }) {
           <span className="grid h-10 w-10 shrink-0 place-items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/logo-mark.png"
+              src={logo}
               alt="آکادمی ریتیل ایران"
               className={`h-full w-full object-contain transition-[filter] duration-300 ${
                 overHero ? 'brightness-0 invert' : ''

@@ -1,3 +1,4 @@
+import { isOn } from '@/server/sections';
 import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -37,18 +38,12 @@ export const metadata: Metadata = {
 const registerCta =
   'rounded-full bg-brand px-4 py-1.5 text-xs font-bold text-white transition-colors hover:bg-brand-500';
 
-/**
- * Sections hidden for now. The markup below is untouched — flip a flag to
- * bring one back.
- */
-const SHOW_WORKSHOPS = false;
-const SHOW_SEMINARS = false;
-const SHOW_PAST_EVENTS = false;
-const SHOW_CALENDAR = false;
-/** The MBA block duplicates the «همکاری با دانشگاه‌ها» group above it. */
-const SHOW_MBA = false;
-
 export default function ProgramsPage() {
+  const SHOW_WORKSHOPS = isOn('programs.workshops');
+  const SHOW_SEMINARS = isOn('programs.seminars');
+  const SHOW_PAST_EVENTS = isOn('programs.pastEvents');
+  const SHOW_CALENDAR = isOn('programs.calendar');
+  const SHOW_MBA = isOn('programs.mba');
   const programModels = getProgramModels();
   const visibleCourses = getVisibleCourses();
   const workshops = getWorkshops();

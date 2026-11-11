@@ -1,3 +1,4 @@
+import { img } from '@/server/images';
 import type { Metadata } from 'next';
 
 import { getSite } from '@/server/content';
@@ -24,7 +25,7 @@ export default function SoonPage() {
       <div className="relative w-full max-w-lg text-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/media/logo-mark.png"
+          src={img('site.logo')}
           alt={brand}
           className="mx-auto h-16 w-auto object-contain"
         />

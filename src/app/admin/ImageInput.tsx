@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 /** Picture picker: shrinks the photo in the browser, uploads it, and keeps only its address. */
-export function ImageField({ value, onChange }: { value: string; onChange: (next: string) => void }) {
+export function ImageField({ value, onChange, original }: { value: string; onChange: (next: string) => void; original?: string }) {
   const [state, setState] = useState<'idle' | 'busy' | string>('idle');
 
   async function pick(file: File) {
@@ -32,14 +32,14 @@ export function ImageField({ value, onChange }: { value: string; onChange: (next
 
   return (
     <div className="mt-2 flex flex-wrap items-center gap-4">
-      {value ? (
+      {value || original ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={value} alt="" className="h-20 w-20 rounded-xl border border-line object-cover" />
+        <img src={value || original} alt="" className="h-24 w-24 rounded-xl border border-line bg-paper object-contain" />
       ) : (
         <span className="grid h-20 w-20 place-items-center rounded-xl border border-dashed border-line text-xs text-ink-mute">بدون عکس</span>
       )}
       <label className="cursor-pointer rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-brand hover:border-brand-400">
-        {state === 'busy' ? 'در حال بارگذاری…' : value ? 'تعویض عکس' : 'انتخاب عکس'}
+        {state === 'busy' ? 'در حال بارگذاری…' : value ? 'تعویض عکس' : original ? 'جایگزین کردن' : 'انتخاب عکس'}
         <input
           type="file"
           accept="image/png,image/jpeg,image/webp"
@@ -54,7 +54,7 @@ export function ImageField({ value, onChange }: { value: string; onChange: (next
       </label>
       {value && (
         <button type="button" className="text-xs font-bold text-red-700 hover:underline" onClick={() => onChange('')}>
-          حذف عکس
+          {original ? 'برگرداندن تصویر اصلی' : 'حذف عکس'}
         </button>
       )}
       {state !== 'idle' && state !== 'busy' && <span className="text-xs text-red-700">{state}</span>}
@@ -63,12 +63,12 @@ export function ImageField({ value, onChange }: { value: string; onChange: (next
 }
 
 /** The same picker for ordinary forms: remembers its address in a hidden field of the given name. */
-export function ImageInput({ name, defaultValue = '' }: { name: string; defaultValue?: string }) {
+export function ImageInput({ name, defaultValue = '', original }: { name: string; defaultValue?: string; original?: string }) {
   const [value, setValue] = useState(defaultValue);
   return (
     <>
       <input type="hidden" name={name} value={value} />
-      <ImageField value={value} onChange={setValue} />
+      <ImageField value={value} onChange={setValue} original={original} />
     </>
   );
 }

@@ -159,17 +159,17 @@ export function setSetting(key: string, value: unknown) {
 
 export function updateHeroSlide(
   id: string,
-  patch: { eyebrow: string; title: string; lead: string; enabled: boolean },
+  patch: { eyebrow: string; title: string; lead: string; enabled: boolean; image?: string },
 ) {
   db()
     .prepare(
-      `UPDATE hero_slides SET eyebrow = ?, title = ?, lead = ?, enabled = ? WHERE id = ?`,
+      `UPDATE hero_slides SET eyebrow = ?, title = ?, lead = ?, enabled = ?, image = COALESCE(?, image) WHERE id = ?`,
     )
-    .run(patch.eyebrow, patch.title, patch.lead, patch.enabled ? 1 : 0, id);
+    .run(patch.eyebrow, patch.title, patch.lead, patch.enabled ? 1 : 0, patch.image ?? null, id);
 }
 
 export function listHeroSlidesForAdmin() {
   return db()
-    .prepare(`SELECT id, enabled, eyebrow, title, lead FROM hero_slides ORDER BY position ASC`)
-    .all() as { id: string; enabled: number; eyebrow: string; title: string; lead: string }[];
+    .prepare(`SELECT id, enabled, eyebrow, title, lead, visual, image FROM hero_slides ORDER BY position ASC`)
+    .all() as { id: string; enabled: number; eyebrow: string; title: string; lead: string; visual: string; image: string }[];
 }

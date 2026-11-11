@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { siteUrl } from '@/lib/site-url';
 import { organizationSchema, websiteSchema } from '@/lib/seo';
 import { getSeoSettings } from '@/server/seo-settings';
+import { img } from '@/server/images';
 import { JsonLd } from '@/components/JsonLd';
 import { getSite } from '@/server/content';
 import './globals.css';
@@ -65,12 +66,12 @@ export function generateMetadata(): Metadata {
     siteName: 'آکادمی ریتیل ایران',
     locale: 'fa_IR',
     type: 'website',
-    images: [{ url: '/media/logo-mark.png', width: 512, height: 512, alt: 'آکادمی ریتیل ایران' }],
+    images: [{ url: img('site.logo'), width: 512, height: 512, alt: 'آکادمی ریتیل ایران' }],
   },
   twitter: {
     card: 'summary',
     title: 'آکادمی ریتیل ایران',
-    images: ['/media/logo-mark.png'],
+    images: [img('site.logo')],
     description:
       'آموزش تخصصی فروش، مدیریت فروشگاه و تجربه‌ی مشتری — برای فروشگاه‌داران و برندهای زنجیره‌ای.',
   },
@@ -83,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fa" dir="rtl" className={lahzeh.variable}>
       <body>
-        <JsonLd data={organizationSchema(site)} />
+        <JsonLd data={organizationSchema({ ...site, logoPath: img('site.logo') })} />
         <JsonLd data={websiteSchema(site)} />
         {children}
       </body>

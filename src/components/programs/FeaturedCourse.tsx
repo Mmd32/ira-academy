@@ -1,3 +1,4 @@
+import { img } from '@/server/images';
 import Link from 'next/link';
 
 import { Reveal } from '@/components/Reveal';
@@ -71,7 +72,7 @@ export function FeaturedCourse() {
                 <div className="inline-flex items-center rounded-2xl bg-white px-10 py-6 shadow-lift">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/media/logo-mark.png"
+                    src={img('site.logo')}
                     alt={site.brand}
                     className="h-14 w-auto object-contain"
                   />
