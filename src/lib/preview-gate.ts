@@ -38,6 +38,7 @@ export function isExempt(pathname: string): boolean {
   return (
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/media/') ||
+    pathname.startsWith('/uploads/') ||
     pathname.startsWith('/fonts/') ||
     pathname.startsWith('/api/') ||
     // The panel has its own sign-in; the curtain must not sit in front of it.

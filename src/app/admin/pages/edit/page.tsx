@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { pages as seed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { requireAdmin } from '@/server/guard';
-import { EDITABLE_PAGES } from '@/server/pages-write';
+import { EDITABLE_PAGES, withImages } from '@/server/pages-write';
 
 import { PageTitle } from '../../ui';
 import { PageEditor } from './PageEditor';
@@ -29,7 +29,7 @@ export default function EditPage({ searchParams }: Props) {
         <PageTitle eyebrow="متن صفحه" title={EDITABLE_PAGES[slug]} />
       </div>
       <div className="mt-8">
-        <PageEditor slug={slug} initial={JSON.parse(JSON.stringify(content))} />
+        <PageEditor slug={slug} initial={withImages(slug, content)} />
       </div>
     </>
   );

@@ -13,6 +13,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
 import { about as aboutSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
+import { getSections } from '@/server/sections';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
@@ -26,10 +27,12 @@ export const metadata: Metadata = {
  * Sections hidden for now. The markup stays in place so each can be switched
  * back on by flipping its flag — nothing has to be rewritten.
  */
-const SHOW_FOUNDERS = false;
-const SHOW_SPONSORS = false;
+
 
 export default function AboutPage() {
+  const sections = getSections();
+  const SHOW_FOUNDERS = sections['about.founders'];
+  const SHOW_SPONSORS = sections['about.sponsors'];
   const about = getPage('about', aboutSeed as unknown as typeof aboutSeed);
   const pillars = [
     { label: 'هدف', text: about.goal },
@@ -103,9 +106,18 @@ export default function AboutPage() {
                   {group.people.map((person, i) => (
                     <Reveal key={person.name} className="h-full">
                       <div className="card flex h-full items-center gap-4 p-6">
-                        <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand text-lg font-black text-white">
-                          {fa(i + 1)}
-                        </span>
+                        {(person as { image?: string }).image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={(person as { image?: string }).image}
+                            alt={person.name}
+                            className="h-14 w-14 shrink-0 rounded-full object-cover"
+                          />
+                        ) : (
+                          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand text-lg font-black text-white">
+                            {fa(i + 1)}
+                          </span>
+                        )}
                         <div>
                           <h4 className="whitespace-pre-line font-extrabold text-ink">{person.name}</h4>
                           {person.role && <p className="mt-1 text-sm text-ink-mute">{person.role}</p>}
@@ -131,9 +143,18 @@ export default function AboutPage() {
               {about.founders.map((person, i) => (
                 <Reveal key={i} className="h-full">
                   <div className="card flex h-full flex-col items-center p-8 text-center">
-                    <span className="grid h-20 w-20 place-items-center rounded-full border border-gold/40 bg-brand/5 text-2xl font-black text-brand">
-                      آ
-                    </span>
+                    {(person as { image?: string }).image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={(person as { image?: string }).image}
+                        alt={person.name}
+                        className="h-24 w-24 rounded-full border border-gold/40 object-cover"
+                      />
+                    ) : (
+                      <span className="grid h-20 w-20 place-items-center rounded-full border border-gold/40 bg-brand/5 text-2xl font-black text-brand">
+                        آ
+                      </span>
+                    )}
                     <h3 className="mt-4 font-extrabold text-ink">{person.name}</h3>
                     <p className="mt-1 text-sm text-ink-mute">{person.role}</p>
                   </div>

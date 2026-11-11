@@ -14,20 +14,39 @@ export const metadata: Metadata = {
 /** The panel reads the database on every request, so nothing may be cached. */
 export const dynamic = 'force-dynamic';
 
-const NAV = [
-  { href: '/admin/', label: 'خلاصه' },
-  { href: '/admin/leads/', label: 'فرم‌ها و سرنخ‌ها', badge: 'leads' },
-  { href: '/admin/articles/', label: 'مقاله‌ها' },
-  { href: '/admin/courses/', label: 'دوره‌ها' },
-  { href: '/admin/texts/', label: 'متن‌های سایت' },
-  { href: '/admin/site/', label: 'هدر، فوتر و دکمه‌ها' },
-  { href: '/admin/pages/', label: 'متن صفحه‌ها' },
-  { href: '/admin/glossary/', label: 'واژه‌نامه' },
-  { href: '/admin/students/', label: 'دانش‌پذیران' },
-  { href: '/admin/orgs/', label: 'سازمان‌ها' },
-  { href: '/admin/groups/', label: 'گروه‌ها' },
-  { href: '/admin/exams/', label: 'آزمون‌ها' },
-  { href: '/admin/seo/', label: 'سئو و آنالیتیکس' },
+type NavItem = { href: string; label: string; badge?: 'leads' };
+
+/** Grouped by what the person is doing, so fifteen links do not read as one long row. */
+const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
+  { title: '', items: [{ href: '/admin/', label: 'خلاصه' }] },
+  {
+    title: 'محتوای سایت',
+    items: [
+      { href: '/admin/articles/', label: 'مقاله‌ها' },
+      { href: '/admin/courses/', label: 'دوره‌ها' },
+      { href: '/admin/texts/', label: 'متن‌های سایت' },
+      { href: '/admin/pages/', label: 'متن صفحه‌ها' },
+      { href: '/admin/site/', label: 'هدر، فوتر و دکمه‌ها' },
+      { href: '/admin/sections/', label: 'نمایش بخش‌ها' },
+      { href: '/admin/glossary/', label: 'واژه‌نامه' },
+    ],
+  },
+  {
+    title: 'دانش‌پذیران و آزمون',
+    items: [
+      { href: '/admin/students/', label: 'دانش‌پذیران' },
+      { href: '/admin/orgs/', label: 'سازمان‌ها' },
+      { href: '/admin/groups/', label: 'گروه‌ها' },
+      { href: '/admin/exams/', label: 'آزمون‌ها' },
+    ],
+  },
+  {
+    title: 'رشد',
+    items: [
+      { href: '/admin/leads/', label: 'فرم‌ها و سرنخ‌ها', badge: 'leads' },
+      { href: '/admin/seo/', label: 'سئو و آنالیتیکس' },
+    ],
+  },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -47,20 +66,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             پنل مدیریت
           </Link>
 
-          <nav className="flex flex-1 flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-ink-soft transition-colors hover:text-brand"
-              >
-                {item.label}
-                {item.badge === 'leads' && counts.new > 0 && (
-                  <span className="mr-2 rounded-full bg-gold px-2 py-0.5 text-[11px] font-black text-ink">
-                    {counts.new}
-                  </span>
-                )}
-              </Link>
+          <nav className="flex flex-1 flex-wrap items-start gap-x-8 gap-y-3 text-sm">
+            {NAV_GROUPS.map((group) => (
+              <div key={group.title || 'home'}>
+                {group.title && <p className="mb-1 text-[11px] font-bold text-ink-mute">{group.title}</p>}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  {group.items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="py-1 text-ink-soft transition-colors hover:text-brand"
+                    >
+                      {item.label}
+                      {item.badge === 'leads' && counts.new > 0 && (
+                        <span className="mr-2 rounded-full bg-gold px-2 py-0.5 text-[11px] font-black text-ink">
+                          {counts.new}
+                        </span>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             ))}
           </nav>
 

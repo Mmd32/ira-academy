@@ -1,3 +1,4 @@
+import { getSections } from '@/server/sections';
 import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
@@ -23,9 +24,9 @@ export const metadata: Metadata = {
 };
 
 /** The album grid is hidden until there are event photographs. The markup stays. */
-const SHOW_ALBUMS = false;
 
 export default function CommunityPage() {
+  const SHOW_ALBUMS = getSections()['community.albums'];
   const site = getSite();
   const community = getPage('community', communitySeed as unknown as typeof communitySeed);
   return (
@@ -92,7 +93,12 @@ export default function CommunityPage() {
               <Reveal key={album.title}>
                 <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
                   <div className={`absolute inset-0 ${album.tone}`} />
-                  <div className="navy-grid absolute inset-0 opacity-40" />
+                  {album.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={album.image} alt={album.title} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="navy-grid absolute inset-0 opacity-40" />
+                  )}
                   <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end bg-gradient-to-t from-ink/80 to-transparent p-5 text-white">
                     <span className="text-[10px] font-bold text-white/70">
                       آلبوم تصاویر

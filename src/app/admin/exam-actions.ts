@@ -36,6 +36,7 @@ import { saveSeoSettings } from '@/server/seo-settings';
 import { saveUi } from '@/server/ui';
 import { getPage } from '@/server/content';
 import { savePage } from '@/server/pages-write';
+import { saveSections } from '@/server/sections';
 import { RESULT_MODES, type ResultMode } from '@/lib/exam-shared';
 import { fromTehranInput } from '@/lib/tehran-time';
 
@@ -401,5 +402,12 @@ export async function savePageAction(_prev: string | null, formData: FormData): 
   if (error) return error;
   revalidatePath(`/${slug}`);
   revalidatePath('/admin/pages');
+  return 'ذخیره شد و همین حالا روی سایت است';
+}
+
+export async function saveSectionsAction(_prev: string | null, formData: FormData): Promise<string | null> {
+  requireUser();
+  saveSections(formData.getAll('on').map(String));
+  revalidatePath('/', 'layout');
   return 'ذخیره شد و همین حالا روی سایت است';
 }
