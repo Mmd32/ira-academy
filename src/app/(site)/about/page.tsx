@@ -34,7 +34,6 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   const about = getPage('about', aboutSeed as unknown as typeof aboutSeed);
   const sections = getSections();
-  const SHOW_FOUNDERS = sections['about.founders'];
   const SHOW_SPONSORS = sections['about.sponsors'];
 
   const founders = listPeople({ kind: 'founder', onlyVisible: true });
@@ -166,7 +165,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {SHOW_FOUNDERS && founders.length > 0 && (
+      {founders.length > 0 && (
         <section className="section bg-white">
           <div className="container-x">
             <Reveal>

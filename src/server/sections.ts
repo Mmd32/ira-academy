@@ -10,7 +10,6 @@ import { db, json } from './db';
 export type SectionDef = { key: string; page: string; label: string; hint: string };
 
 export const SECTIONS: readonly SectionDef[] = [
-  { key: 'about.founders', page: 'معرفی آکادمی', label: 'هیئت مؤسس', hint: 'نام، سمت و عکس را در «متن صفحه‌ها ← معرفی آکادمی» وارد کنید.' },
   { key: 'about.sponsors', page: 'معرفی آکادمی', label: 'حامیان', hint: 'متن آن در «متن صفحه‌ها ← معرفی آکادمی» است.' },
   { key: 'community.albums', page: 'جامعه ARI', label: 'آلبوم رویدادها', hint: 'عنوان و عکس هر آلبوم را در «متن صفحه‌ها ← جامعه ARI» بگذارید.' },
 ];
