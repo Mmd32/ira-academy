@@ -16,7 +16,8 @@ import { corporate as corporateSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { getSite } from '@/server/content';
 import { LiteralText } from '@/components/LiteralText';
-import { fa, formatLandlines } from '@/lib/text';
+import { fa } from '@/lib/text';
+import { PhoneLinks } from '@/components/PhoneLinks';
 
 export const metadata: Metadata = {
   description:
@@ -100,7 +101,7 @@ export default function CorporatePage() {
                   «و ۵» (the Persian «و» drags the digit that follows it), so LiteralText isolates
                   each piece. */}
               <div className="mt-6 w-fit rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-lg font-black text-gold-soft">
-                <LiteralText value={formatLandlines(String(site.phone ?? ''), String(site.phone2 ?? ''))} />
+                <PhoneLinks numbers={[String(site.phone ?? ''), String(site.phone2 ?? '')]} />
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

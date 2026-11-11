@@ -43,3 +43,15 @@ export function formatLandlines(first: string, second?: string): string {
   const sameButLast = a.length === b.length && a.slice(0, -1) === b.slice(0, -1);
   return fa(`${group(first)} و ${sameButLast ? b.slice(-1) : group(second ?? '')}`);
 }
+
+/** "02128429966" → "۰۲۱ ۲۸۴۲ ۹۹۶۶": a Tehran landline in groups, digits in Persian. */
+export function groupLandline(number: string): string {
+  const d = number.replace(/\D/g, '');
+  return fa(d.length === 11 && d.startsWith('021') ? `${d.slice(0, 3)} ${d.slice(3, 7)} ${d.slice(7)}` : number.trim());
+}
+
+/** "02128429966" → "+982128429966", the form a phone's dialler wants. */
+export function telHref(number: string): string {
+  const d = number.replace(/\D/g, '');
+  return d ? `tel:+98${d.replace(/^0/, '')}` : '';
+}

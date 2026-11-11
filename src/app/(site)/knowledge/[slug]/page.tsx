@@ -254,7 +254,7 @@ export default function ArticlePage({ params }: Props) {
                   {others.length > 0 ? 'مقالات دیگر کتابخانه' : 'دوره‌های تخصصی آکادمی'}
                 </h2>
               </div>
-              <Link href="/knowledge/#articles" className="btn-secondary !py-2.5 text-xs">
+              <Link href="/articles/" className="btn-secondary !py-2.5 text-xs">
                 همه مقالات
               </Link>
             </div>

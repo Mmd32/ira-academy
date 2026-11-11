@@ -123,7 +123,7 @@ export function ArticlesPreview() {
               <p className="eyebrow">{ui('home.articles.eyebrow')}</p>
               <h2 className="mt-5 text-3xl sm:text-4xl">{ui('home.articles.title')}</h2>
             </div>
-            <Link href="/knowledge/#articles" className="btn-secondary !py-2.5 text-xs">
+            <Link href="/articles/" className="btn-secondary !py-2.5 text-xs">
               {ui('home.articles.all')}
             </Link>
           </div>

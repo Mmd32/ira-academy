@@ -31,7 +31,7 @@ export function Footer() {
             </span>
             <span className="text-sm font-extrabold">{site.brand}</span>
           </div>
-          <p className="mt-4 max-w-xs text-xs leading-6 text-white/50">{site.footerText}</p>
+          <p className="mt-4 max-w-xs whitespace-pre-line text-xs leading-6 text-white/50">{site.footerText}</p>
           <SocialLinks site={site} />
         </div>
 

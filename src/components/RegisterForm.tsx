@@ -7,7 +7,7 @@ import { Reveal } from '@/components/Reveal';
 
 
 import { LiteralText } from '@/components/LiteralText';
-import { formatLandlines } from '@/lib/text';
+import { PhoneLinks } from '@/components/PhoneLinks';
 
 /** Everything registrable, in one flat list for the <select>. */
 export type RegisterProgram = { id: string; label: string };
@@ -88,7 +88,7 @@ export function RegisterForm({
             {'پس از ارسال فرم، کارشناس ثبت‌نام برای اعلام جزئیات دوره\nمورد نظرتان (زمان‌بندی، شهریه و نحوه پرداخت) با شما تماس می‌گیرد. برای مشاوره فوری:'}
           </p>
           <div className="mt-5 w-fit rounded-full border border-brand/15 bg-brand/5 px-6 py-3 font-black text-brand">
-            <LiteralText value={formatLandlines(site.phone, site.phone2)} />
+            <PhoneLinks numbers={[site.phone, site.phone2]} />
           </div>
 
           {site.address && (

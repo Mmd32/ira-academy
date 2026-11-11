@@ -98,14 +98,14 @@ export const UI_ITEMS: readonly UiItem[] = [
     "key": "nav.6.href",
     "group": "هدر: منو",
     "label": "منوی 6: لینک",
-    "default": "/knowledge/#articles",
+    "default": "/articles/",
     "kind": "href"
   },
   {
     "key": "nav.7.label",
     "group": "هدر: منو",
     "label": "منوی 7: عنوان",
-    "default": "تماس",
+    "default": "ارتباط با ما",
     "kind": "text"
   },
   {
@@ -231,7 +231,7 @@ export const UI_ITEMS: readonly UiItem[] = [
     "key": "footer.2.1.href",
     "group": "فوتر",
     "label": "ستون 2، لینک 1: آدرس",
-    "default": "/knowledge/#articles",
+    "default": "/articles/",
     "kind": "href"
   },
   {
@@ -259,7 +259,7 @@ export const UI_ITEMS: readonly UiItem[] = [
     "key": "footer.2.3.href",
     "group": "فوتر",
     "label": "ستون 2، لینک 3: آدرس",
-    "default": "/knowledge/#articles",
+    "default": "/articles/",
     "kind": "href"
   },
   {
@@ -674,6 +674,27 @@ export const UI_ITEMS: readonly UiItem[] = [
     "label": "دکمه‌ی دوم: لینک",
     "default": "/portal/",
     "kind": "href"
+  },
+{
+    "key": "page.articles.eyebrow",
+    "group": "سربرگ صفحه‌ها",
+    "label": "مقالات: برچسب کوچک بالای عنوان",
+    "default": "مقالات",
+    "kind": "text"
+  },
+{
+    "key": "page.articles.title",
+    "group": "سربرگ صفحه‌ها",
+    "label": "مقالات: عنوان بزرگ",
+    "default": "مقاله‌ها و موردکاوی‌های تخصصی ریتیل",
+    "kind": "text"
+  },
+{
+    "key": "page.articles.lead",
+    "group": "سربرگ صفحه‌ها",
+    "label": "مقالات: متن زیر عنوان",
+    "default": "نوشته‌های تخصصی درباره‌ی فروش، مدیریت فروشگاه و تجربه‌ی مشتری.",
+    "kind": "long"
   }
 ];
 

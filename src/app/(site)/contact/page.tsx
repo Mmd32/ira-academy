@@ -1,3 +1,4 @@
+import { PhoneLinks } from '@/components/PhoneLinks';
 import { ui } from '@/server/ui';
 import type { Metadata } from 'next';
 
@@ -46,7 +47,7 @@ export default function ContactPage() {
         <div className="container-x grid items-start gap-8 lg:grid-cols-3">
           <Reveal>
             <div className="card p-7">
-              <p className="eyebrow">نشانی دفتر</p>
+              <p className="eyebrow">نشانی دفتر آکادمی</p>
               <p className="mt-5 text-sm leading-8 text-ink-soft">{site.address}</p>
               <div className="mt-5 grid aspect-video place-items-center rounded-2xl border border-dashed border-line bg-paper text-xs text-ink-mute">
                 نقشه (نشان) — به‌زودی
@@ -72,15 +73,7 @@ export default function ContactPage() {
                 <div className="border-b border-line pb-4">
                   <dt className="text-xs text-ink-mute">تلفن</dt>
                   <dd className="mt-1 space-y-1 text-right">
-                    {[site.phone, site.phone2]
-                      .filter(Boolean)
-                      .map((number) => (
-                        <LiteralText
-                          key={String(number)}
-                          value={fa(String(number))}
-                          className="block font-bold text-ink"
-                        />
-                      ))}
+                    <PhoneLinks numbers={[String(site.phone ?? ''), String(site.phone2 ?? '')]} stacked linkClassName="font-bold text-ink" />
                   </dd>
                 </div>
                 <div className="border-b border-line pb-4">
@@ -118,14 +111,20 @@ export default function ContactPage() {
           <Reveal>
             <p className="eyebrow">پرسش‌های متداول</p>
           </Reveal>
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <div className="mx-auto mt-10 grid max-w-3xl gap-3">
             {contact.faqs.map((faq) => (
-              <Reveal key={faq.q}>
-                <div className="card p-6">
-                  <h3 className="font-extrabold text-ink">{faq.q}</h3>
-                  <p className="mt-2 text-sm leading-7 text-ink-soft">{faq.a}</p>
-                </div>
-              </Reveal>
+              <details key={faq.q} className="card group p-0">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-extrabold text-ink [&::-webkit-details-marker]:hidden">
+                  {faq.q}
+                  <span
+                    aria-hidden
+                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-brand transition-transform duration-300 group-open:rotate-180"
+                  >
+                    ⌄
+                  </span>
+                </summary>
+                <p className="whitespace-pre-line border-t border-line px-5 pb-5 pt-4 text-sm leading-8 text-ink-soft">{faq.a}</p>
+              </details>
             ))}
           </div>
         </div>
@@ -156,9 +155,7 @@ export default function ContactPage() {
             <div id="partner" className="card flex h-full flex-col p-8">
               <p className="eyebrow">مشارکت و همکاری</p>
               <div className="mt-4 flex-1 leading-8 text-ink-soft">
-                {contact.partnerLines.map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
+                <p>{contact.partnerLines.join(' ')}</p>
               </div>
               <a
                 href={`mailto:${site.email}?subject=پیشنهاد همکاری`}

@@ -12,6 +12,16 @@
     scroll-padding-top: var(--nav-h);
   }
 
+  /*
+    Running text is justified. :where() keeps this at the lowest specificity,
+    so a paragraph that sets its own alignment (centred captions, labels)
+    still wins; a one-line paragraph is unaffected either way.
+  */
+  :where(main, footer) p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
   body {
     @apply bg-paper text-ink antialiased;
     font-family: var(--font-brand);
