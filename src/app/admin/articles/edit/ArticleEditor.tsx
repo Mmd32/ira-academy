@@ -6,6 +6,8 @@ import { useFormStatus } from 'react-dom';
 
 import { saveArticleAction } from '../../content-actions';
 import { Field, fieldBox } from '../../ui';
+import { ImageInput } from '../../ImageInput';
+import { JalaliDate } from '@/components/JalaliPreview';
 
 import type { Article, ArticleBlock } from '@/content/articles';
 
@@ -37,7 +39,50 @@ function Submit() {
   );
 }
 
-export function ArticleEditor({ article }: { article?: Article }) {
+type PersonOption = { slug: string; name: string; role: string };
+
+/** Choosing a profile fills the name and title; both stay editable for a guest author. */
+function AuthorPicker({ article, people }: { article?: Article; people: PersonOption[] }) {
+  const [slug, setSlug] = useState(article?.author.slug ?? '');
+  const [name, setName] = useState(article?.author.name ?? '');
+  const [title, setTitle] = useState(article?.author.title ?? '');
+
+  return (
+    <>
+      <Field label="پروفایل نویسنده" hint="صفحه‌ی پروفایل او زیر مقاله لینک می‌شود">
+        <select
+          name="authorSlug"
+          value={slug}
+          onChange={(e) => {
+            const p = people.find((x) => x.slug === e.target.value);
+            setSlug(e.target.value);
+            if (p) {
+              setName(p.name);
+              setTitle(p.role);
+            }
+          }}
+          className={fieldBox}
+        >
+          <option value="">بدون پروفایل (فقط نام)</option>
+          {people.map((p) => (
+            <option key={p.slug} value={p.slug}>
+              {p.name}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <span className="hidden sm:block" />
+      <Field label="نام نویسنده">
+        <input name="authorName" value={name} onChange={(e) => setName(e.target.value)} className={fieldBox} />
+      </Field>
+      <Field label="سمت نویسنده">
+        <input name="authorTitle" value={title} onChange={(e) => setTitle(e.target.value)} className={fieldBox} />
+      </Field>
+    </>
+  );
+}
+
+export function ArticleEditor({ article, people }: { article?: Article; people: PersonOption[] }) {
   const [rows, setRows] = useState<Row[]>(
     article ? toRows(article.body) : [{ key: 0, type: 'lead', text: '', extra: '' }],
   );
@@ -82,20 +127,12 @@ export function ArticleEditor({ article }: { article?: Article }) {
           <Field label="نوع" hint="مثلاً مقاله، مورد کاوی">
             <input name="kind" defaultValue={article?.kind ?? 'مقاله'} className={fieldBox} />
           </Field>
-          <Field label="نویسنده">
-            <input name="authorName" defaultValue={article?.author.name} className={fieldBox} />
-          </Field>
-          <Field label="سمت نویسنده">
-            <input name="authorTitle" defaultValue={article?.author.title} className={fieldBox} />
-          </Field>
-          <Field label="تاریخ انتشار" hint="میلادی">
-            <input
-              name="publishedAt"
-              type="date"
-              defaultValue={article?.publishedAt ?? new Date().toISOString().slice(0, 10)}
-              className={`${fieldBox} ltr`}
-            />
-          </Field>
+          <AuthorPicker article={article} people={people} />
+          <div>
+            <span className="text-sm font-semibold text-ink">تاریخ انتشار</span>
+            <span className="mr-2 text-xs text-ink-mute">شمسی</span>
+            <JalaliDate name="publishedAt" defaultValue={article?.publishedAt ?? new Date().toISOString().slice(0, 10)} />
+          </div>
           <Field label="کلیدواژه‌های سئو" hint="با «،» جدا کنید">
             <input
               name="keywords"
@@ -110,9 +147,10 @@ export function ArticleEditor({ article }: { article?: Article }) {
         </Field>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="تصویر کاور" hint="مثلاً /media/articles/name.webp">
-            <input name="coverSrc" defaultValue={article?.cover.src} className={`${fieldBox} ltr`} />
-          </Field>
+          <div>
+            <span className="text-sm font-semibold text-ink">تصویر کاور</span>
+            <ImageInput name="coverSrc" defaultValue={article?.cover.src} />
+          </div>
           <Field label="توضیح تصویر کاور" hint="برای نابینایان و گوگل">
             <input name="coverAlt" defaultValue={article?.cover.alt} className={fieldBox} />
           </Field>
@@ -161,12 +199,9 @@ export function ArticleEditor({ article }: { article?: Article }) {
               </p>
             ) : row.type === 'image' ? (
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                <input
-                  name="blockText"
-                  defaultValue={row.text}
-                  placeholder="/media/articles/name.webp"
-                  className={`${fieldBox} ltr !mt-0`}
-                />
+                <div>
+                  <ImageInput name="blockText" defaultValue={row.text} />
+                </div>
                 <input
                   name="blockExtra"
                   defaultValue={row.extra}

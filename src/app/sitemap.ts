@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 import { getArticles, getContentUpdatedAt } from '@/server/content';
+import { listPeople } from '@/server/people';
 import { siteUrl } from '@/lib/site-url';
 
 export const dynamic = 'force-dynamic';
@@ -31,6 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency,
       priority,
+    })),
+    ...listPeople({ onlyVisible: true }).map((p) => ({
+      url: `${siteUrl}/team/${p.slug}/`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
     })),
     // Each published article is its own indexable page.
     ...getArticles().map((a) => ({

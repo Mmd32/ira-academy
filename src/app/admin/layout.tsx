@@ -25,6 +25,7 @@ const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { href: '/admin/articles/', label: 'مقاله‌ها' },
       { href: '/admin/courses/', label: 'دوره‌ها' },
       { href: '/admin/texts/', label: 'متن‌های سایت' },
+      { href: '/admin/people/', label: 'افراد و پروفایل‌ها' },
       { href: '/admin/pages/', label: 'متن صفحه‌ها' },
       { href: '/admin/site/', label: 'هدر، فوتر و دکمه‌ها' },
       { href: '/admin/sections/', label: 'نمایش بخش‌ها' },

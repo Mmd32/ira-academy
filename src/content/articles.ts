@@ -15,7 +15,7 @@ export type Article = {
   /** Short title for cards and breadcrumbs. */
   shortTitle: string;
   kind: string;
-  author: { name: string; title: string };
+  author: { name: string; title: string; /** Profile page, when the author has one. */ slug?: string };
   /** ISO date — drives <time>, the sitemap and the Article schema. */
   publishedAt: string;
   /** Meta description and card text; keep near 155 characters. */

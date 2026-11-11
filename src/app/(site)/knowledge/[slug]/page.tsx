@@ -14,6 +14,7 @@ import { Reveal } from '@/components/Reveal';
 import { StoreLayoutDiagram } from '@/components/articles/StoreLayoutDiagram';
 import { readingMinutes } from '@/content/articles';
 import { getArticles, getArticleBySlug, getSite } from '@/server/content';
+import { getPerson } from '@/server/people';
 
 import { siteUrl } from '@/lib/site-url';
 import { breadcrumbSchema } from '@/lib/seo';
@@ -132,7 +133,13 @@ export default function ArticlePage({ params }: Props) {
           </h1>
 
           <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/65">
-            <span className="font-bold text-gold-soft">{article.author.name}</span>
+            {article.author.slug && getPerson(article.author.slug) ? (
+              <Link href={`/team/${article.author.slug}/`} className="font-bold text-gold-soft hover:underline">
+                {article.author.name}
+              </Link>
+            ) : (
+              <span className="font-bold text-gold-soft">{article.author.name}</span>
+            )}
             <span className="text-white/50">{article.author.title}</span>
           </div>
 
@@ -236,8 +243,29 @@ export default function ArticlePage({ params }: Props) {
             <Reveal>
               <div className="mt-16 border-t border-line pt-8">
                 <p className="eyebrow">درباره نویسنده</p>
-                <p className="mt-4 text-lg font-extrabold text-ink">{article.author.name}</p>
-                <p className="mt-1 leading-8 text-ink-soft">{article.author.title}</p>
+                {(() => {
+                  const person = article.author.slug ? getPerson(article.author.slug) : undefined;
+                  return (
+                    <div className="mt-4 flex items-start gap-5">
+                      {person?.photo && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={person.photo} alt={person.name} className="h-20 w-20 shrink-0 rounded-full border border-line object-cover" />
+                      )}
+                      <div>
+                        <p className="text-lg font-extrabold text-ink">{article.author.name}</p>
+                        <p className="mt-1 leading-8 text-ink-soft">{article.author.title}</p>
+                        {person?.bio && (
+                          <p className="mt-2 line-clamp-3 text-sm leading-8 text-ink-soft">{person.bio}</p>
+                        )}
+                        {person && (
+                          <Link href={`/team/${person.slug}/`} className="mt-2 inline-block text-sm font-bold text-brand hover:underline">
+                            مشاهده‌ی پروفایل و نوشته‌های او ←
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </Reveal>
           </div>

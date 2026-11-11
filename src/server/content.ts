@@ -138,7 +138,11 @@ function toArticle(r: Row): Article {
     title: String(r.title),
     shortTitle: String(r.short_title),
     kind: String(r.kind),
-    author: { name: String(r.author_name), title: String(r.author_title) },
+    author: {
+      name: String(r.author_name),
+      title: String(r.author_title),
+      slug: r.author_slug ? String(r.author_slug) : undefined,
+    },
     publishedAt: String(r.published_at),
     excerpt: String(r.excerpt),
     cover: { src: String(r.cover_src), alt: String(r.cover_alt) },

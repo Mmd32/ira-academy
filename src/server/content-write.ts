@@ -15,6 +15,7 @@ export type ArticleInput = {
   kind: string;
   authorName: string;
   authorTitle: string;
+  authorSlug: string;
   publishedAt: string;
   excerpt: string;
   coverSrc: string;
@@ -37,13 +38,14 @@ export function upsertArticle(input: ArticleInput, originalSlug?: string) {
     .prepare(
       `INSERT INTO articles
          (slug, published, position, title, short_title, kind, author_name,
-          author_title, published_at, excerpt, cover_src, cover_alt, keywords, body)
+          author_title, author_slug, published_at, excerpt, cover_src, cover_alt, keywords, body)
        VALUES (@slug, @published, @position, @title, @shortTitle, @kind, @authorName,
-               @authorTitle, @publishedAt, @excerpt, @coverSrc, @coverAlt, @keywords, @body)
+               @authorTitle, @authorSlug, @publishedAt, @excerpt, @coverSrc, @coverAlt, @keywords, @body)
        ON CONFLICT(slug) DO UPDATE SET
          published = excluded.published, title = excluded.title,
          short_title = excluded.short_title, kind = excluded.kind,
          author_name = excluded.author_name, author_title = excluded.author_title,
+         author_slug = excluded.author_slug,
          published_at = excluded.published_at, excerpt = excluded.excerpt,
          cover_src = excluded.cover_src, cover_alt = excluded.cover_alt,
          keywords = excluded.keywords, body = excluded.body`,
@@ -57,6 +59,7 @@ export function upsertArticle(input: ArticleInput, originalSlug?: string) {
       kind: input.kind,
       authorName: input.authorName,
       authorTitle: input.authorTitle,
+      authorSlug: input.authorSlug,
       publishedAt: input.publishedAt,
       excerpt: input.excerpt,
       coverSrc: input.coverSrc,

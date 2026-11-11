@@ -37,6 +37,7 @@ import { saveUi } from '@/server/ui';
 import { getPage } from '@/server/content';
 import { savePage } from '@/server/pages-write';
 import { saveSections } from '@/server/sections';
+import { deletePerson, savePerson, PERSON_KINDS, type PersonKind } from '@/server/people';
 import { RESULT_MODES, type ResultMode } from '@/lib/exam-shared';
 import { fromTehranInput } from '@/lib/tehran-time';
 
@@ -410,4 +411,43 @@ export async function saveSectionsAction(_prev: string | null, formData: FormDat
   saveSections(formData.getAll('on').map(String));
   revalidatePath('/', 'layout');
   return 'ذخیره شد و همین حالا روی سایت است';
+}
+
+/* ----------------------------- people / profiles ------------------------ */
+
+export async function savePersonAction(formData: FormData) {
+  requireUser();
+  const get = (k: string) => String(formData.get(k) ?? '');
+  const original = get('originalSlug') || null;
+  const kind = get('kind');
+
+  const result = savePerson(original, {
+    slug: get('slug') || `person-${Date.now().toString(36)}`,
+    kind: (kind in PERSON_KINDS ? kind : 'instructor') as PersonKind,
+    name: get('name'),
+    role: get('role'),
+    groupLabel: get('groupLabel'),
+    bio: get('bio'),
+    photo: get('photo'),
+    instagram: get('instagram'),
+    linkedin: get('linkedin'),
+    website: get('website'),
+    email: get('email'),
+    position: Number(get('position')) || 0,
+    visible: formData.get('visible') === 'on',
+  });
+
+  const back = original ? `?slug=${encodeURIComponent(original)}&` : '?';
+  if ('error' in result) redirect(`/admin/people/edit/${back}error=${encodeURIComponent(result.error)}`);
+
+  revalidatePath('/', 'layout');
+  redirect(`/admin/people/edit/?slug=${result.slug}&saved=1`);
+}
+
+export async function deletePersonAction(formData: FormData) {
+  requireUser();
+  const slug = String(formData.get('slug') ?? '');
+  if (slug) deletePerson(slug);
+  revalidatePath('/', 'layout');
+  redirect('/admin/people/');
 }

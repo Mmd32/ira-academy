@@ -244,6 +244,28 @@ function migrate(d: Database.Database) {
      * account but gets one code per organisation; the code is PREFIX-0001,
      * counted per organisation and never reused.
      */
+    /*
+     * People with a public profile: founders, group heads, instructors and
+     * article authors. Each has a page at /team/<slug>.
+     */
+    CREATE TABLE IF NOT EXISTS people (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      slug        TEXT NOT NULL UNIQUE,
+      kind        TEXT NOT NULL DEFAULT 'instructor',
+      name        TEXT NOT NULL DEFAULT '',
+      role        TEXT NOT NULL DEFAULT '',
+      group_label TEXT NOT NULL DEFAULT '',
+      bio         TEXT NOT NULL DEFAULT '',
+      photo       TEXT NOT NULL DEFAULT '',
+      instagram   TEXT NOT NULL DEFAULT '',
+      linkedin    TEXT NOT NULL DEFAULT '',
+      website     TEXT NOT NULL DEFAULT '',
+      email       TEXT NOT NULL DEFAULT '',
+      position    INTEGER NOT NULL DEFAULT 0,
+      visible     INTEGER NOT NULL DEFAULT 1,
+      created_at  TEXT NOT NULL
+    );
+
     CREATE TABLE IF NOT EXISTS organizations (
       id         INTEGER PRIMARY KEY AUTOINCREMENT,
       name       TEXT NOT NULL UNIQUE,
@@ -282,6 +304,8 @@ function migrate(d: Database.Database) {
   // change of organisation never rewrites an old result.
   addColumn('attempts', 'student_code', "TEXT NOT NULL DEFAULT ''");
   addColumn('attempts', 'org_name', "TEXT NOT NULL DEFAULT ''");
+  // The profile an article's author links to; empty means a name only.
+  addColumn('articles', 'author_slug', "TEXT NOT NULL DEFAULT ''");
 }
 
 /**

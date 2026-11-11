@@ -67,6 +67,7 @@ export async function saveArticleAction(formData: FormData) {
       kind: str(formData, 'kind'),
       authorName: str(formData, 'authorName'),
       authorTitle: str(formData, 'authorTitle'),
+      authorSlug: str(formData, 'authorSlug'),
       publishedAt: str(formData, 'publishedAt'),
       excerpt: str(formData, 'excerpt'),
       coverSrc: str(formData, 'coverSrc'),
