@@ -1,0 +1,37 @@
+# systemd unit — copy to /etc/systemd/system/ira.service
+#
+#   sudo cp deploy/ira.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now ira
+#
+# Restart on failure and on reboot, so the site comes back without anyone
+# logging in.
+
+[Unit]
+Description=Iran Retail Academy website
+After=network.target
+
+[Service]
+Type=simple
+User=ira
+WorkingDirectory=/srv/ira/current
+Environment=NODE_ENV=production
+Environment=PORT=3000
+EnvironmentFile=/srv/ira/shared/.env
+ExecStart=/usr/bin/npm run start
+Restart=always
+RestartSec=5
+
+# The app only ever needs to write the database and its backups.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/ira/shared
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ira
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,130 @@
+import { img } from '@/server/images';
+import { ui } from '@/server/ui';
+import type { Metadata } from 'next';
+
+/**
+ * Rendered per request: its content comes from the database, and an editor who
+ * saves a change in the panel must see it on the site immediately. At this
+ * traffic a SQLite read per request costs microseconds.
+ */
+export const dynamic = 'force-dynamic';
+
+
+import { PageHeader } from '@/components/PageHeader';
+import { Reveal } from '@/components/Reveal';
+import { LeadForm } from '@/components/LeadForm';
+import { corporate as corporateSeed } from '@/content/pages';
+import { getPage } from '@/server/content';
+import { getSite } from '@/server/content';
+import { LiteralText } from '@/components/LiteralText';
+import { fa } from '@/lib/text';
+import { PhoneLinks } from '@/components/PhoneLinks';
+
+export const metadata: Metadata = {
+  description:
+    'برنامه‌های توسعه سرمایه انسانی برای سازمان‌های فعال در صنعت ریتیل و فروشگاه‌داری؛ از نیازسنجی و طراحی مسیر آموزشی تا اجرا و ارزیابی یادگیری.',
+  title: 'خدمات سازمانی',
+  alternates: { canonical: '/corporate/' },
+};
+
+export default function CorporatePage() {
+  const corporate = getPage('corporate', corporateSeed as unknown as typeof corporateSeed);
+  const site = getSite();
+  return (
+    <>
+      <PageHeader
+        eyebrow={ui('page.corporate.eyebrow')}
+        title={ui('page.corporate.title')}
+        lead={ui('page.corporate.lead')}
+      />
+
+      <section className="section bg-white">
+        <div className="container-x">
+          {/* Text beside a photograph — beside, not behind, so the paragraphs stay legible. */}
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <Reveal>
+              <p className="eyebrow">اهمیت و مزایا</p>
+              <h2 className="mt-5 text-3xl sm:text-4xl">چرا آموزش سازمانیِ ویژه‌سازی‌شده؟</h2>
+              <div className="mt-4 space-y-4 leading-8 text-ink-soft">
+                {corporate.intro.map((paragraph: string, i: number) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={img('corporate.photo1')}
+                alt="فضای داخلی یک فروشگاه ریتیل"
+                width={936}
+                height={562}
+                loading="lazy"
+                className="aspect-[4/3] w-full rounded-3xl border border-line object-cover shadow-lift"
+              />
+            </Reveal>
+          </div>
+
+          <div className="mt-12 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {corporate.benefits.map((benefit, i) => (
+              <Reveal key={benefit.title} className="h-full">
+                <div className="card flex h-full flex-col p-6">
+                  <span className="text-2xl font-black text-gold">
+                    {fa(String(i + 1).padStart(2, '0'))}
+                  </span>
+                  <h3 className="mt-3 font-extrabold text-ink">{benefit.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{benefit.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="request" className="navy-stage relative overflow-hidden py-24 text-white">
+        <div className="navy-grid absolute inset-0" aria-hidden />
+        <div className="container-x relative grid items-center gap-12 lg:grid-cols-2">
+          <Reveal>
+            <div>
+              <p className="eyebrow-light flex items-center gap-3">
+                تماس با مشاوران آموزش سازمانی
+                <span className="h-px w-12 bg-gold/50" />
+              </p>
+              <h2 className="mt-5 text-3xl text-white sm:text-4xl">فرم نیازسنجی</h2>
+              <div className="mt-4 max-w-xl space-y-2 leading-9 text-white/65">
+                <p className="whitespace-pre-line">
+                  {'لطفاً اطلاعات خواسته‌شده در فرم را تکمیل و ارسال کنید،\nتا مشاوران آکادمی با شما تماس بگیرند.'}
+                </p>
+                <p>همچنین، می‌توانید از طریق شماره تلفن درج شده، با ما در ارتباط باشید.</p>
+              </div>
+              {/* Left to right, each group kept whole: «۰۲۱ ۲۸۴۲ ۹۹۶۶ و ۵» with the area code on the
+                  left, the way the academy's document shows it. Left to right on its own splits
+                  «و ۵» (the Persian «و» drags the digit that follows it), so LiteralText isolates
+                  each piece. */}
+              <div className="mt-6 w-fit rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-lg font-black text-gold-soft">
+                <PhoneLinks numbers={[String(site.phone ?? ''), String(site.phone2 ?? '')]} />
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={img('corporate.photo2')}
+                alt="کارگاه آموزش سازمانی"
+                className="mt-8 hidden aspect-video w-full rounded-3xl border border-white/10 object-cover lg:block"
+              />
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <div className="rounded-3xl bg-white p-8 shadow-lift">
+              <h3 className="mb-6 text-lg font-extrabold text-ink">فرم درخواست</h3>
+              <LeadForm
+                subject="درخواست آموزش سازمانی"
+                cta="درخواست جلسه نیازسنجی"
+                fields={['name', 'company', 'phone', 'note']}
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}

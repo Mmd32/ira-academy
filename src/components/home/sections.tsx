@@ -2,12 +2,14 @@ import Link from 'next/link';
 
 import { Reveal } from '@/components/Reveal';
 import { Marquee } from '@/components/Marquee';
-import { visibleCourses } from '@/content/programs';
+
 import { news } from '@/content/knowledge';
-import { articles as posts } from '@/content/articles';
+import { getArticles, getVisibleCourses } from '@/server/content';
 import { fa } from '@/lib/text';
+import { ui } from '@/server/ui';
 
 export function CourseMarquee() {
+  const visibleCourses = getVisibleCourses();
   return (
     <section className="border-b border-line bg-white py-6">
       <Marquee speed={55}>
@@ -48,7 +50,7 @@ const sections = [
     href: '/corporate/',
     num: '۰۳',
     title: 'خدمات سازمانی',
-    desc: 'آموزش‌های Custom-Made، مشاوره و طراحی برنامه‌ی آموزشی برای سازمان‌ها.',
+    desc: 'آموزش‌های ویژه‌سازی‌شده، مشاوره و طراحی برنامه‌ی آموزشی برای سازمان‌ها.',
   },
   {
     href: '/community/',
@@ -59,7 +61,7 @@ const sections = [
   {
     href: '/knowledge/',
     num: '۰۵',
-    title: 'دانشنامه ریتیل',
+    title: 'کتابخانه ریتیل',
     desc: 'اخبار، مقالات و مورد کاوی، ویدیو و پادکست، ابزارهای کاربردی و لغت‌نامه.',
   },
   {
@@ -81,10 +83,8 @@ export function SectionsGrid() {
     <section className="section bg-white">
       <div className="container-x">
         <Reveal>
-          <p className="eyebrow">بخش‌های آکادمی</p>
-          <h2 className="mt-5 max-w-2xl text-3xl sm:text-4xl">
-            هر آنچه برای رشد فروشگاه و تیم‌تان لازم دارید
-          </h2>
+          <p className="eyebrow">{ui('home.sections.eyebrow')}</p>
+          <h2 className="mt-5 max-w-2xl text-3xl sm:text-4xl">{ui('home.sections.title')}</h2>
         </Reveal>
 
         <div className="mt-12 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -98,10 +98,10 @@ export function SectionsGrid() {
                 <div className="text-2xl font-black text-brand/15 transition-colors duration-300 group-hover:text-gold">
                   {section.num}
                 </div>
-                <h3 className="mt-2 text-lg font-extrabold text-ink">{section.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{section.desc}</p>
+                <h3 className="mt-2 text-lg font-extrabold text-ink">{ui(`home.tile.${i + 1}.title`)}</h3>
+                <p className="mt-2 flex-1 text-sm leading-7 text-ink-soft">{ui(`home.tile.${i + 1}.desc`)}</p>
                 <span className="mt-4 text-xs font-bold text-brand transition-colors group-hover:text-gold-soft">
-                  مشاهده ←
+                  {ui('home.tile.more')}
                 </span>
               </Link>
             </Reveal>
@@ -113,17 +113,18 @@ export function SectionsGrid() {
 }
 
 export function ArticlesPreview() {
+  const posts = getArticles();
   return (
     <section className="section border-y border-line bg-paper-soft">
       <div className="container-x">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="eyebrow">دانشنامه ریتیل</p>
-              <h2 className="mt-5 text-3xl sm:text-4xl">تازه‌ترین مقالات</h2>
+              <p className="eyebrow">{ui('home.articles.eyebrow')}</p>
+              <h2 className="mt-5 text-3xl sm:text-4xl">{ui('home.articles.title')}</h2>
             </div>
-            <Link href="/knowledge/#articles" className="btn-secondary !py-2.5 text-xs">
-              همه‌ی مقالات
+            <Link href="/articles/" className="btn-secondary !py-2.5 text-xs">
+              {ui('home.articles.all')}
             </Link>
           </div>
         </Reveal>
@@ -153,7 +154,7 @@ export function ArticlesPreview() {
                     {post.excerpt}
                   </span>
                   <span className="mt-4 text-xs font-bold text-brand transition-colors group-hover:text-gold-soft">
-                    ادامه‌ی مطلب ←
+                    {ui('home.articles.read')}
                   </span>
                 </span>
               </Link>
@@ -170,7 +171,7 @@ export function NewsTicker() {
     <section className="border-b border-line bg-white py-5">
       <div className="container-x mb-3 flex items-center gap-3">
         <span className="rounded-full bg-gold/15 px-3 py-1 text-[11px] font-black text-gold">
-          اخبار و رویدادها
+          {ui('home.news.title')}
         </span>
       </div>
       <Marquee speed={45}>
@@ -196,19 +197,16 @@ export function HomeCta() {
       <div className="navy-grid absolute inset-0" aria-hidden />
       <div className="container-x relative grid items-center gap-8 lg:grid-cols-2">
         <Reveal>
-          <h2 className="text-3xl text-white sm:text-4xl">آماده‌ی شروع هستید؟</h2>
-          <p className="mt-4 max-w-lg leading-9 text-white/65">
-            در دوره‌ی مناسب ثبت‌نام کنید، یا اگر دانش‌پذیر آکادمی هستید، از درگاه دانش‌پذیران به
-            دوره‌ها، جزوات و فرصت‌های شغلی دسترسی پیدا کنید.
-          </p>
+          <h2 className="text-3xl text-white sm:text-4xl">{ui('home.cta.title')}</h2>
+          <p className="mt-4 max-w-lg leading-9 text-white/65">{ui('home.cta.text')}</p>
         </Reveal>
         <Reveal delay={0.15}>
           <div className="flex flex-wrap items-center gap-4 lg:justify-end">
-            <Link href="/register/" className="btn-gold">
-              ثبت‌نام در دوره‌ها
+            <Link href={ui('home.cta.primary.href')} className="btn-gold">
+              {ui('home.cta.primary.label')}
             </Link>
-            <Link href="/portal/" className="btn-ghost-light">
-              فرصت‌های شغلی (ویژه‌ی دانش‌پذیران)
+            <Link href={ui('home.cta.secondary.href')} className="btn-ghost-light">
+              {ui('home.cta.secondary.label')}
             </Link>
           </div>
         </Reveal>

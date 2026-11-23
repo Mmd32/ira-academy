@@ -1,0 +1,9 @@
+# Nightly backup at 03:00, and a weekly copy off the server.
+#
+#   sudo crontab -u ira -e      # then paste these two lines
+#
+# Change the rsync target to a machine or bucket you control. A backup that
+# never leaves the server does not survive the server.
+
+0 3 * * *  cd /srv/ira/current && BACKUP_DIR=/srv/ira/shared/backups /usr/bin/npm run backup >> /srv/ira/shared/backup.log 2>&1
+0 4 * * 0  rsync -az /srv/ira/shared/backups/ user@backup-host:/backups/ira/ >> /srv/ira/shared/backup.log 2>&1

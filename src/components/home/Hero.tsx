@@ -11,13 +11,13 @@ import {
   useTransform,
 } from 'framer-motion';
 
-import { heroSlides, heroAutoplayMs, type HeroSlide } from '@/content/hero';
-import { stats } from '@/content/site';
+import { type HeroSlide } from '@/content/hero';
+import type { Stat } from '@/content/site';
 import { fa, splitTitle } from '@/lib/text';
 import { Emblem3D } from './Emblem3D';
 
 /** Slide 1 — the emblem floating in a parallax 3D stage. */
-function Scene3D() {
+function Scene3D({ fallback }: { fallback: string }) {
   const reduced = useReducedMotion();
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
@@ -56,14 +56,14 @@ function Scene3D() {
           style={{ transform: 'translate(-50%,-50%) translateZ(10px)' }}
         />
         <div className="absolute inset-4" style={{ transform: 'translateZ(50px)' }}>
-          <Emblem3D />
+          <Emblem3D fallback={fallback} />
         </div>
 
         <div
           className="glass-navy absolute -right-1 top-6 w-40 animate-float-slow p-4 sm:right-0"
           style={{ transform: 'translateZ(110px)' }}
         >
-          <div className="text-[10px] font-bold tracking-widest text-white/50">رشد فروش</div>
+          <div className="text-[10px] font-bold text-white/50">رشد فروش</div>
           <div className="mt-1 text-2xl font-black text-gold-soft">{fa('34')}٪+</div>
           <div className="mt-2 flex items-end gap-1">
             {[8, 14, 11, 18, 24, 30].map((h, i) => (
@@ -98,7 +98,7 @@ function ImageVisual({ slide }: { slide: HeroSlide }) {
     <div className="relative mx-auto w-full max-w-[440px]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={slide.image || '/media/academy.jpg'}
+        src={slide.image}
         alt={slide.eyebrow}
         className="aspect-[4/3] w-full rounded-3xl border border-white/10 object-cover shadow-lift"
       />
@@ -140,7 +140,7 @@ function ChatDemo() {
             i % 2 ? 'ml-auto border-gold/30' : 'mr-auto'
           }`}
         >
-          <div className="mb-1 text-[10px] font-bold tracking-widest text-gold-soft">{turn.who}</div>
+          <div className="mb-1 text-[10px] font-bold text-gold-soft">{turn.who}</div>
           {turn.text}
         </div>
       ))}
@@ -154,7 +154,7 @@ function ChatDemo() {
 function SlideVisual({ slide }: { slide: HeroSlide }) {
   switch (slide.visual) {
     case 'scene3d':
-      return <Scene3D />;
+      return <Scene3D fallback={slide.image} />;
     case 'chat-demo':
       return <ChatDemo />;
     case 'image':
@@ -167,7 +167,15 @@ function SlideVisual({ slide }: { slide: HeroSlide }) {
 /** The stats strip under the hero. Flip to true to bring it back. */
 const SHOW_STATS = false;
 
-export function Hero() {
+export function Hero({
+  slides: heroSlides,
+  autoplayMs: heroAutoplayMs,
+  stats,
+}: {
+  slides: HeroSlide[];
+  autoplayMs: number;
+  stats: readonly Stat[];
+}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduced = useReducedMotion();
@@ -175,7 +183,7 @@ export function Hero() {
 
   const goTo = useCallback(
     (next: number) => setIndex(((next % heroSlides.length) + heroSlides.length) % heroSlides.length),
-    [],
+    [heroSlides.length],
   );
 
   useEffect(() => {
@@ -187,7 +195,7 @@ export function Hero() {
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
-  }, [reduced, paused]);
+  }, [reduced, paused, heroSlides.length, heroAutoplayMs]);
 
   const slide = heroSlides[index];
 

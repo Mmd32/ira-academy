@@ -33,7 +33,7 @@ export function PageHeader({
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 text-3xl text-white sm:text-4xl lg:text-5xl"
+          className="mt-5 text-balance text-3xl text-white sm:text-4xl lg:text-5xl"
         >
           {title}
         </motion.h1>
@@ -42,9 +42,14 @@ export function PageHeader({
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-5 max-w-2xl leading-9 text-white/65"
+            className={`mt-5 leading-9 text-white/65 ${lead.includes('\n') ? 'max-w-4xl' : 'max-w-2xl'}`}
           >
-            {lead}
+            {/* A newline in the text is a deliberate line break. */}
+            {lead.split('\n').map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
           </motion.p>
         )}
       </div>
