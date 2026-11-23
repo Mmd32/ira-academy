@@ -129,6 +129,23 @@
     transform-style: preserve-3d;
   }
 
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .rotate-y-neg-180 {
+    transform: rotateY(-180deg);
+  }
+
   .ltr {
     direction: ltr;
     unicode-bidi: isolate;

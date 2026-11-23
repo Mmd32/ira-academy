@@ -20,6 +20,7 @@ export const SECTIONS: readonly SectionDef[] = [
   { key: 'about.founders', page: 'معرفی آکادمی', label: 'هیئت مؤسس', hint: 'فقط وقتی دیده می‌شود که دست‌کم یک نفر با نقش «هیئت مؤسس» داشته باشید.', default: true },
   { key: 'about.sponsors', page: 'معرفی آکادمی', label: 'حامیان', hint: 'متن آن در «متن صفحه‌ها ← معرفی آکادمی» است.', default: false },
   // Programs
+  { key: 'programs.featured', page: 'برنامه‌های آموزشی', label: 'دوره ویژه (بالای صفحه)', hint: 'دوره شاخص همکاری آکادمی بالای صفحه برنامه‌ها.', default: false },
   { key: 'programs.workshops', page: 'برنامه‌های آموزشی', label: 'کارگاه‌ها', hint: 'محتوای فعلی نمونه است.', default: false },
   { key: 'programs.seminars', page: 'برنامه‌های آموزشی', label: 'سمینارها و وبینارها', hint: 'محتوای فعلی نمونه است.', default: false },
   { key: 'programs.pastEvents', page: 'برنامه‌های آموزشی', label: 'دوره‌های برگزارشده', hint: 'محتوای فعلی نمونه است.', default: false },
