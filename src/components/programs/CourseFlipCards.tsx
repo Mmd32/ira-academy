@@ -4,90 +4,56 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Reveal } from '@/components/Reveal';
-import { fa } from '@/lib/text';
 
 export type FlipCourseData = {
   id: string;
-  code: string;
-  levelBadge: string;
+  badge: string;
   title: string;
-  latinName: string;
   logo: string;
-  tagline: string;
-  sessions: number;
-  hours: number;
-  audience: string;
-  syllabus: string[];
+  desc: string;
+  ctaText: string;
+  ctaHref?: string;
+  ctaDisabled?: boolean;
 };
 
 export const COURSES_DATA: readonly FlipCourseData[] = [
   {
+    id: 'retail-pro',
+    badge: 'Retail PRO',
+    title: 'دوره‌های استاندارد',
+    logo: '/media/courses/retail-pro.png',
+    desc: 'دوره‌های عمومی آکادمی با سرفصل ثابت و ثبت‌نام\u00A0آزاد.',
+    ctaText: 'ثبت‌نام',
+    ctaHref: '/programs/standard/',
+    ctaDisabled: false,
+  },
+  {
     id: 'retail-star',
-    code: 'STAR',
-    levelBadge: 'سطح ۱ · پایه',
-    title: 'اصول فروش حضوری و ارتباط با مشتری',
-    latinName: 'Retail STAR',
+    badge: 'Retail STAR',
+    title: 'سازمانی',
     logo: '/media/courses/retail-star.png',
-    tagline: 'تسلط بر روانشناسی فروش، فنون گفت‌وگو، شناخت نیاز خریدار و خلق تجربه‌ی وفادارساز.',
-    sessions: 6,
-    hours: 18,
-    audience: 'فروشندگان، صندوق‌داران و مسئولین خدمات مشتریان',
-    syllabus: [
-      'روانشناسی مشتری و آغاز حرفه‌ای مکالمه فروش',
-      'تکنیک‌های کشف نیاز و پیشنهاد مکمل (Cross/Up-selling)',
-      'استانداردهای طلایی استقبال، راهنمایی و بدرقه',
-    ],
+    desc: 'این دوره‌ها بر اساس نیاز برندها شخصی‌سازی و در محل آن سازمان برگزار\u00A0می‌شود.',
+    ctaText: 'تماس با ما',
+    ctaHref: '/corporate/#request',
+    ctaDisabled: false,
   },
   {
     id: 'retail-ace',
-    code: 'ACE',
-    levelBadge: 'سطح ۲ · میانی',
-    title: 'سرپرستی شیفت و استانداردهای عملیاتی',
-    latinName: 'Retail ACE',
+    badge: 'Retail ACE',
+    title: 'همکاری با مؤسسات آموزشی',
     logo: '/media/courses/retail-ace.png',
-    tagline: 'انضباط اجرایی، هدایت پرسنل سالن، کنترل روزانه‌ی صندوق، انبارگردانی خرد و نظارت کیفی.',
-    sessions: 9,
-    hours: 22,
-    audience: 'سرپرستان شیفت، کمک‌مدیران و مسئولان سالن',
-    syllabus: [
-      'مدیریت تحویل شیفت و چک‌لیست‌های بازگشایی و بستن',
-      'نظارت بر ویترین، نورپردازی و اصول ویژوال مرچندایزینگ',
-      'کنترل موجودی، پیشگیری از کسری کالا و انبارداری خرد',
-    ],
-  },
-  {
-    id: 'retail-pro',
-    code: 'PRO',
-    levelBadge: 'سطح ۳ · پیشرفته',
-    title: 'مدیریت حرفه‌ای فروشگاه و شاخص‌های تجاری',
-    latinName: 'Retail PRO',
-    logo: '/media/courses/retail-pro.png',
-    tagline: 'تحلیل داده‌های فروشگاهی، سنجش شاخص‌های KPI، مدیریت سود و زیان (P&L) و رهبری تیم.',
-    sessions: 12,
-    hours: 30,
-    audience: 'مدیران فروشگاه‌ها، شعب زنجیره‌ای و سرپرستان منطقه',
-    syllabus: [
-      'تحلیل شاخص‌های کلیدی (ATV, UPT, Footfall, Sales/m²)',
-      'مهندسی سود و زیان شعبه (Store P&L) و هزینه‌های پنهان',
-      'طراحی و اجرای کمپین‌های پروموشن و تقویم فصلی',
-    ],
+    desc: 'دوره‌های مشترک با مراکز آموزشی\u00A0تخصصی.',
+    ctaText: 'به‌زودی',
+    ctaDisabled: true,
   },
   {
     id: 'retail-expert',
-    code: 'EXPERT',
-    levelBadge: 'سطح ۴ · ارشد',
-    title: 'معماری زنجیره‌ای، فرنچایز و توسعه بازار',
-    latinName: 'Retail EXPERT',
+    badge: 'Retail EXPERT',
+    title: 'همکاری با دانشگاه‌ها',
     logo: '/media/courses/retail-expert.png',
-    tagline: 'سیستم‌سازی مقیاس‌پذیر، تکثیر شعب، استراتژی اومنی‌چنل، قراردادهای فرنچایز و سرمایه‌گذاری.',
-    sessions: 16,
-    hours: 40,
-    audience: 'مالکان برندها، مدیران عامل، مدیران ارشد و سرمایه‌گذاران',
-    syllabus: [
-      'استراتژی‌های تکثیر شعب و مدل‌های اعطای نمایندگی',
-      'یکپارچه‌سازی اومنی‌چنل: پیوند فروشگاه فیزیکی و آنلاین',
-      'معماری زنجیره تأمین و چارچوب قراردادهای فرنچایز',
-    ],
+    desc: 'دوره‌های مشترک با دانشگاه‌ها و مراکز آموزش\u00A0عالی.',
+    ctaText: 'به‌زودی',
+    ctaDisabled: true,
   },
 ];
 
@@ -113,7 +79,7 @@ export function CourseFlipCards() {
                   isFlipped ? 'rotate-y-neg-180' : ''
                 }`}
               >
-                {/* ================= FRONT FACE (SQUARE · ONLY LOGO + FLIP ARROW) ================= */}
+                {/* ================= FRONT FACE (SQUARE · PURE LOGO + FLIP ARROW) ================= */}
                 <article
                   onClick={() => toggleFlip(course.id)}
                   role="button"
@@ -124,27 +90,27 @@ export function CourseFlipCards() {
                       toggleFlip(course.id);
                     }
                   }}
-                  aria-label={`مشاهده مشخصات ${course.latinName}`}
-                  className="backface-hidden group/card absolute inset-0 flex h-full w-full cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-400/50 hover:shadow-lift"
+                  aria-label={`مشاهده مشخصات ${course.title} (${course.badge})`}
+                  className="backface-hidden group/card absolute inset-0 flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl border border-line bg-white p-5 sm:p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-400/50 hover:shadow-lift"
                 >
                   {/* Subtle top gold highlight line on hover */}
                   <span className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-l from-transparent via-gold/70 to-transparent opacity-0 transition-opacity duration-300 group-hover/card:opacity-100" />
 
-                  {/* Top Bar with flip arrow button */}
-                  <div className="flex items-center justify-end">
+                  {/* Top-left flip button (aligned symmetrically with back face) */}
+                  <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleFlip(course.id);
                       }}
-                      className="group/btn flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-line bg-paper text-ink-mute transition-all duration-300 hover:border-gold hover:bg-gold/15 hover:text-gold focus:outline-none"
+                      className="group/btn flex h-7.5 w-7.5 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-line bg-paper text-ink-mute transition-all duration-300 hover:border-gold hover:bg-gold/15 hover:text-gold focus:outline-none"
                       title="چرخش کارت و مشاهده اطلاعات دوره"
-                      aria-label={`چرخش کارت ${course.latinName}`}
+                      aria-label={`چرخش کارت ${course.badge}`}
                       aria-expanded={isFlipped}
                     >
                       <svg
-                        className="h-4 w-4 transition-transform duration-500 group-hover/btn:rotate-180"
+                        className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-500 group-hover/btn:rotate-180"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -160,39 +126,36 @@ export function CourseFlipCards() {
                     </button>
                   </div>
 
-                  {/* Centered Logo Stage - PURE LOGO centered in the square */}
-                  <div className="flex flex-1 items-center justify-center p-2">
+                  {/* Centered Logo Stage - PURE LOGO prominent and bold in the square */}
+                  <div className="flex h-full w-full items-center justify-center p-2">
                     <Image
                       src={course.logo}
-                      alt={course.latinName}
-                      width={300}
-                      height={180}
-                      className="max-h-[82%] max-w-[88%] w-auto object-contain transition-transform duration-500 group-hover/card:scale-105"
+                      alt={course.badge}
+                      width={400}
+                      height={275}
+                      className="max-h-[74%] max-w-[82%] w-auto object-contain transition-transform duration-500 group-hover/card:scale-105"
                       priority={idx < 2}
                     />
                   </div>
-
-                  {/* Bottom breathing space */}
-                  <div className="h-2 w-full" aria-hidden="true" />
                 </article>
 
-                {/* ================= BACK FACE (SQUARE · COURSE DATA + CTA) ================= */}
+                {/* ================= BACK FACE (SQUARE · CLEAN, NATURAL TYPOGRAPHY) ================= */}
                 <article
-                  className="backface-hidden rotate-y-180 group/backcard absolute inset-0 flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-brand/40 bg-white p-3.5 sm:p-4.5 shadow-lift"
+                  className="backface-hidden rotate-y-180 group/backcard absolute inset-0 flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-brand/30 bg-white p-4 sm:p-5 shadow-lift text-right"
                 >
                   {/* Subtle top gold highlight */}
                   <span className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-l from-transparent via-gold to-transparent" />
 
-                  {/* Top Bar with level badge & flip back arrow */}
-                  <div className="flex items-center justify-between gap-1 border-b border-line pb-1.5">
-                    <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-black text-gold">
-                      {course.levelBadge}
+                  {/* Top Bar with English badge & flip back arrow */}
+                  <div className="flex items-center justify-between gap-1 border-b border-line/70 pb-2">
+                    <span className="inline-flex items-center rounded-full border border-brand/10 bg-brand/5 px-2.5 py-0.5 font-mono text-[11px] font-bold text-brand tracking-wider">
+                      {course.badge}
                     </span>
 
                     <button
                       type="button"
                       onClick={() => toggleFlip(course.id)}
-                      className="group/back flex h-7 w-7 items-center justify-center rounded-full border border-line bg-paper text-ink-mute transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white focus:outline-none"
+                      className="group/back flex h-7.5 w-7.5 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-line bg-paper text-ink-mute transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white focus:outline-none"
                       title="بازگشت به روی کارت"
                       aria-label="بازگشت به روی کارت"
                       aria-expanded={isFlipped}
@@ -214,52 +177,34 @@ export function CourseFlipCards() {
                     </button>
                   </div>
 
-                  {/* Middle Section: Title, Meta, Audience & Syllabus */}
-                  <div className="flex flex-1 flex-col justify-evenly py-1">
-                    {/* Course Title */}
-                    <div>
-                      <h3 className="text-xs sm:text-sm font-black leading-snug text-ink">
-                        {course.title}
-                      </h3>
-                      <div className="mt-0.5 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-ink-mute">
-                        <span className="font-bold text-brand">{course.latinName}</span>
-                        <span>
-                          {fa(course.sessions)} مبحث · {fa(course.hours)} ساعت
-                        </span>
-                      </div>
+                  {/* Middle Section: Title & Natural Unjustified Description */}
+                  <div className="my-auto py-1 text-right">
+                    <h3 className="text-base font-black text-ink sm:text-lg leading-tight">
+                      {course.title}
+                    </h3>
+                    <div className="mt-2 text-xs sm:text-[13px] leading-5 sm:leading-6 text-ink-soft text-right [text-align:right!important] [text-justify:none!important] [text-wrap:pretty] tracking-normal">
+                      {course.desc}
                     </div>
-
-                    {/* Audience Box */}
-                    <div className="rounded-md bg-paper px-2 py-1">
-                      <p className="text-[11px] sm:text-xs leading-snug text-ink-soft">
-                        <span className="font-bold text-ink">مخاطبان: </span>
-                        {course.audience}
-                      </p>
-                    </div>
-
-                    {/* Key Syllabus list */}
-                    <ul className="space-y-0.5">
-                      {course.syllabus.map((item, sIdx) => (
-                        <li
-                          key={sIdx}
-                          className="flex items-center gap-1.5 text-[11px] sm:text-xs text-ink-soft"
-                        >
-                          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                          <span className="truncate">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
 
-                  {/* Actions: CTA "مشاهده دوره‌ها" */}
-                  <div className="border-t border-line pt-1.5 sm:pt-2">
-                    <Link
-                      href={`/register/?course=${course.id}`}
-                      className="flex w-full items-center justify-center gap-1.5 rounded-full bg-brand py-1.5 sm:py-2 text-center text-xs font-bold text-white shadow-card transition-all duration-300 hover:bg-brand-500 hover:shadow-lift"
-                    >
-                      <span>مشاهده دوره‌ها</span>
-                      <span aria-hidden="true">←</span>
-                    </Link>
+                  {/* Actions: CTA Button (strictly identical dimensions, height, font, and bottom alignment across all 4 cards) */}
+                  <div className="mt-auto border-t border-line/70 pt-2.5 sm:pt-3">
+                    {course.ctaDisabled ? (
+                      <span
+                        aria-disabled="true"
+                        className="flex h-10 w-full cursor-not-allowed items-center justify-center rounded-full border border-line/80 bg-paper/90 px-4 text-center text-xs sm:text-sm font-bold text-ink-mute/70 opacity-60 select-none"
+                      >
+                        <span>{course.ctaText}</span>
+                      </span>
+                    ) : (
+                      <Link
+                        href={course.ctaHref || '#'}
+                        className="group/cta flex h-10 w-full items-center justify-center gap-2 rounded-full border border-brand bg-brand px-4 text-center text-xs sm:text-sm font-bold text-white shadow-card transition-all duration-300 hover:border-brand-500 hover:bg-brand-500 hover:shadow-lift"
+                      >
+                        <span>{course.ctaText}</span>
+                        <span aria-hidden="true" className="text-xs transition-transform duration-300 group-hover/cta:-translate-x-1">←</span>
+                      </Link>
+                    )}
                   </div>
                 </article>
               </div>
