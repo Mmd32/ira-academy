@@ -84,7 +84,7 @@ export function SectionsGrid() {
       <div className="container-x">
         <Reveal>
           <p className="eyebrow">{ui('home.sections.eyebrow')}</p>
-          <h2 className="mt-5 max-w-2xl text-3xl sm:text-4xl">{ui('home.sections.title')}</h2>
+          <h2 className="mt-5 text-[clamp(1.1rem,3.6vw,2.1rem)] sm:whitespace-nowrap">{ui('home.sections.title')}</h2>
         </Reveal>
 
         <div className="mt-12 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">

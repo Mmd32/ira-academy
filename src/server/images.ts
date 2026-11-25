@@ -10,7 +10,7 @@ export type ImageSlot = { key: string; label: string; hint: string; default: str
 
 export const IMAGE_SLOTS: readonly ImageSlot[] = [
   { key: 'site.logo', label: 'لوگوی آکادمی', hint: 'در هدر، فوتر، صفحه‌ی در حال ساخت، داده‌های گوگل و پیش‌نمایش لینک. مربع و با پس‌زمینه‌ی شفاف.', default: '/media/logo-mark.png' },
-  { key: 'about.photo', label: 'تصویر صفحه‌ی معرفی', hint: 'کنار متن «هدف، مأموریت و چشم‌انداز».', default: '/media/academy-about.webp' },
+  { key: 'about.photo', label: 'تصویر صفحه‌ی معرفی', hint: 'کنار متن «هدف، مأموریت و چشم‌انداز».', default: '/media/academy-about.jpg' },
   { key: 'corporate.photo1', label: 'تصویر اول خدمات سازمانی', hint: 'بالای صفحه‌ی خدمات سازمانی.', default: '/media/articles/retail-boutique.webp' },
   { key: 'corporate.photo2', label: 'تصویر دوم خدمات سازمانی', hint: 'کنار شماره‌ی تماس در همان صفحه.', default: '/media/academy.jpg' },
   { key: 'hero.fallback', label: 'تصویر پیش‌فرض اسلایدر', hint: 'وقتی اسلایدی تصویر خودش را ندارد. تصویر هر اسلاید در «متن‌های سایت» است.', default: '/media/academy.jpg' },

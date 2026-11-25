@@ -41,12 +41,13 @@ const registerCta =
 
 export default function ProgramsPage() {
   const SHOW_FEATURED = isOn('programs.featured');
+  const SHOW_FLIP_CARDS = isOn('programs.flipCards');
   const SHOW_WORKSHOPS = isOn('programs.workshops');
   const SHOW_SEMINARS = isOn('programs.seminars');
   const SHOW_PAST_EVENTS = isOn('programs.pastEvents');
   const SHOW_CALENDAR = isOn('programs.calendar');
   const SHOW_MBA = isOn('programs.mba');
-  const SHOW_LEGACY_MODELS = false;
+  const SHOW_LEGACY_MODELS = !SHOW_FLIP_CARDS;
   const programModels = getProgramModels();
   const visibleCourses = getVisibleCourses();
   const workshops = getWorkshops();
@@ -81,7 +82,7 @@ export default function ProgramsPage() {
             </p>
           </Reveal>
 
-          <CourseFlipCards />
+          {SHOW_FLIP_CARDS && <CourseFlipCards />}
 
           {SHOW_LEGACY_MODELS && (
             <div className="mt-16 space-y-4">

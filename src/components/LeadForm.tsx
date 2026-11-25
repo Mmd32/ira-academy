@@ -85,16 +85,16 @@ export function LeadForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="flex flex-1 flex-col space-y-4">
       {fields.map((field) =>
         field === 'note' ? (
-          <label key={field} className="block">
+          <label key={field} className="flex flex-1 flex-col">
             <span className="mb-1.5 block text-xs font-bold text-ink-soft">{labels[field] ?? LABELS[field]}</span>
           <textarea
-            rows={4}
+            rows={5}
             value={values[field] || ''}
             onChange={bind(field)}
-            className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400"
+            className="w-full flex-1 rounded-2xl border border-line bg-paper px-4 py-3 text-sm outline-none transition-colors focus:border-brand-400"
           />
           </label>
         ) : (

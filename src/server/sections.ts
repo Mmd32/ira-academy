@@ -16,10 +16,12 @@ export const SECTIONS: readonly SectionDef[] = [
   { key: 'home.news', page: 'صفحه‌ی اول', label: 'نوار اخبار و رویدادها', hint: 'نوار باریک قبل از دعوت به اقدام.', default: true },
   { key: 'home.cta', page: 'صفحه‌ی اول', label: 'دعوت به اقدام (CTA) پایین صفحه', hint: '«آماده‌ی شروع هستید؟» با دو دکمه.', default: true },
   // About
-  { key: 'about.faculty', page: 'معرفی آکادمی', label: 'کادر علمی', hint: 'مدیران گروه و مدرسین. افراد را در «افراد و پروفایل‌ها» اضافه کنید.', default: true },
-  { key: 'about.founders', page: 'معرفی آکادمی', label: 'هیئت مؤسس', hint: 'فقط وقتی دیده می‌شود که دست‌کم یک نفر با نقش «هیئت مؤسس» داشته باشید.', default: true },
+  { key: 'about.faculty', page: 'معرفی آکادمی', label: 'کادر علمی', hint: 'مدیران گروه و مدرسین. افراد را در «افراد و پروفایل‌ها» اضافه کنید.', default: false },
+  { key: 'about.founders', page: 'معرفی آکادمی', label: 'هیئت مؤسس', hint: 'فقط وقتی دیده می‌شود که دست‌کم یک نفر با نقش «هیئت مؤسس» داشته باشید.', default: false },
+  { key: 'about.flipCards', page: 'معرفی آکادمی', label: 'قالب کارت‌های چرخشی (تیم و کادر علمی)', hint: 'روشن = کارت‌های مربع چرخشی؛ خاموش = کارت‌های ساده‌ی قبلی.', default: true },
   { key: 'about.sponsors', page: 'معرفی آکادمی', label: 'حامیان', hint: 'متن آن در «متن صفحه‌ها ← معرفی آکادمی» است.', default: false },
   // Programs
+  { key: 'programs.flipCards', page: 'برنامه‌های آموزشی', label: 'کارت‌های مربع چرخشی دوره‌ها', hint: 'روشن = ۴ کارت چرخشی؛ خاموش = پنهان‌شدن کارت‌های چرخشی و نمایش فهرست کلاسیک.', default: true },
   { key: 'programs.featured', page: 'برنامه‌های آموزشی', label: 'دوره ویژه (بالای صفحه)', hint: 'دوره شاخص همکاری آکادمی بالای صفحه برنامه‌ها.', default: false },
   { key: 'programs.workshops', page: 'برنامه‌های آموزشی', label: 'کارگاه‌ها', hint: 'محتوای فعلی نمونه است.', default: false },
   { key: 'programs.seminars', page: 'برنامه‌های آموزشی', label: 'سمینارها و وبینارها', hint: 'محتوای فعلی نمونه است.', default: false },

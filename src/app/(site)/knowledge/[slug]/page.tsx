@@ -235,7 +235,7 @@ export default function ArticlePage({ params }: Props) {
 
               return (
                 <Reveal key={i}>
-                  <p className="mt-6 leading-9 text-ink-soft">{block.text}</p>
+                  <p className="mt-3 leading-8 text-ink-soft">{block.text}</p>
                 </Reveal>
               );
             })}

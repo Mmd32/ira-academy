@@ -91,7 +91,7 @@ export default function ProfilePage({ params }: Props) {
             <Reveal>
               <p className="eyebrow">درباره‌ی {person.name}</p>
               {person.bio ? (
-                <div className="mt-5 space-y-5 whitespace-pre-line leading-9 text-ink-soft">{person.bio}</div>
+                <div className="mt-5 space-y-2.5 whitespace-pre-line leading-8 text-ink-soft">{person.bio}</div>
               ) : (
                 <p className="mt-5 text-ink-mute">معرفی‌نامه‌ی این صفحه به‌زودی اضافه می‌شود.</p>
               )}

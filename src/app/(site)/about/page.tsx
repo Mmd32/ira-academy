@@ -12,6 +12,7 @@ export const dynamic = 'force-dynamic';
 
 import { PageHeader } from '@/components/PageHeader';
 import { Reveal } from '@/components/Reveal';
+import { TeamFlipCards, type TeamFlipCardData } from '@/components/about/TeamFlipCards';
 import { about as aboutSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { getSections, isOn } from '@/server/sections';
@@ -36,28 +37,38 @@ export default function AboutPage() {
   const about = getPage('about', aboutSeed as unknown as typeof aboutSeed);
   const sections = getSections();
   const SHOW_SPONSORS = sections['about.sponsors'];
+  const USE_FLIP_CARDS = sections['about.flipCards'];
 
   const founders = listPeople({ kind: 'founder', onlyVisible: true });
   const managers = listPeople({ kind: 'manager', onlyVisible: true });
   const instructors = listPeople({ kind: 'instructor', onlyVisible: true });
-  type Card = { name: string; role: string; label: string; photo: string; slug: string };
-  const asCard = (p: (typeof managers)[number]): Card => ({
+  const asCard = (p: (typeof managers)[number]): TeamFlipCardData => ({
+    id: String(p.id),
     name: p.name,
     role: p.role,
     label: p.groupLabel,
     photo: p.photo,
+    bio: p.bio,
     slug: p.slug,
   });
   // Until the real people are entered, the placeholder list written at the start still shows.
-  const facultyGroups: { title: string; people: Card[] }[] =
+  const facultyGroups: { title: string; people: TeamFlipCardData[] }[] =
     managers.length + instructors.length > 0
       ? [
           { title: 'مدیران گروه‌ها', people: managers.map(asCard) },
           { title: 'مدرسین', people: instructors.map(asCard) },
         ].filter((g) => g.people.length > 0)
-      : about.faculty.map((g) => ({
+      : about.faculty.map((g, gIdx) => ({
           title: g.title,
-          people: g.people.map((p) => ({ name: p.name, role: p.role, label: '', photo: '', slug: '' })),
+          people: g.people.map((p, pIdx) => ({
+            id: `${gIdx}-${pIdx}`,
+            name: p.name,
+            role: p.role,
+            label: '',
+            photo: '',
+            bio: '',
+            slug: '',
+          })),
         }));
   const pillars = [
     { label: 'هدف', text: about.goal },
@@ -78,9 +89,9 @@ export default function AboutPage() {
               legibility, and the paragraphs here are long. */}
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
             <Reveal>
-              <div className="space-y-5">
+              <div className="space-y-2.5">
                 {about.intro.map((paragraph, i) => (
-                  <p key={i} className="whitespace-pre-line leading-9 text-ink-soft">
+                  <p key={i} className="whitespace-pre-line leading-8 text-ink-soft">
                     {paragraph}
                   </p>
                 ))}
@@ -128,39 +139,43 @@ export default function AboutPage() {
                 <Reveal>
                   <h3 className="font-extrabold text-brand">{group.title}</h3>
                 </Reveal>
-                <div className="mt-4 grid auto-rows-fr gap-5 sm:grid-cols-3">
-                  {group.people.map((person, i) => {
-                    const card = (
-                      <div className="card flex h-full items-center gap-4 p-6 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-lift">
-                        {person.photo ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={person.photo} alt={person.name} className="h-14 w-14 shrink-0 rounded-full object-cover" />
-                        ) : (
-                          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand text-lg font-black text-white">
-                            {fa(i + 1)}
-                          </span>
-                        )}
-                        <div>
-                          <h4 className="whitespace-pre-line font-extrabold text-ink">{person.name}</h4>
-                          {person.role && <p className="mt-1 text-sm text-ink-mute">{person.role}</p>}
-                          {person.label && <p className="mt-1 text-xs font-bold text-brand">{person.label}</p>}
-                          {person.slug && <span className="mt-1 block text-xs font-bold text-brand">مشاهده‌ی پروفایل ←</span>}
+                {USE_FLIP_CARDS ? (
+                  <TeamFlipCards items={group.people} fallbackBadge={group.title} columns={3} />
+                ) : (
+                  <div className="mt-4 grid auto-rows-fr gap-5 sm:grid-cols-3">
+                    {group.people.map((person, i) => {
+                      const card = (
+                        <div className="card flex h-full items-center gap-4 p-6 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-lift">
+                          {person.photo ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={person.photo} alt={person.name} className="h-14 w-14 shrink-0 rounded-full object-cover" />
+                          ) : (
+                            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand text-lg font-black text-white">
+                              {fa(i + 1)}
+                            </span>
+                          )}
+                          <div>
+                            <h4 className="whitespace-pre-line font-extrabold text-ink">{person.name}</h4>
+                            {person.role && <p className="mt-1 text-sm text-ink-mute">{person.role}</p>}
+                            {person.label && <p className="mt-1 text-xs font-bold text-brand">{person.label}</p>}
+                            {person.slug && <span className="mt-1 block text-xs font-bold text-brand">مشاهده‌ی پروفایل ←</span>}
+                          </div>
                         </div>
-                      </div>
-                    );
-                    return (
-                      <Reveal key={`${person.name}-${i}`} className="h-full">
-                        {person.slug ? (
-                          <Link href={`/team/${person.slug}/`} className="group block h-full">
-                            {card}
-                          </Link>
-                        ) : (
-                          <div className="group h-full">{card}</div>
-                        )}
-                      </Reveal>
-                    );
-                  })}
-                </div>
+                      );
+                      return (
+                        <Reveal key={`${person.name}-${i}`} className="h-full">
+                          {person.slug ? (
+                            <Link href={`/team/${person.slug}/`} className="group block h-full">
+                              {card}
+                            </Link>
+                          ) : (
+                            <div className="group h-full">{card}</div>
+                          )}
+                        </Reveal>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -175,28 +190,36 @@ export default function AboutPage() {
               <p className="eyebrow">هیئت مؤسس</p>
               <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">بنیان‌گذاران آکادمی</h2>
             </Reveal>
-            <div className="mt-10 grid auto-rows-fr gap-5 sm:grid-cols-3">
-              {founders.map((person) => (
-                <Reveal key={person.id} className="h-full">
-                  <Link
-                    href={`/team/${person.slug}/`}
-                    className="card group flex h-full flex-col items-center p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
-                  >
-                    {person.photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={person.photo} alt={person.name} className="h-24 w-24 rounded-full border border-gold/40 object-cover" />
-                    ) : (
-                      <span className="grid h-20 w-20 place-items-center rounded-full border border-gold/40 bg-brand/5 text-2xl font-black text-brand">
-                        {person.name.trim().charAt(0)}
-                      </span>
-                    )}
-                    <h3 className="mt-4 font-extrabold text-ink">{person.name}</h3>
-                    <p className="mt-1 text-sm text-ink-mute">{person.role}</p>
-                    <span className="mt-3 text-xs font-bold text-brand">مشاهده‌ی پروفایل ←</span>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
+            {USE_FLIP_CARDS ? (
+              <TeamFlipCards
+                items={founders.map(asCard)}
+                fallbackBadge="هیئت مؤسس"
+                columns={3}
+              />
+            ) : (
+              <div className="mt-10 grid auto-rows-fr gap-5 sm:grid-cols-3">
+                {founders.map((person) => (
+                  <Reveal key={person.id} className="h-full">
+                    <Link
+                      href={`/team/${person.slug}/`}
+                      className="card group flex h-full flex-col items-center p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
+                    >
+                      {person.photo ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={person.photo} alt={person.name} className="h-24 w-24 rounded-full border border-gold/40 object-cover" />
+                      ) : (
+                        <span className="grid h-20 w-20 place-items-center rounded-full border border-gold/40 bg-brand/5 text-2xl font-black text-brand">
+                          {person.name.trim().charAt(0)}
+                        </span>
+                      )}
+                      <h3 className="mt-4 font-extrabold text-ink">{person.name}</h3>
+                      <p className="mt-1 text-sm text-ink-mute">{person.role}</p>
+                      <span className="mt-3 text-xs font-bold text-brand">مشاهده‌ی پروفایل ←</span>
+                    </Link>
+                  </Reveal>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
