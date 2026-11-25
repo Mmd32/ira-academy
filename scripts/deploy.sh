@@ -5,7 +5,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 HOST=root@185.205.203.109
-SSH="ssh -4 -i .deploy-key/id_ed25519 -o BatchMode=yes"
+KEY="${DEPLOY_KEY:-.deploy-key/id_ed25519}"
+if [ ! -f "$KEY" ] && [ -f "$HOME/.ssh/id_ed25519_rs_vps" ]; then
+  KEY="$HOME/.ssh/id_ed25519_rs_vps"
+fi
+SSH="ssh -4 -i $KEY -o BatchMode=yes"
 
 rsync -az -e "$SSH" --delete \
   --exclude node_modules --exclude .next --exclude data --exclude backups \
