@@ -63,7 +63,7 @@ function Scene3D({ fallback }: { fallback: string }) {
       {/* Placed outside preserve-3d with z-20 so the rotating 3D emblem can never render in front of either card */}
       <div className="pointer-events-none absolute inset-0 z-20">
         {/* Top-right: Certificate card */}
-        <div className="glass-navy pointer-events-auto absolute -right-1 top-4 flex w-44 animate-float-slow items-center gap-3 p-4 sm:-right-2">
+        <div className="glass-navy pointer-events-auto absolute -right-3 top-4 flex w-44 animate-float-slow items-center gap-3 p-4 sm:-right-6 lg:-right-8">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold/10 text-gold-soft">
             ✓
           </div>
