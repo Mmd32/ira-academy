@@ -75,10 +75,10 @@ export default function ProgramsPage() {
       <section id="courses" className="section bg-white">
         <div className="container-x">
           <Reveal>
-            <p className="eyebrow">دوره‌های تخصصی</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">سطوح جامع آموزشی آکادمی ریتیل ایران</h2>
+            <p className="eyebrow">{ui('programs.courses.eyebrow')}</p>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">{ui('programs.courses.title')}</h2>
             <p className="mt-4 max-w-2xl text-base leading-8 text-ink-soft">
-              چهار سطح تخصصی از مهارت‌های خط مقدم تا مدیریت و راهبری شبکه‌های فروشگاهی. برای مشاهده سرفصل‌ها و اطلاعات تکمیلی هر دوره، روی فلش بالای کارت کلیک کنید.
+              {ui('programs.courses.lead')}
             </p>
           </Reveal>
 

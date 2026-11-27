@@ -49,8 +49,40 @@ export default function ContactPage() {
             <div className="card p-7">
               <p className="eyebrow">نشانی دفتر آکادمی</p>
               <p className="mt-5 text-sm leading-8 text-ink-soft">{site.address}</p>
-              <div className="mt-5 grid aspect-video place-items-center rounded-2xl border border-dashed border-line bg-paper text-xs text-ink-mute">
-                نقشه (نشان) — به‌زودی
+              <div className="mt-5 overflow-hidden rounded-2xl border border-line bg-paper">
+                <iframe
+                  title="نقشه دفتر آکادمی ریتیل ایران"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=51.4115%2C35.7915%2C51.4215%2C35.7995&layer=mapnik&marker=35.7955%2C51.4165"
+                  className="aspect-video w-full border-0"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold">
+                <a
+                  href="https://nshn.ir/?lat=35.7955&lng=51.4165"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-line bg-paper px-3 py-1.5 text-brand transition-colors hover:border-brand hover:bg-brand hover:text-white"
+                >
+                  مسیریابی در نشان
+                </a>
+                <a
+                  href="https://balad.ir/location?latitude=35.7955&longitude=51.4165&zoom=16"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-line bg-paper px-3 py-1.5 text-brand transition-colors hover:border-brand hover:bg-brand hover:text-white"
+                >
+                  بلد
+                </a>
+                <a
+                  href="https://maps.google.com/?q=35.7955,51.4165"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-line bg-paper px-3 py-1.5 text-ink-soft transition-colors hover:border-brand hover:text-brand"
+                >
+                  گوگل‌مپ
+                </a>
               </div>
             </div>
           </Reveal>

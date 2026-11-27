@@ -23,7 +23,7 @@ export const COURSES_DATA: readonly FlipCourseData[] = [
     title: 'دوره‌های استاندارد',
     logo: '/media/courses/retail-pro.png',
     desc: 'دوره‌های عمومی آکادمی با سرفصل ثابت و ثبت‌نام\u00A0آزاد.',
-    ctaText: 'ثبت‌نام',
+    ctaText: 'مشاهده',
     ctaHref: '/programs/standard/',
     ctaDisabled: false,
   },
