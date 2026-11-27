@@ -33,8 +33,8 @@ export const COURSES_DATA: readonly FlipCourseData[] = [
     title: 'سازمانی',
     logo: '/media/courses/retail-star.png',
     desc: 'این دوره‌ها بر اساس نیاز برندها شخصی‌سازی و در محل آن سازمان برگزار\u00A0می‌شود.',
-    ctaText: 'تماس با ما',
-    ctaHref: '/corporate/#request',
+    ctaText: 'مشاهده',
+    ctaHref: '/corporate/',
     ctaDisabled: false,
   },
   {
