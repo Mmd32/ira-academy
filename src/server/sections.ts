@@ -15,6 +15,7 @@ export const SECTIONS: readonly SectionDef[] = [
   { key: 'home.articles', page: 'صفحه‌ی اول', label: 'تازه‌ترین مقالات', hint: 'سه مقاله‌ی آخر.', default: true },
   { key: 'home.news', page: 'صفحه‌ی اول', label: 'نوار اخبار و رویدادها', hint: 'نوار باریک قبل از دعوت به اقدام.', default: false },
   { key: 'home.cta', page: 'صفحه‌ی اول', label: 'دعوت به اقدام (CTA) پایین صفحه', hint: '«آماده‌ی شروع هستید؟» با دو دکمه.', default: true },
+  { key: 'site.consult', page: 'صفحه‌ی اول', label: 'مشاور هوشمند (اسلاید و دکمه شناور)', hint: 'دکمه‌ی مشاور آکادمی پایین صفحه و اسلاید مشاور هوشمند در اسلایدر اول.', default: false },
   // About
   { key: 'about.faculty', page: 'معرفی آکادمی', label: 'کادر علمی', hint: 'مدیران گروه و مدرسین. افراد را در «افراد و پروفایل‌ها» اضافه کنید.', default: false },
   { key: 'about.founders', page: 'معرفی آکادمی', label: 'هیئت مؤسس', hint: 'فقط وقتی دیده می‌شود که دست‌کم یک نفر با نقش «هیئت مؤسس» داشته باشید.', default: false },

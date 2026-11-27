@@ -24,9 +24,14 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const showConsult = isOn('site.consult');
+  const slides = showConsult
+    ? getHeroSlides()
+    : getHeroSlides().filter((s) => s.id !== 'advisor' && s.visual !== 'chat-demo');
+
   return (
     <>
-      <Hero slides={getHeroSlides()} autoplayMs={getHeroAutoplayMs()} stats={getStats()} />
+      <Hero slides={slides} autoplayMs={getHeroAutoplayMs()} stats={getStats()} />
       {isOn('home.marquee') && <CourseMarquee />}
       {isOn('home.tiles') && <SectionsGrid />}
       {isOn('home.articles') && <ArticlesPreview />}

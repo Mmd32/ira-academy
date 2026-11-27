@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer';
 import { Nav } from '@/components/Nav';
 import { uiAll } from '@/server/ui';
 import { img } from '@/server/images';
+import { isOn } from '@/server/sections';
 
 /**
  * The public site's chrome. The admin panel lives outside this group, so it
@@ -36,7 +37,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       */}
       <main className="overflow-x-hidden">{children}</main>
       <Footer />
-      <ConsultWidget />
+      {isOn('site.consult') && <ConsultWidget />}
       <Analytics />
     </>
   );
