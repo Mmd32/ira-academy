@@ -56,7 +56,7 @@ export default function CorporatePage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={img('corporate.photo1')}
-                alt="فضای داخلی یک فروشگاه ریتیل"
+                alt="کارگاه آموزش سازمانی"
                 width={936}
                 height={562}
                 loading="lazy"
@@ -83,40 +83,32 @@ export default function CorporatePage() {
 
       <section id="request" className="navy-stage relative overflow-hidden py-24 text-white">
         <div className="navy-grid absolute inset-0" aria-hidden />
-        <div className="container-x relative grid items-stretch gap-12 lg:grid-cols-2">
-          <Reveal className="h-full">
-            <div className="flex h-full flex-col justify-between">
-              <div>
-                <p className="eyebrow-light flex items-center gap-3">
-                  تماس با مشاوران آموزش سازمانی
-                  <span className="h-px w-12 bg-gold/50" />
+        <div className="container-x relative grid items-center gap-12 lg:grid-cols-2">
+          <Reveal>
+            <div>
+              <p className="eyebrow-light flex items-center gap-3">
+                تماس با مشاوران آموزش سازمانی
+                <span className="h-px w-12 bg-gold/50" />
+              </p>
+              <h2 className="mt-5 text-3xl text-white sm:text-4xl">فرم نیازسنجی</h2>
+              <div className="mt-4 max-w-xl space-y-2 leading-9 text-white/65">
+                <p className="whitespace-pre-line">
+                  {'لطفاً اطلاعات خواسته‌شده در فرم را تکمیل و ارسال کنید،\nتا مشاوران آکادمی با شما تماس بگیرند.'}
                 </p>
-                <h2 className="mt-5 text-3xl text-white sm:text-4xl">فرم نیازسنجی</h2>
-                <div className="mt-4 max-w-xl space-y-2 leading-9 text-white/65">
-                  <p className="whitespace-pre-line">
-                    {'لطفاً اطلاعات خواسته‌شده در فرم را تکمیل و ارسال کنید،\nتا مشاوران آکادمی با شما تماس بگیرند.'}
-                  </p>
-                  <p>همچنین، می‌توانید از طریق شماره تلفن درج شده، با ما در ارتباط باشید.</p>
-                </div>
-                {/* Left to right, each group kept whole: «۰۲۱ ۲۸۴۲ ۹۹۶۶ و ۵» with the area code on the
-                    left, the way the academy's document shows it. Left to right on its own splits
-                    «و ۵» (the Persian «و» drags the digit that follows it), so LiteralText isolates
-                    each piece. */}
-                <div className="mt-6 w-fit rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-lg font-black text-gold-soft">
-                  <PhoneLinks numbers={[String(site.phone ?? ''), String(site.phone2 ?? '')]} />
-                </div>
+                <p>همچنین، می‌توانید از طریق شماره تلفن درج شده، با ما در ارتباط باشید.</p>
               </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={img('corporate.photo2')}
-                alt="کارگاه آموزش سازمانی"
-                className="mt-8 hidden aspect-video w-full rounded-3xl border border-white/10 object-cover lg:block"
-              />
+              {/* Left to right, each group kept whole: «۰۲۱ ۲۸۴۲ ۹۹۶۶ و ۵» with the area code on the
+                  left, the way the academy's document shows it. Left to right on its own splits
+                  «و ۵» (the Persian «و» drags the digit that follows it), so LiteralText isolates
+                  each piece. */}
+              <div className="mt-6 w-fit rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-lg font-black text-gold-soft">
+                <PhoneLinks numbers={[String(site.phone ?? ''), String(site.phone2 ?? '')]} />
+              </div>
             </div>
           </Reveal>
 
-          <Reveal className="h-full">
-            <div className="flex h-full flex-col rounded-3xl bg-white p-8 shadow-lift">
+          <Reveal>
+            <div className="rounded-3xl bg-white p-8 shadow-lift">
               <h3 className="mb-6 text-lg font-extrabold text-ink">فرم درخواست</h3>
               <LeadForm
                 subject="درخواست آموزش سازمانی"

@@ -13,7 +13,7 @@ export const SECTIONS: readonly SectionDef[] = [
   { key: 'home.marquee', page: 'صفحه‌ی اول', label: 'نوار متحرک دوره‌ها', hint: 'زیر اسلایدر بالای صفحه.', default: true },
   { key: 'home.tiles', page: 'صفحه‌ی اول', label: 'کارت‌های بخش‌های آکادمی', hint: 'هفت کارت لینک به صفحه‌های اصلی.', default: true },
   { key: 'home.articles', page: 'صفحه‌ی اول', label: 'تازه‌ترین مقالات', hint: 'سه مقاله‌ی آخر.', default: true },
-  { key: 'home.news', page: 'صفحه‌ی اول', label: 'نوار اخبار و رویدادها', hint: 'نوار باریک قبل از دعوت به اقدام.', default: true },
+  { key: 'home.news', page: 'صفحه‌ی اول', label: 'نوار اخبار و رویدادها', hint: 'نوار باریک قبل از دعوت به اقدام.', default: false },
   { key: 'home.cta', page: 'صفحه‌ی اول', label: 'دعوت به اقدام (CTA) پایین صفحه', hint: '«آماده‌ی شروع هستید؟» با دو دکمه.', default: true },
   // About
   { key: 'about.faculty', page: 'معرفی آکادمی', label: 'کادر علمی', hint: 'مدیران گروه و مدرسین. افراد را در «افراد و پروفایل‌ها» اضافه کنید.', default: false },
