@@ -59,22 +59,10 @@ function Scene3D({ fallback }: { fallback: string }) {
           <Emblem3D fallback={fallback} />
         </div>
 
+        {/* Top-right (swapped & raised z-depth so it stays in front of the emblem) */}
         <div
-          className="glass-navy absolute -right-1 top-6 w-40 animate-float-slow p-4 sm:right-0"
-          style={{ transform: 'translateZ(110px)' }}
-        >
-          <div className="text-[10px] font-bold text-white/50">رشد فروش</div>
-          <div className="mt-1 text-2xl font-black text-gold-soft">{fa('34')}٪+</div>
-          <div className="mt-2 flex items-end gap-1">
-            {[8, 14, 11, 18, 24, 30].map((h, i) => (
-              <div key={i} className="w-2.5 rounded-sm bg-gold/70" style={{ height: h }} />
-            ))}
-          </div>
-        </div>
-
-        <div
-          className="glass-navy absolute -left-1 bottom-8 flex w-44 animate-float-slow items-center gap-3 p-4 sm:left-2"
-          style={{ transform: 'translateZ(90px)', animationDelay: '1.2s' }}
+          className="glass-navy absolute -right-1 top-6 z-20 flex w-44 animate-float-slow items-center gap-3 p-4 sm:right-0"
+          style={{ transform: 'translateZ(120px)' }}
         >
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold/10 text-gold-soft">
             ✓
@@ -84,6 +72,32 @@ function Scene3D({ fallback }: { fallback: string }) {
             <br />
             آکادمی ریتیل ایران
           </div>
+        </div>
+
+        {/* Bottom-left: growth bar chart + 3 bullet points (without 34%) */}
+        <div
+          className="glass-navy absolute -left-1 bottom-6 z-20 w-52 animate-float-slow p-4 sm:left-0 sm:w-56"
+          style={{ transform: 'translateZ(100px)', animationDelay: '1.2s' }}
+        >
+          <div className="flex items-end gap-1">
+            {[8, 14, 11, 18, 24, 30].map((h, i) => (
+              <div key={i} className="w-2.5 rounded-sm bg-gold/70" style={{ height: h }} />
+            ))}
+          </div>
+          <ul className="mt-3 space-y-1.5 text-[11px] font-semibold leading-5 text-white/90">
+            <li className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-soft" />
+              <span>افزایش کیفیت عملیات</span>
+            </li>
+            <li className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-soft" />
+              <span>رشد فروش و سود خالص</span>
+            </li>
+            <li className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-soft" />
+              <span>افزایش رضایت مشتریان</span>
+            </li>
+          </ul>
         </div>
       </motion.div>
     </div>
