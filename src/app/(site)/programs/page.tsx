@@ -72,12 +72,12 @@ export default function ProgramsPage() {
 
       {SHOW_FEATURED && <FeaturedCourse />}
 
-      <section id="courses" className="section bg-white">
+      <section id="courses" className="section !pt-8 sm:!pt-10 bg-white">
         <div className="container-x">
           <Reveal>
             <p className="eyebrow">{ui('programs.courses.eyebrow')}</p>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl">{ui('programs.courses.title')}</h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-ink-soft">
+            <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl">{ui('programs.courses.title')}</h2>
+            <p className="mt-2.5 max-w-2xl text-sm leading-7 text-ink-soft sm:text-base">
               {ui('programs.courses.lead')}
             </p>
           </Reveal>

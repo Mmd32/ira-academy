@@ -16,7 +16,7 @@ export function PageHeader({
   return (
     <header className="navy-stage relative overflow-hidden text-white">
       <div className="navy-grid absolute inset-0" aria-hidden />
-      <div className="container-x relative pb-14 pt-[calc(var(--nav-h)+3.5rem)]">
+      <div className="container-x relative pb-8 pt-[calc(var(--nav-h)+1.5rem)] sm:pb-9">
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -33,7 +33,7 @@ export function PageHeader({
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 text-balance text-3xl text-white sm:text-4xl lg:text-5xl"
+          className="mt-3 text-balance text-2xl text-white sm:text-3xl lg:text-4xl"
         >
           {title}
         </motion.h1>
@@ -42,7 +42,7 @@ export function PageHeader({
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className={`mt-5 leading-9 text-white/65 ${lead.includes('\n') ? 'max-w-4xl' : 'max-w-2xl'}`}
+            className={`mt-2.5 text-sm leading-7 text-white/65 sm:text-base ${lead.includes('\n') ? 'max-w-4xl' : 'max-w-2xl'}`}
           >
             {/* A newline in the text is a deliberate line break. */}
             {lead.split('\n').map((line, i) => (

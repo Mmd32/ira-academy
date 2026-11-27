@@ -41,7 +41,7 @@
 
 @layer components {
   .section {
-    @apply py-24 sm:py-32;
+    @apply py-12 sm:py-16;
   }
 
   .btn-primary,
