@@ -38,6 +38,8 @@ export const SECTIONS: readonly SectionDef[] = [
   { key: 'knowledge.handouts', page: 'کتابخانه', label: 'آرشیو جزوات', hint: '', default: true },
   // Community
   { key: 'community.albums', page: 'جامعه ARI', label: 'آلبوم رویدادها', hint: 'عنوان و عکس آلبوم‌ها در «متن صفحه‌ها ← جامعه ARI».', default: false },
+  // Contact
+  { key: 'contact.mobile', page: 'ارتباط با آکادمی', label: 'شماره موبایل (واتساپ / تلگرام / بله)', hint: 'تا زمان اختصاص شماره موبایل اختصاصی خاموش بماند.', default: false },
 ];
 
 function saved(): Record<string, boolean> {

@@ -19,6 +19,7 @@ import { breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { contact as contactSeed } from '@/content/pages';
 import { getPage } from '@/server/content';
 import { getSite } from '@/server/content';
+import { isOn } from '@/server/sections';
 import { fa } from '@/lib/text';
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   const contact = getPage('contact', contactSeed as unknown as typeof contactSeed);
   const site = getSite();
+  const showMobile = isOn('contact.mobile');
   return (
     <>
       <JsonLd data={faqSchema(contact.faqs)} />
@@ -108,16 +110,18 @@ export default function ContactPage() {
                     <PhoneLinks numbers={[String(site.phone ?? ''), String(site.phone2 ?? '')]} stacked linkClassName="font-bold text-ink" />
                   </dd>
                 </div>
-                <div className="border-b border-line pb-4">
+                <div className={showMobile ? 'border-b border-line pb-4' : ''}>
                   <dt className="text-xs text-ink-mute">ایمیل</dt>
                   <dd className="ltr mt-1 text-right font-bold text-ink">{site.email}</dd>
                 </div>
-                <div>
-                  <dt className="text-xs text-ink-mute">واتساپ / تلگرام / بله</dt>
-                  <dd className="mt-1 text-right">
-                    <LiteralText value={fa(site.mobile)} className="font-bold text-brand" />
-                  </dd>
-                </div>
+                {showMobile && (
+                  <div>
+                    <dt className="text-xs text-ink-mute">واتساپ / تلگرام / بله</dt>
+                    <dd className="mt-1 text-right">
+                      <LiteralText value={fa(site.mobile)} className="font-bold text-brand" />
+                    </dd>
+                  </div>
+                )}
               </dl>
             </div>
           </Reveal>
