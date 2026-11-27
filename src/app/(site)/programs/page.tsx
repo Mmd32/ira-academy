@@ -77,12 +77,15 @@ export default function ProgramsPage() {
           <Reveal>
             <p className="eyebrow">{ui('programs.courses.eyebrow')}</p>
             <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl">{ui('programs.courses.title')}</h2>
-            <p className="mt-2.5 max-w-2xl text-sm leading-7 text-ink-soft sm:text-base">
-              {ui('programs.courses.lead')}
-            </p>
           </Reveal>
 
           {SHOW_FLIP_CARDS && <CourseFlipCards />}
+
+          <Reveal delay={0.1}>
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-ink-soft sm:mt-8 sm:text-base">
+              {ui('programs.courses.lead')}
+            </p>
+          </Reveal>
 
           {SHOW_LEGACY_MODELS && (
             <div className="mt-16 space-y-4">
