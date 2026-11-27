@@ -74,6 +74,8 @@ export default function AboutPage() {
     { label: 'هدف', text: about.goal },
     { label: 'چشم‌انداز', text: about.vision },
   ];
+  const hasMiddleSections =
+    isOn('about.faculty') || (isOn('about.founders') && founders.length > 0);
   return (
     <>
       <PageHeader
@@ -82,7 +84,7 @@ export default function AboutPage() {
         lead={ui('page.about.lead')}
       />
 
-      <section className="section bg-white">
+      <section className={`section bg-white ${hasMiddleSections ? '' : '!pb-6'}`}>
         <div className="container-x">
           {/* Text beside a photograph. The photograph sits beside the text rather
               than behind it: text over an image has to fight the image for
@@ -184,7 +186,7 @@ export default function AboutPage() {
       )}
 
       {isOn('about.founders') && founders.length > 0 && (
-        <section className="section bg-white">
+        <section className={`section bg-white ${hasMiddleSections ? '' : '!pt-0'}`}>
           <div className="container-x">
             <Reveal>
               <p className="eyebrow">هیئت مؤسس</p>
@@ -224,7 +226,7 @@ export default function AboutPage() {
         </section>
       )}
 
-      <section className="section bg-white">
+      <section className={`section bg-white ${hasMiddleSections ? '' : '!pt-0'}`}>
         <div className={`container-x grid gap-10 ${SHOW_SPONSORS ? 'lg:grid-cols-2' : ''}`}>
           <Reveal>
             <div className="card h-full p-8 sm:p-10">
