@@ -58,12 +58,12 @@ function Scene3D({ fallback }: { fallback: string }) {
         <div className="absolute inset-4" style={{ transform: 'translateZ(50px)' }}>
           <Emblem3D fallback={fallback} />
         </div>
+      </motion.div>
 
-        {/* Top-right (swapped & raised z-depth so it stays in front of the emblem) */}
-        <div
-          className="glass-navy absolute -right-1 top-6 z-20 flex w-44 animate-float-slow items-center gap-3 p-4 sm:right-0"
-          style={{ transform: 'translateZ(120px)' }}
-        >
+      {/* Placed outside preserve-3d with z-20 so the rotating 3D emblem can never render in front of either card */}
+      <div className="pointer-events-none absolute inset-0 z-20">
+        {/* Top-right: Certificate card */}
+        <div className="glass-navy pointer-events-auto absolute -right-1 top-4 flex w-44 animate-float-slow items-center gap-3 p-4 sm:-right-2">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold/10 text-gold-soft">
             ✓
           </div>
@@ -76,8 +76,8 @@ function Scene3D({ fallback }: { fallback: string }) {
 
         {/* Bottom-left: growth bar chart + 3 bullet points (without 34%) */}
         <div
-          className="glass-navy absolute -left-1 bottom-6 z-20 w-52 animate-float-slow p-4 sm:left-0 sm:w-56"
-          style={{ transform: 'translateZ(100px)', animationDelay: '1.2s' }}
+          className="glass-navy pointer-events-auto absolute -left-1 bottom-4 w-52 animate-float-slow p-4 sm:-left-2 sm:w-56"
+          style={{ animationDelay: '1.2s' }}
         >
           <div className="flex items-end gap-1">
             {[8, 14, 11, 18, 24, 30].map((h, i) => (
@@ -99,7 +99,7 @@ function Scene3D({ fallback }: { fallback: string }) {
             </li>
           </ul>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
