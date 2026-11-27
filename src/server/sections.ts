@@ -29,7 +29,7 @@ export const SECTIONS: readonly SectionDef[] = [
   { key: 'programs.mba', page: 'برنامه‌های آموزشی', label: 'MBA و Mini MBA', hint: 'تکراری با «همکاری با دانشگاه‌ها».', default: false },
   { key: 'programs.calendar', page: 'برنامه‌های آموزشی', label: 'تقویم آموزشی', hint: 'هنوز تقویم واقعی ندارد.', default: false },
   // Library
-  { key: 'knowledge.news', page: 'کتابخانه', label: 'اخبار صنعت', hint: '', default: true },
+  { key: 'knowledge.news', page: 'کتابخانه', label: 'اخبار صنعت', hint: '', default: false },
   { key: 'knowledge.articles', page: 'کتابخانه', label: 'مقالات و موردکاوی‌ها', hint: '', default: true },
   { key: 'knowledge.media', page: 'کتابخانه', label: 'ویدیو و پادکست', hint: '', default: true },
   { key: 'knowledge.library', page: 'کتابخانه', label: 'معرفی کتاب', hint: '', default: true },
