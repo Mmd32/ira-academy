@@ -63,41 +63,41 @@ function Scene3D({ fallback }: { fallback: string }) {
       {/* Placed outside preserve-3d with z-20 so the rotating 3D emblem can never render in front of either card */}
       <div className="pointer-events-none absolute inset-0 z-20">
         {/* Top-right: Certificate card */}
-        <div className="glass-navy pointer-events-auto absolute -right-3 top-4 flex w-44 animate-float-slow items-center gap-3 p-4 sm:-right-6 lg:-right-8">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold/10 text-gold-soft">
+        <div className="glass-navy pointer-events-auto absolute -right-2 top-2 flex w-40 animate-float-slow items-center gap-2.5 p-3 sm:-right-8 sm:w-44 sm:p-3.5">
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold/10 text-sm text-gold-soft">
             ✓
           </div>
-          <div className="text-xs font-bold leading-6 text-white">
+          <div className="text-[11px] font-bold leading-5 text-white sm:text-xs sm:leading-6">
             مدرک تخصصی
             <br />
             آکادمی ریتیل ایران
           </div>
         </div>
 
-        {/* Bottom-left: growth bar chart + 3 bullet points (without 34%) */}
+        {/* Bottom-left: 3 compact bullet points + growth bar chart at the bottom */}
         <div
-          className="glass-navy pointer-events-auto absolute -left-1 bottom-4 w-52 animate-float-slow p-4 sm:-left-2 sm:w-56"
+          className="glass-navy pointer-events-auto absolute -left-2 bottom-2 w-44 animate-float-slow p-3 sm:-left-8 sm:w-48 sm:p-3.5"
           style={{ animationDelay: '1.2s' }}
         >
-          <div className="flex items-end gap-1">
-            {[8, 14, 11, 18, 24, 30].map((h, i) => (
-              <div key={i} className="w-2.5 rounded-sm bg-gold/70" style={{ height: h }} />
-            ))}
-          </div>
-          <ul className="mt-3 space-y-1.5 text-[11px] font-semibold leading-5 text-white/90">
+          <ul className="space-y-1 text-[10.5px] font-semibold leading-4 text-white/90 sm:text-[11px]">
             <li className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-soft" />
+              <span className="h-1 w-1 shrink-0 rounded-full bg-gold-soft" />
               <span>افزایش کیفیت عملیات</span>
             </li>
             <li className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-soft" />
+              <span className="h-1 w-1 shrink-0 rounded-full bg-gold-soft" />
               <span>رشد فروش و سود خالص</span>
             </li>
             <li className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-soft" />
+              <span className="h-1 w-1 shrink-0 rounded-full bg-gold-soft" />
               <span>افزایش رضایت مشتریان</span>
             </li>
           </ul>
+          <div className="mt-2 flex items-end gap-1">
+            {[6, 10, 8, 13, 17, 22].map((h, i) => (
+              <div key={i} className="w-2 rounded-sm bg-gold/70" style={{ height: h }} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
