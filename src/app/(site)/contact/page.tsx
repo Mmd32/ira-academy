@@ -110,9 +110,21 @@ export default function ContactPage() {
                     <PhoneLinks numbers={[String(site.phone ?? ''), String(site.phone2 ?? '')]} stacked linkClassName="font-bold text-ink" />
                   </dd>
                 </div>
-                <div className={showMobile ? 'border-b border-line pb-4' : ''}>
+                <div className="border-b border-line pb-4">
                   <dt className="text-xs text-ink-mute">ایمیل</dt>
                   <dd className="ltr mt-1 text-right font-bold text-ink">{site.email}</dd>
+                </div>
+                <div className={showMobile ? 'border-b border-line pb-4' : ''}>
+                  <dt className="text-xs text-ink-mute">پشتیبانی وب‌سایت</dt>
+                  <dd className="mt-1 text-right">
+                    <a
+                      href="tel:+989371145196"
+                      dir="ltr"
+                      className="inline-block font-bold text-ink transition-colors hover:text-brand"
+                    >
+                      ۰۹۳۷۱۱۴۵۱۹۶
+                    </a>
+                  </dd>
                 </div>
                 {showMobile && (
                   <div>

@@ -8,7 +8,8 @@ type Message = { role: 'user' | 'assistant'; content: string; links?: Link[] };
 
 const ASK_NAME: Message = {
   role: 'assistant',
-  content: 'سلام! من مشاور آکادمی ریتیل ایران هستم. لطفاً نام و نام خانوادگی‌تان را بنویسید.',
+  content:
+    'سلام! من مشاور آکادمی ریتیل ایران هستم. در صورت نیاز به پشتیبانی وب‌سایت یا تماس مستقیم می‌توانید با شماره ۰۹۳۷۱۱۴۵۱۹۶ تماس بگیرید. لطفاً نام و نام خانوادگی‌تان را بنویسید.',
 };
 
 const NAME_KEY = 'ira-consult-name';
