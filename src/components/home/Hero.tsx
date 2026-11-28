@@ -52,34 +52,34 @@ function Scene3D({ fallback }: { fallback: string }) {
           }}
         />
         <div
-          className="absolute left-1/2 top-1/2 h-[320px] w-[320px] rounded-full border border-gold/40 sm:h-[370px] sm:w-[370px]"
+          className="absolute left-1/2 top-1/2 h-[300px] w-[300px] rounded-full border border-gold/40 sm:h-[350px] sm:w-[350px]"
           style={{ transform: 'translate(-50%,-50%) translateZ(10px)' }}
         />
-        <div className="absolute inset-4" style={{ transform: 'translateZ(50px)' }}>
+        <div className="absolute inset-8 sm:inset-6" style={{ transform: 'translateZ(50px)' }}>
           <Emblem3D fallback={fallback} />
         </div>
       </motion.div>
 
       {/* Placed outside preserve-3d with z-20 so the rotating 3D emblem can never render in front of either card */}
       <div className="pointer-events-none absolute inset-0 z-20">
-        {/* Top-right: Certificate card */}
-        <div className="glass-navy pointer-events-auto absolute -right-2 top-2 flex w-40 animate-float-slow items-center gap-2.5 p-3 sm:-right-8 sm:w-44 sm:p-3.5">
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold/10 text-sm text-gold-soft">
+        {/* Top-right: Certificate card — nudged right to clear the rotating emblem */}
+        <div className="glass-navy pointer-events-auto absolute -right-5 top-2 flex w-36 animate-float-slow items-center gap-2 p-2.5 sm:-right-10 sm:w-40 sm:p-3 lg:-right-14">
+          <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold/10 text-xs text-gold-soft">
             ✓
           </div>
-          <div className="text-[11px] font-bold leading-5 text-white sm:text-xs sm:leading-6">
+          <div className="text-[10.5px] font-bold leading-4 text-white sm:text-[11px] sm:leading-5">
             مدرک تخصصی
             <br />
             آکادمی ریتیل ایران
           </div>
         </div>
 
-        {/* Bottom-left: 3 compact bullet points + growth bar chart at the bottom */}
+        {/* Bottom-left: Compact bullets + growth graph at bottom, nudged left to completely clear the logo */}
         <div
-          className="glass-navy pointer-events-auto absolute -left-2 bottom-2 w-44 animate-float-slow p-3 sm:-left-8 sm:w-48 sm:p-3.5"
+          className="glass-navy pointer-events-auto absolute -left-5 bottom-1 w-auto max-w-[155px] animate-float-slow p-2.5 sm:-left-10 sm:max-w-[170px] sm:p-3 lg:-left-14"
           style={{ animationDelay: '1.2s' }}
         >
-          <ul className="space-y-1 text-[10.5px] font-semibold leading-4 text-white/90 sm:text-[11px]">
+          <ul className="space-y-1 text-[10px] font-semibold leading-snug text-white/90 sm:text-[10.5px]">
             <li className="flex items-center gap-1.5">
               <span className="h-1 w-1 shrink-0 rounded-full bg-gold-soft" />
               <span>افزایش کیفیت عملیات</span>
@@ -93,9 +93,10 @@ function Scene3D({ fallback }: { fallback: string }) {
               <span>افزایش رضایت مشتریان</span>
             </li>
           </ul>
+          {/* Growth bar chart at the bottom */}
           <div className="mt-2 flex items-end gap-1">
-            {[6, 10, 8, 13, 17, 22].map((h, i) => (
-              <div key={i} className="w-2 rounded-sm bg-gold/70" style={{ height: h }} />
+            {[6, 9, 8, 12, 16, 20].map((h, i) => (
+              <div key={i} className="w-1.5 rounded-xs bg-gold/75 sm:w-2" style={{ height: h }} />
             ))}
           </div>
         </div>
